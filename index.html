@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="assets/l3arn-icon-180.png" />
 <link rel="manifest" href="assets/manifest.webmanifest" />
 <meta name="theme-color" content="#1e2a78" />
-<title>L3ARN · BBA Study Hub</title>
+<title>L3ARN: A Study space for all</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -89,8 +89,9 @@
   .menu-btn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;min-height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0;flex:none}
   .menu-btn svg{width:var(--icon);height:var(--icon)}
   .brand{display:flex;align-items:center;flex:none}
-  .brand-logo-tile{display:inline-flex;align-items:center;background:var(--navy);border-radius:12px;padding:5px 9px}
-  .brand-logo{height:26px;width:auto;display:block}
+  .brand-logo-tile{display:inline-flex;align-items:center;gap:7px;background:var(--navy);border-radius:12px;padding:5px 10px}
+  .brand-logo{height:26px;width:26px;display:block}
+  .brand-word{color:#fff;font-weight:800;font-size:17px;letter-spacing:.04em;line-height:1}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   .unit-pill{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--surface2);border:1px solid var(--line);color:var(--ink2);padding:6px 12px;border-radius:999px}
   .headtools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto}
@@ -252,7 +253,8 @@
   .sidebar.open{transform:translateX(0)}
   .sidebar .snav-brand{display:flex;align-items:center;padding:2px 8px 14px}
   .sidebar .snav-brand .brand-logo-tile{padding:6px 10px}
-  .sidebar .snav-brand .brand-logo{height:30px}
+  .sidebar .snav-brand .brand-logo{height:30px;width:30px}
+  .sidebar .snav-brand .brand-word{font-size:19px}
   .snav-label{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);padding:12px 12px 8px}
   .snav-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:transparent;color:var(--ink2);font-weight:700;font-size:15px;border-radius:12px;padding:11px 12px;min-height:46px;transition:background .18s ease,color .18s ease,transform .12s ease}
   .snav-item svg{width:var(--icon);height:var(--icon);flex:none}
@@ -309,6 +311,31 @@
   .seg button{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:9px 16px;font-weight:700;font-size:14.5px}
   .seg button.on{background:var(--teal);border-color:var(--teal);color:#fff}
   html[data-theme="dark"] .seg button.on{color:#0b1512}
+
+  /* ---------- Study profile (college, course, major) ---------- */
+  .field select{width:100%;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--ink);font-size:16px;font-weight:600}
+  .field select:focus{outline:3px solid rgba(14,124,107,.35);border-color:var(--teal)}
+  .snav-profile{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface2);border-radius:14px;padding:10px 12px;margin:2px 0 8px;color:var(--ink)}
+  .snav-profile:hover{border-color:var(--teal)}
+  .snav-avatar{width:36px;height:36px}
+  .snav-profile-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+  .snav-profile-name{font-size:13.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .snav-profile-sub{font-size:12px;color:var(--ink2);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .header-profile{display:none;flex-direction:column;line-height:1.35;text-align:right}
+  .header-profile span:first-child{font-size:13px;font-weight:800}
+  .header-profile span:last-child{font-size:11.5px;color:var(--ink2);font-weight:600}
+  @media (min-width:960px){ .header-profile{display:flex} }
+  .subject-card{position:relative;cursor:pointer}
+  .subject-card:not(.subject-add) h3{padding-right:36px}
+  .subject-remove{position:absolute;top:10px;right:10px;width:32px;height:32px;min-height:32px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink3);font-size:19px;font-weight:800;line-height:1;padding:0;display:grid;place-items:center}
+  .subject-remove:hover{border-color:var(--bad);color:var(--bad)}
+  .subject-add{align-items:center;text-align:center;border-style:dashed}
+  .subject-add .add-plus{font-size:30px;font-weight:800;color:var(--teal);line-height:1}
+  .sheet-scrim{position:fixed;inset:0;z-index:60;background:rgba(10,15,30,.45)}
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;display:flex;justify-content:center}
+  .sheet-card{background:var(--surface);border:1px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0;box-shadow:var(--shadow);padding:20px;width:100%;max-width:560px;max-height:82vh;overflow-y:auto}
+  .add-subject-opt{display:block;width:100%;text-align:left;margin-top:8px}
+  @media (min-width:720px){ .sheet{align-items:center;padding:20px} .sheet-card{border-radius:18px;border-bottom:1px solid var(--line)} }
 
   /* ---------- Loading (spinner + pulse, flat colors only) ---------- */
   .spinner{width:34px;height:34px;flex:none;border-radius:50%;border:3px solid var(--line);border-top-color:var(--teal);animation:spin .8s linear infinite}
@@ -461,7 +488,14 @@
 <body>
 
 <aside class="sidebar" id="sidebar" aria-label="App sections">
-  <div class="snav-brand"><span class="brand-logo-tile"><img class="brand-logo" src="assets/l3arn-logo.png" alt="L3ARN" width="1200" height="511" /></span></div>
+  <div class="snav-brand"><span class="brand-logo-tile"><img class="brand-logo" src="assets/l3arn-symbol-white.png" alt="" width="1200" height="1200" /><span class="brand-word">L3ARN</span></span></div>
+  <button class="snav-profile" id="snav-profile" type="button" onclick="showMain('profile')" aria-label="Open profile">
+    <span id="snav-avatar-wrap"><img id="snav-avatar-img" class="avatar snav-avatar hidden" alt="" /><span id="snav-avatar-init" class="avatar avatar-init snav-avatar hidden" aria-hidden="true"></span></span>
+    <span class="snav-profile-text">
+      <span id="snav-profile-name" class="snav-profile-name"></span>
+      <span id="snav-profile-sub" class="snav-profile-sub"></span>
+    </span>
+  </button>
   <div class="snav-label" data-i18n="menuLabel">Menu</div>
   <button class="snav-item" id="nav-home" aria-selected="true" onclick="showMain('home')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
@@ -503,7 +537,7 @@
     <button class="menu-btn" id="menu-btn" onclick="toggleSidebar()" aria-label="Open menu" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
-    <div class="brand"><span class="brand-logo-tile"><img class="brand-logo" src="assets/l3arn-logo.png" alt="L3ARN" width="1200" height="511" /></span><span class="sr-only">L3ARN</span></div>
+    <div class="brand"><span class="brand-logo-tile"><img class="brand-logo" src="assets/l3arn-symbol-white.png" alt="" width="1200" height="1200" /><span class="brand-word">L3ARN</span></span></div>
     <span class="unit-pill" id="unit-pill">Year 1 · BBA</span>
     <div class="headtools">
       <span class="streak-pill" id="streak-pill" title="Daily streak">
@@ -518,6 +552,10 @@
         <svg id="theme-icon-sun" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         <span id="theme-label">Dark</span>
       </button>
+      <span class="header-profile" id="header-profile">
+        <span id="header-profile-name"></span>
+        <span id="header-profile-sub"></span>
+      </span>
       <img id="header-avatar-img" class="avatar hidden" alt="Profile picture" />
       <span id="header-avatar-init" class="avatar avatar-init hidden" aria-hidden="true"></span>
       <button class="toolbtn" id="auth-btn" onclick="openAuth()">Sign in</button>
@@ -563,7 +601,7 @@
   <div class="section-head">
     <h2 data-i18n="chooseSubject">Choose a subject</h2>
   </div>
-  <p class="lede" data-i18n="chooseLede">BBA Year 1. Pick a subject to revise with flashcards, check your knowledge, and track your assignment.</p>
+  <p class="lede" id="home-lede">ATHE BBA Program · Year 1. Pick a subject to revise with flashcards, check your knowledge, and track your assignment.</p>
   <div class="subject-grid" id="subject-grid"></div>
 </section>
 
@@ -905,10 +943,21 @@
       </div>
     </div>
     <div class="card" style="margin-top:16px">
-      <h3 style="font-size:18px;font-weight:800" data-i18n="genderH">Gender</h3>
-      <div class="seg" id="gender-seg" style="margin-top:12px">
-        <button type="button" onclick="setGender('male')" data-gender="male" data-i18n="male">Male</button>
-        <button type="button" onclick="setGender('female')" data-gender="female" data-i18n="female">Female</button>
+      <h3 style="font-size:18px;font-weight:800" data-i18n="studyProfileH">Study profile</h3>
+      <div class="field">
+        <label for="college-select" data-i18n="collegeLabel">College</label>
+        <select id="college-select" onchange="setCollege(this.value)"></select>
+        <input id="college-other" type="text" maxlength="80" class="hidden" style="margin-top:10px" data-i18n-ph="collegeOtherPh" placeholder="Type your college" onchange="setCollegeOther(this.value)" />
+      </div>
+      <div class="field">
+        <label for="course-select" data-i18n="courseLabel">Course</label>
+        <select id="course-select" onchange="setCourse(this.value)"></select>
+        <input id="course-other" type="text" maxlength="80" class="hidden" style="margin-top:10px" data-i18n-ph="courseOtherPh" placeholder="Type your course" onchange="setCourseOther(this.value)" />
+      </div>
+      <div class="field" id="major-field">
+        <label for="major-select" data-i18n="majorLabel">Major</label>
+        <select id="major-select" onchange="setMajor(this.value)"></select>
+        <input id="major-other" type="text" maxlength="80" class="hidden" style="margin-top:10px" data-i18n-ph="majorOtherPh" placeholder="Type your major" onchange="setMajorOther(this.value)" />
       </div>
       <h3 style="font-size:18px;font-weight:800;margin-top:22px" data-i18n="yearH">Academic year</h3>
       <div class="seg" id="year-seg" style="margin-top:12px">
@@ -916,6 +965,13 @@
         <button type="button" onclick="setYear(2)" data-year="2">Year 2</button>
         <button type="button" onclick="setYear(3)" data-year="3">Year 3</button>
         <button type="button" onclick="setYear(4)" data-year="4">Year 4</button>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3 style="font-size:18px;font-weight:800" data-i18n="genderH">Gender</h3>
+      <div class="seg" id="gender-seg" style="margin-top:12px">
+        <button type="button" onclick="setGender('male')" data-gender="male" data-i18n="male">Male</button>
+        <button type="button" onclick="setGender('female')" data-gender="female" data-i18n="female">Female</button>
       </div>
     </div>
     <div class="card" style="margin-top:16px">
@@ -1062,6 +1118,24 @@
 <div id="saved-toast" class="saved-toast" role="status" aria-live="polite">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
   <span id="saved-toast-text">Saved</span>
+</div>
+
+<!-- Add subject sheet -->
+<div id="add-subject-scrim" class="sheet-scrim hidden" onclick="closeAddSubject()"></div>
+<div id="add-subject-sheet" class="sheet hidden" role="dialog" aria-modal="true" aria-label="Add subject">
+  <div class="sheet-card fadein">
+    <h3 style="font-size:19px;font-weight:800" data-i18n="addSubjectH">Add subject</h3>
+    <p class="ink2" id="add-subject-note" style="font-size:14.5px;margin-top:6px"></p>
+    <div id="add-subject-list"></div>
+    <div class="field">
+      <label for="custom-subject-input" data-i18n="addOwnSubject">Add your own subject</label>
+      <input id="custom-subject-input" type="text" maxlength="80" data-i18n-ph="customSubjectPh" placeholder="Subject name" />
+    </div>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="btn primary" type="button" onclick="addCustomSubject()" data-i18n="addBtn">Add</button>
+      <button class="btn" type="button" onclick="closeAddSubject()" data-i18n="closeBtn">Close</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -1220,7 +1294,30 @@ var I18N = {
     examsCount:"Exams",
     dayStreak:"Day streak",
     profileH:"Profile",
-    profileLede:"Your picture, gender, and academic year. Everything here syncs across your devices when you are signed in.",
+    profileLede:"Your picture, college, course, major, and academic year. Everything here syncs across your devices when you are signed in.",
+    studyProfileH:"Study profile",
+    collegeLabel:"College",
+    courseLabel:"Course",
+    majorLabel:"Major",
+    collegeOtherPh:"Type your college",
+    courseOtherPh:"Type your course",
+    majorOtherPh:"Type your major",
+    otherOption:"Other",
+    otherCourse:"Other course",
+    addSubjectH:"Add subject",
+    addSubjectNote:"Tap a subject to add it to your list.",
+    addSubjectNone:"All preset subjects for this course are already in your list. Add your own below.",
+    addOwnSubject:"Add your own subject",
+    customSubjectPh:"Subject name",
+    addBtn:"Add",
+    closeBtn:"Close",
+    removeSubject:"Remove subject",
+    subjectRemoved:"Subject removed",
+    subjectAdded:"Subject added",
+    cannotRemoveLast:"Keep at least one subject in your list.",
+    chooseLede2:"Pick a subject to revise with flashcards, check your knowledge, and track your assignment.",
+    addSubjectCard:"Add subject",
+    addSubjectCardSub:"Add a subject from your course, or add your own.",
     uploadPic:"Upload picture",
     removePic:"Remove picture",
     picNote:"Your picture is resized to a small square on this device before it is saved, so it stays light.",
@@ -1410,7 +1507,30 @@ var I18N = {
     examsCount:"စာမေးပွဲများ",
     dayStreak:"ရက်ဆက်တိုက်",
     profileH:"ပရိုဖိုင်",
-    profileLede:"သင့်ဓာတ်ပုံ၊ ကျား/မ နှင့် ပညာသင်နှစ်။ ဝင်ရောက်ထားလျှင် စက်အားလုံးတွင် ချိန်ညှိပေးမည်။",
+    profileLede:"သင့်ဓာတ်ပုံ၊ ကောလိပ်၊ သင်တန်း၊ အဓိကဘာသာနှင့် ပညာသင်နှစ်။ ဝင်ရောက်ထားလျှင် စက်အားလုံးတွင် ချိန်ညှိပေးမည်။",
+    studyProfileH:"လေ့လာမှုပရိုဖိုင်",
+    collegeLabel:"ကောလိပ်",
+    courseLabel:"သင်တန်း",
+    majorLabel:"အဓိကဘာသာ",
+    collegeOtherPh:"သင့်ကောလိပ်ကို ရိုက်ထည့်ပါ",
+    courseOtherPh:"သင့်သင်တန်းကို ရိုက်ထည့်ပါ",
+    majorOtherPh:"သင့်အဓိကဘာသာကို ရိုက်ထည့်ပါ",
+    otherOption:"အခြား",
+    otherCourse:"အခြားသင်တန်း",
+    addSubjectH:"ဘာသာရပ်ထည့်မည်",
+    addSubjectNote:"သင့်စာရင်းထဲသို့ ထည့်ရန် ဘာသာရပ်တစ်ခုကို နှိပ်ပါ။",
+    addSubjectNone:"ဤသင်တန်းအတွက် သတ်မှတ်ထားသော ဘာသာရပ်အားလုံး စာရင်းထဲတွင် ရှိပြီးဖြစ်သည်။ အောက်တွင် သင့်ကိုယ်ပိုင် ဘာသာရပ်ကို ထည့်ပါ။",
+    addOwnSubject:"သင့်ကိုယ်ပိုင် ဘာသာရပ်ထည့်မည်",
+    customSubjectPh:"ဘာသာရပ်အမည်",
+    addBtn:"ထည့်မည်",
+    closeBtn:"ပိတ်မည်",
+    removeSubject:"ဘာသာရပ်ဖယ်ရှားမည်",
+    subjectRemoved:"ဘာသာရပ်ဖယ်ရှားပြီးပြီ",
+    subjectAdded:"ဘာသာရပ်ထည့်ပြီးပြီ",
+    cannotRemoveLast:"စာရင်းထဲတွင် အနည်းဆုံး ဘာသာရပ်တစ်ခု ထားရှိပါ။",
+    chooseLede2:"ကတ်များ၊ မေးခွန်းများဖြင့် ပြန်လည်လေ့ကျင့်ပြီး တာဝန်ကို ခြေရာခံရန် ဘာသာရပ်ရွေးပါ။",
+    addSubjectCard:"ဘာသာရပ်ထည့်မည်",
+    addSubjectCardSub:"သင့်သင်တန်းမှ ဘာသာရပ်တစ်ခုထည့်ပါ၊ သို့မဟုတ် သင့်ကိုယ်ပိုင်ထည့်ပါ။",
     uploadPic:"ဓာတ်ပုံတင်မည်",
     removePic:"ဓာတ်ပုံဖယ်ရှားမည်",
     picNote:"သင့်ဓာတ်ပုံကို သိမ်းဆည်းခြင်းမပြုမီ ဤစက်တွင် စတုရန်းပုံအသေးအဖြစ် ချုံ့ပေးမည်။",
@@ -1509,7 +1629,8 @@ function applyLang(){
   renderStreak(); renderKnownNote(); renderNotesCount(); updateSyncLabel(); updateThemeLabel();
   renderStats(); renderSubjectGrid(); renderEmptyNotes();
   updateHeroForView();
-  if (view === "learn") renderLearn();
+  if (view === "home") renderHome();
+  else if (view === "learn") renderLearn();
   else if (view === "playlist") renderPlaylist();
   else if (view === "schedule") renderSchedule();
   else if (view === "profile") renderProfile();
@@ -1596,9 +1717,198 @@ var SUBJECTS = [
     subHtml:"Study material for this subject has not been added yet.",
     footer:"L3ARN · Financial Accounting", ready:false }
 ];
+/* ================= Study profile: colleges, courses, majors ================= */
+var COLLEGES = ["NMA College","Strategy First International College","STI Myanmar University","Myanmar Imperial College","GUSTO College","Parami University","Myanmar Management International College","American University of Yangon","Myanmar International Business College (MIB College)","British United College","MESI College","ATBC International College","Myanmar Excellence Institute","KBTC School of Information Technology","Myanmar Creative Technology College","AU MIT Myanmar College","Richmond College","Y-Max College","Myanmar Commercial Management Institute (MCMI)","Newton International Centre","Matrix College"];
+var COURSES = [
+  { id:"athe-bba", label:"ATHE BBA Program", short:"ATHE BBA", code:"Year 1 · ATHE BBA", majors:"business" },
+  { id:"athe-l4", label:"ATHE Level 4 Diploma in Business and Management", short:"ATHE L4", code:"Year 1 · ATHE L4", majors:"business" },
+  { id:"athe-l5", label:"ATHE Level 5 Diploma in Business and Management", short:"ATHE L5", code:"Year 2 · ATHE L5", majors:"business" },
+  { id:"ncc-biz-l4", label:"NCC Level 4 Diploma in Business", short:"NCC Business L4", code:"Year 1 · NCC Business", majors:"business" },
+  { id:"ncc-biz-l5", label:"NCC Level 5 Diploma in Business", short:"NCC Business L5", code:"Year 2 · NCC Business", majors:"business" },
+  { id:"ncc-comp-l4", label:"NCC Level 4 Diploma in Computing", short:"NCC Computing", code:"Year 1 · NCC Computing", majors:"computing" },
+  { id:"ged", label:"GED", short:"GED", code:"GED", majors:"none" },
+  { id:"igcse", label:"IGCSE", short:"IGCSE", code:"IGCSE", majors:"none" },
+  { id:"bba", label:"BBA Program", short:"BBA", code:"Year 1 · BBA", majors:"business" },
+  { id:"mba", label:"MBA Program", short:"MBA", code:"MBA", majors:"business" },
+  { id:"hnd", label:"Pearson HND in Business", short:"HND", code:"HND in Business", majors:"business" }
+];
+var MAJOR_LISTS = {
+  business:["Business Administration","Marketing","Finance","Accounting","Human Resource Management","Entrepreneurship","International Business","Management"],
+  computing:["Software Development","Computer Networks","Web Development","Database Management","IT Management"]
+};
+/* Subject catalog per course, from the published curricula. Only teamproject has
+   study content; every other subject opens an empty hub with working notes.
+   Never invent study content for any subject. */
+var COURSE_CATALOG = {
+  "athe-bba":[
+    { id:"teamproject", title:"Managing a Work-Based Team Project" },
+    { id:"entrepreneurship", title:"Entrepreneurship" },
+    { id:"marketing", title:"Marketing Mix" },
+    { id:"finance", title:"Financial Accounting" },
+    { id:"biz-environment", title:"The Business Environment" },
+    { id:"people-orgs", title:"People in Organisations" },
+    { id:"comm-skills", title:"Communication Skills for Business" },
+    { id:"resource-mgmt", title:"Resource Management" },
+    { id:"csr", title:"Corporate Social Responsibility" },
+    { id:"crm", title:"Customer Relationship Management" },
+    { id:"admin-services", title:"Administrative Services" },
+    { id:"info-knowledge", title:"Managing Information and Knowledge" },
+    { id:"ops-mgmt", title:"Managing Operations" },
+    { id:"quality-mgmt", title:"Managing Quality" },
+    { id:"digital-comms", title:"Digital Communications" },
+    { id:"cultural-persp", title:"Cultural Perspectives" },
+    { id:"applied-stats", title:"Applied Statistics" }
+  ],
+  "athe-l5":[
+    { id:"biz-global", title:"Business Organisations in a Global Context" },
+    { id:"people-mgmt", title:"People Management" },
+    { id:"finance-managers", title:"Finance for Managers" },
+    { id:"research-project", title:"Research Project" },
+    { id:"managing-comm", title:"Managing Communication" },
+    { id:"marketing-principles", title:"Marketing Principles and Practice" },
+    { id:"sustainability", title:"Manage Sustainability in an Organisation" },
+    { id:"small-business", title:"Small Business Enterprise" },
+    { id:"new-venture", title:"Planning a New Business Venture" },
+    { id:"business-law", title:"Business Law" },
+    { id:"ops-mgmt-l5", title:"Operations Management" },
+    { id:"strategic-info", title:"Information for Strategic Decision-Making" },
+    { id:"org-change", title:"Organisational Analysis and Change" },
+    { id:"financial-audit", title:"Financial Systems and Auditing" },
+    { id:"business-ethics", title:"Business Ethics" },
+    { id:"applied-econ", title:"Applied Economics for Business" }
+  ],
+  "ncc-biz-l4":[
+    { id:"leadership-entre", title:"Leadership and Entrepreneurship" },
+    { id:"project-mgmt", title:"Project Management" },
+    { id:"corp-responsibility", title:"Corporate Responsibility with Sustainable Business" },
+    { id:"biz-finance", title:"Understanding Business Finance" },
+    { id:"org-culture", title:"Organisational Culture and Collaboration" },
+    { id:"ncc-business-law", title:"Business Law" },
+    { id:"expert-ebusiness", title:"Expert eBusiness" },
+    { id:"intl-business", title:"International Business" },
+    { id:"applying-marketing", title:"Applying Marketing" }
+  ],
+  "ncc-biz-l5":[
+    { id:"startup-business", title:"Start Up Business" },
+    { id:"innovation-growth", title:"Innovation and Growth" },
+    { id:"raising-finance", title:"Raising Finance Capital: Process and Law" },
+    { id:"agile-leadership", title:"Agile and Responsive Leadership" },
+    { id:"ethics-business", title:"Ethics in Business" }
+  ],
+  "ncc-comp-l4":[
+    { id:"skills-computing", title:"Skills for Computing" },
+    { id:"computer-networks", title:"Computer Networks" },
+    { id:"computer-systems", title:"Computer Systems" },
+    { id:"website-design", title:"Designing and Developing a Website" },
+    { id:"databases", title:"Databases" },
+    { id:"ebusiness", title:"eBusiness" },
+    { id:"essentials-mgmt", title:"Essentials of Management" },
+    { id:"biz-organisations", title:"Understanding Business Organisations" }
+  ],
+  "ged":[
+    { id:"ged-rla", title:"Reasoning Through Language Arts" },
+    { id:"ged-math", title:"Mathematical Reasoning" },
+    { id:"ged-science", title:"Science" },
+    { id:"ged-social", title:"Social Studies" }
+  ],
+  "igcse":[
+    { id:"igcse-eng-first", title:"English First Language" },
+    { id:"igcse-eng-second", title:"English as a Second Language" },
+    { id:"igcse-eng-lit", title:"English Literature" },
+    { id:"igcse-maths", title:"Mathematics" },
+    { id:"igcse-add-maths", title:"Additional Mathematics" },
+    { id:"igcse-biology", title:"Biology" },
+    { id:"igcse-chemistry", title:"Chemistry" },
+    { id:"igcse-physics", title:"Physics" },
+    { id:"igcse-combined-sci", title:"Combined Science" },
+    { id:"igcse-geography", title:"Geography" },
+    { id:"igcse-history", title:"History" },
+    { id:"igcse-economics", title:"Economics" },
+    { id:"igcse-business", title:"Business Studies" },
+    { id:"igcse-accounting", title:"Accounting" },
+    { id:"igcse-compsci", title:"Computer Science" },
+    { id:"igcse-art", title:"Art and Design" },
+    { id:"igcse-french", title:"French" },
+    { id:"igcse-chinese", title:"Chinese (Mandarin)" }
+  ]
+};
+/* ATHE Level 4 Year 1 shares the ATHE BBA Year 1 subject list. */
+COURSE_CATALOG["athe-l4"] = COURSE_CATALOG["athe-bba"];
+
+function courseDef(id){ for (var i = 0; i < COURSES.length; i++) if (COURSES[i].id === id) return COURSES[i]; return null; }
+function courseLabel(c){ var d = courseDef(c); if (d) return d.label; if (c) return c; return t("otherCourse"); }
+function courseShort(c){ var d = courseDef(c); if (d) return d.short; if (c) return c.length > 18 ? c.slice(0, 18) + "…" : c; return t("otherCourse"); }
+function courseCodeFor(c){ var d = courseDef(c); if (d) return d.code; return "Year " + ((store && store.profile && store.profile.academicYear) || 1) + " · " + courseShort(c); }
+function courseMajors(c){ var d = courseDef(c); if (!d) return MAJOR_LISTS.business; if (d.majors === "business") return MAJOR_LISTS.business; if (d.majors === "computing") return MAJOR_LISTS.computing; return []; }
+function courseCatalog(c){ var d = courseDef(c); if (!d) return []; return COURSE_CATALOG[d.id] || []; }
+/* Every preset subject gets a renderable definition. The four core subjects keep
+   their existing definitions (content, codes, footers) untouched. */
+var PRESET_DEFS = {};
+SUBJECTS.forEach(function(sb){ PRESET_DEFS[sb.id] = sb; });
+Object.keys(COURSE_CATALOG).forEach(function(cid){
+  COURSE_CATALOG[cid].forEach(function(entry){
+    if (!PRESET_DEFS[entry.id]) {
+      PRESET_DEFS[entry.id] = { id:entry.id, code:courseCodeFor(cid), title:entry.title,
+        subHtml:"Study material for this subject has not been added yet.",
+        footer:"L3ARN · " + entry.title, ready:false };
+    }
+  });
+});
+function subjectDef(id){
+  if (PRESET_DEFS[id]) return PRESET_DEFS[id];
+  var customs = (store && store.customSubjects) || [];
+  for (var i = 0; i < customs.length; i++) if (customs[i].id === id) {
+    return { id:customs[i].id, code:courseCodeFor(customs[i].course), title:customs[i].name,
+      subHtml:"Study material for this subject has not been added yet.",
+      footer:"L3ARN · " + customs[i].name, ready:false, custom:true };
+  }
+  return null;
+}
+function defaultCourseSubjects(c){
+  if (c === "athe-bba" || c === "athe-l4") return ["teamproject","entrepreneurship","marketing","finance"];
+  return [];
+}
+function courseSubjectIds(c){
+  if (!store.subjectsByCourse) store.subjectsByCourse = {};
+  if (!Array.isArray(store.subjectsByCourse[c])) store.subjectsByCourse[c] = defaultCourseSubjects(c);
+  return store.subjectsByCourse[c];
+}
+function visibleSubjects(){
+  var out = [];
+  courseSubjectIds(store.profile.course).forEach(function(id){
+    var d = subjectDef(id);
+    if (d) out.push(d);
+  });
+  return out;
+}
+function ensureSubject(id){
+  if (!id) return emptySubjectProgress();
+  if (!store.subjects[id]) store.subjects[id] = emptySubjectProgress();
+  return store.subjects[id];
+}
 function currentSubject(){
-  for (var i = 0; i < SUBJECTS.length; i++) if (SUBJECTS[i].id === store.active) return SUBJECTS[i];
-  return SUBJECTS[0];
+  var d = subjectDef(store.active);
+  if (d) return d;
+  var list = visibleSubjects();
+  if (list.length) return list[0];
+  return { id:"", code:"", title:"", subHtml:"", footer:"", ready:false };
+}
+/* Study profile display lines, e.g. "ThitSar (NMA College)" and
+   "ATHE BBA Program · Business Administration · Year 1". */
+function displayName(){ var p = store.profile; return (p.name || "") || (auth && auth.name) || t("guestName"); }
+function displayCollege(){ return store.profile.college || "NMA College"; }
+function displayMajor(){
+  var majors = courseMajors(store.profile.course);
+  if (!majors.length) return "";
+  return store.profile.major || majors[0];
+}
+function profileNameLine(){ return displayName() + " (" + displayCollege() + ")"; }
+function profileSubLine(){
+  var parts = [courseLabel(store.profile.course)];
+  var m = displayMajor();
+  if (m) parts.push(m);
+  parts.push("Year " + (store.profile.academicYear || 1));
+  return parts.join(" · ");
 }
 var view = "home";   // home | subject
 
@@ -2101,7 +2411,7 @@ var LS_GUEST = "l3arn-guest-dismissed";
 function emptySubjectProgress(){
   return { known:{}, quizBest:null, lastQuiz:null, notes:[], streak:{ count:0, lastDay:null } };
 }
-function emptyProfile(){ return { name:"", gender:null, academicYear:1, picture:null }; }
+function emptyProfile(){ return { name:"", gender:null, academicYear:1, picture:null, college:"NMA College", course:"athe-bba", major:"Business Administration" }; }
 function mergeProfile(p){
   var d = emptyProfile();
   if (!p || typeof p !== "object") return d;
@@ -2110,11 +2420,16 @@ function mergeProfile(p){
   var y = Number(p.academicYear);
   if (y >= 1 && y <= 4) d.academicYear = Math.round(y);
   if (typeof p.picture === "string" && p.picture.length <= 150000 && (p.picture.indexOf("data:image/") === 0 || /^assets\/avatar-[1-4]\.png$/.test(p.picture))) d.picture = p.picture;
+  if (typeof p.college === "string" && p.college.trim()) d.college = p.college.trim().slice(0, 80);
+  if (typeof p.course === "string" && p.course.trim()) d.course = p.course.trim().slice(0, 80);
+  if (typeof p.major === "string") d.major = p.major.trim().slice(0, 80);
   return d;
 }
 function emptyStore(){
-  var s = { active:"teamproject", subjects:{}, playlist:[], watchHistory:[], profile: emptyProfile() };
+  var s = { active:"teamproject", subjects:{}, playlist:[], watchHistory:[], profile: emptyProfile(), subjectsByCourse:{}, customSubjects:[] };
   SUBJECTS.forEach(function(sb){ s.subjects[sb.id] = emptySubjectProgress(); });
+  s.subjectsByCourse["athe-bba"] = ["teamproject","entrepreneurship","marketing","finance"];
+  s.subjectsByCourse["athe-l4"] = ["teamproject","entrepreneurship","marketing","finance"];
   return s;
 }
 function mergeSubject(p, def){
@@ -2138,8 +2453,8 @@ function normalizeStore(raw){
     return s;
   }
   if (raw.subjects && typeof raw.subjects === "object") {
-    SUBJECTS.forEach(function(sb){
-      if (raw.subjects[sb.id]) s.subjects[sb.id] = mergeSubject(raw.subjects[sb.id], s.subjects[sb.id]);
+    Object.keys(raw.subjects).forEach(function(id){
+      if (/^[a-z0-9][a-z0-9-]{0,59}$/.test(id)) s.subjects[id] = mergeSubject(raw.subjects[id], s.subjects[id] || emptySubjectProgress());
     });
   }
   if (raw.active && s.subjects[raw.active]) s.active = raw.active;
@@ -2150,6 +2465,25 @@ function normalizeStore(raw){
     s.watchHistory = raw.watchHistory.filter(function(h){ return h && typeof h.videoId === "string" && ALL_VIDEOS[h.videoId]; }).slice(0, 200).map(function(h){ return { videoId: h.videoId, at: (typeof h.at === "string" ? h.at : new Date().toISOString()) }; });
   }
   if (raw.profile && typeof raw.profile === "object") s.profile = mergeProfile(raw.profile);
+  if (raw.subjectsByCourse && typeof raw.subjectsByCourse === "object") {
+    Object.keys(raw.subjectsByCourse).forEach(function(c){
+      if (Array.isArray(raw.subjectsByCourse[c])) {
+        s.subjectsByCourse[c] = raw.subjectsByCourse[c].filter(function(id){
+          return typeof id === "string" && /^[a-z0-9][a-z0-9-]{0,59}$/.test(id);
+        }).slice(0, 100);
+      }
+    });
+  }
+  if (!Array.isArray(s.subjectsByCourse[s.profile.course])) {
+    s.subjectsByCourse[s.profile.course] = (s.profile.course === "athe-bba" || s.profile.course === "athe-l4") ? ["teamproject","entrepreneurship","marketing","finance"] : [];
+  }
+  if (Array.isArray(raw.customSubjects)) {
+    s.customSubjects = raw.customSubjects.filter(function(c){
+      return c && typeof c.id === "string" && /^[a-z0-9][a-z0-9-]{0,59}$/.test(c.id) && typeof c.name === "string" && c.name.trim() && typeof c.course === "string";
+    }).slice(0, 100).map(function(c){
+      return { id:c.id, name:c.name.trim().slice(0, 80), course:c.course.slice(0, 80) };
+    });
+  }
   return s;
 }
 var store = emptyStore();
@@ -2162,7 +2496,7 @@ function loadLocal(){
     var raw = localStorage.getItem(LS_PROGRESS);
     if (raw) store = normalizeStore(JSON.parse(raw));
   } catch (e) {}
-  progress = store.subjects[store.active];
+  progress = store.subjects[store.active] || emptySubjectProgress();
   try {
     var a = localStorage.getItem(LS_AUTH);
     if (a) { var parsed = JSON.parse(a); if (parsed && parsed.token && parsed.name) auth = parsed; }
@@ -2287,7 +2621,7 @@ function doSignIn(){
       .then(function(r){ return r.json(); }).then(function(d){
         if (d && d.ok && d.progress) {
           store = normalizeStore(d.progress);
-          progress = store.subjects[store.active];
+          progress = store.subjects[store.active] || emptySubjectProgress();
           bumpStreak();
           saveLocal();
         } else {
@@ -2944,7 +3278,8 @@ function switchTab(name){
 
 /* ================= Main navigation ================= */
 function updateHeroForView(){
-  var yearLabel = "Year " + (store.profile.academicYear || 1) + " · BBA";
+  var yearLabel = "Year " + (store.profile.academicYear || 1) + " · " + courseShort(store.profile.course);
+  document.getElementById("unit-pill").textContent = yearLabel;
   var titleKey = null;
   if (view === "learn") titleKey = "learnH";
   else if (view === "playlist") titleKey = "playlistH";
@@ -2955,7 +3290,6 @@ function updateHeroForView(){
   else if (view === "settings") titleKey = "settingsH";
   else if (view === "history") titleKey = "historyViewH";
   if (!titleKey) return;
-  document.getElementById("unit-pill").textContent = yearLabel;
   document.getElementById("footer-text").textContent = "L3ARN · " + t(titleKey);
 }
 function showMain(v){
@@ -3316,13 +3650,13 @@ function openProfile(){
 }
 function renderProfile(){
   var p = store.profile;
-  var name = (p.name || "") || (auth && auth.name) || t("guestName");
-  document.getElementById("profile-name").textContent = name;
-  var genderTxt = p.gender === "male" ? t("male") : p.gender === "female" ? t("female") : t("notSet");
-  document.getElementById("profile-meta").textContent = genderTxt + " · Year " + p.academicYear;
+  var name = displayName();
+  document.getElementById("profile-name").textContent = profileNameLine();
+  document.getElementById("profile-meta").textContent = profileSubLine();
   var totalKnown = 0, totalNotes = 0, best = 0;
-  SUBJECTS.forEach(function(sb){
-    var sp = store.subjects[sb.id];
+  Object.keys(store.subjects).forEach(function(id){
+    var sp = store.subjects[id];
+    if (!sp) return;
     totalKnown += knownCount(sp);
     totalNotes += (sp.notes || []).length;
     var c = (sp.streak && sp.streak.count) || 0; if (c > best) best = c;
@@ -3352,20 +3686,43 @@ function renderProfile(){
   document.querySelectorAll("#avatar-grid .avatar-pick").forEach(function(b){
     b.classList.toggle("on", p.picture === "assets/avatar-" + b.getAttribute("data-avatar") + ".png");
   });
+  fillStudyProfileControls();
   renderHeaderAvatar();
 }
 function renderHeaderAvatar(){
   var img = document.getElementById("header-avatar-img");
   var init = document.getElementById("header-avatar-init");
   var p = store.profile;
-  if (p.picture) {
+  var hasPic = !!p.picture;
+  var hasInit = !!(auth && auth.name);
+  if (hasPic) {
     img.src = p.picture; img.classList.remove("hidden"); init.classList.add("hidden");
-  } else if (auth && auth.name) {
+  } else if (hasInit) {
     init.textContent = auth.name.charAt(0).toUpperCase();
     init.classList.remove("hidden"); img.classList.add("hidden");
   } else {
     img.classList.add("hidden"); init.classList.add("hidden");
   }
+  var simg = document.getElementById("snav-avatar-img");
+  var sinit = document.getElementById("snav-avatar-init");
+  var swrap = document.getElementById("snav-avatar-wrap");
+  if (simg && sinit) {
+    if (hasPic) {
+      simg.src = p.picture; simg.classList.remove("hidden"); sinit.classList.add("hidden");
+    } else if (hasInit) {
+      sinit.textContent = auth.name.charAt(0).toUpperCase();
+      sinit.classList.remove("hidden"); simg.classList.add("hidden");
+    } else {
+      simg.classList.add("hidden"); sinit.classList.add("hidden");
+    }
+  }
+  if (swrap) swrap.classList.toggle("hidden", !hasPic && !hasInit);
+  var nm = profileNameLine(), sub = profileSubLine();
+  var setTxt = function(id, v){ var el = document.getElementById(id); if (el) el.textContent = v; };
+  setTxt("snav-profile-name", nm);
+  setTxt("snav-profile-sub", sub);
+  setTxt("header-profile-name", nm);
+  setTxt("header-profile-sub", sub);
 }
 function syncProfileName(){
   if (auth && auth.name && !store.profile.name) {
@@ -3391,6 +3748,109 @@ function setYear(y){
   showSaved(t("savedToast"));
   renderProfile();
   renderSubjectGrid();
+  updateHeroForView();
+}
+/* ================= Study profile pickers ================= */
+function fillSelectOptions(sel, options, value){
+  sel.innerHTML = "";
+  options.forEach(function(o){
+    var op = document.createElement("option");
+    op.value = o.value; op.textContent = o.label;
+    sel.appendChild(op);
+  });
+  var other = document.createElement("option");
+  other.value = "__other"; other.textContent = t("otherOption");
+  sel.appendChild(other);
+  sel.value = value;
+}
+function fillStudyProfileControls(){
+  var p = store.profile;
+  var collegeSel = document.getElementById("college-select");
+  fillSelectOptions(collegeSel, COLLEGES.map(function(c){ return { value:c, label:c }; }), COLLEGES.indexOf(p.college) !== -1 ? p.college : "__other");
+  var collegeOther = document.getElementById("college-other");
+  collegeOther.classList.toggle("hidden", collegeSel.value !== "__other");
+  if (collegeSel.value === "__other" && document.activeElement !== collegeOther) collegeOther.value = p.college || "";
+  var courseSel = document.getElementById("course-select");
+  fillSelectOptions(courseSel, COURSES.map(function(c){ return { value:c.id, label:c.label }; }), courseDef(p.course) ? p.course : "__other");
+  var courseOther = document.getElementById("course-other");
+  courseOther.classList.toggle("hidden", courseSel.value !== "__other");
+  if (courseSel.value === "__other" && document.activeElement !== courseOther) courseOther.value = p.course || "";
+  var majors = courseMajors(p.course);
+  document.getElementById("major-field").classList.toggle("hidden", majors.length === 0);
+  var majorSel = document.getElementById("major-select");
+  fillSelectOptions(majorSel, majors.map(function(m){ return { value:m, label:m }; }), majors.indexOf(p.major) !== -1 ? p.major : "__other");
+  var majorOther = document.getElementById("major-other");
+  majorOther.classList.toggle("hidden", majorSel.value !== "__other");
+  if (majorSel.value === "__other" && document.activeElement !== majorOther) majorOther.value = p.major || "";
+}
+function saveProfileField(){
+  saveProgress();
+  showSaved(t("savedToast"));
+  renderProfile();
+  renderHeaderAvatar();
+  updateHeroForView();
+}
+function setCollege(v){
+  if (v === "__other") {
+    var inp = document.getElementById("college-other");
+    inp.classList.remove("hidden");
+    inp.focus();
+    return;
+  }
+  store.profile.college = v;
+  saveProfileField();
+}
+function setCollegeOther(v){
+  v = (v || "").trim().slice(0, 80);
+  if (!v) { renderProfile(); return; }
+  store.profile.college = v;
+  saveProfileField();
+}
+function setCourse(v){
+  if (v === "__other") {
+    var inp = document.getElementById("course-other");
+    inp.classList.remove("hidden");
+    inp.focus();
+    return;
+  }
+  applyCourse(v);
+}
+function setCourseOther(v){
+  v = (v || "").trim().slice(0, 80);
+  if (!v) { renderProfile(); return; }
+  applyCourse(v);
+}
+function applyCourse(c){
+  store.profile.course = c;
+  var majors = courseMajors(c);
+  store.profile.major = majors.length ? majors[0] : "";
+  var list = courseSubjectIds(c);
+  if (list.indexOf(store.active) === -1) {
+    store.active = list.length ? list[0] : "";
+    progress = store.active ? ensureSubject(store.active) : emptySubjectProgress();
+  }
+  saveProgress();
+  showSaved(t("savedToast"));
+  renderSubjectGrid();
+  updateHeroForView();
+  renderProfile();
+  renderHeaderAvatar();
+}
+function setMajor(v){
+  if (v === "__other") {
+    var inp = document.getElementById("major-other");
+    inp.classList.remove("hidden");
+    inp.focus();
+    return;
+  }
+  store.profile.major = v;
+  saveProfileField();
+}
+function setMajorOther(v){
+  v = (v || "").trim().slice(0, 80);
+  if (!v) { renderProfile(); return; }
+  store.profile.major = v;
+  saveProfileField();
 }
 function resizeImageToSquare(dataUrl, done){
   var img = new Image();
@@ -3475,8 +3935,9 @@ function showView(v){
 }
 function renderStats(){
   var totalKnown = 0, totalNotes = 0, best = 0;
-  SUBJECTS.forEach(function(sb){
-    var p = store.subjects[sb.id];
+  Object.keys(store.subjects).forEach(function(id){
+    var p = store.subjects[id];
+    if (!p) return;
     totalKnown += knownCount(p);
     totalNotes += (p.notes || []).length;
     var c = (p.streak && p.streak.count) || 0; if (c > best) best = c;
@@ -3493,6 +3954,7 @@ function renderStats(){
 }
 function renderEmptyNotes(){
   var sb = currentSubject();
+  if (!sb.id) return;
   var msg = t("emptyNote").replace("{subject}", sb.title);
   var els = document.querySelectorAll(".empty-note");
   for (var i = 0; i < els.length; i++) els[i].textContent = msg;
@@ -3501,12 +3963,20 @@ function renderSubjectGrid(){
   var grid = document.getElementById("subject-grid");
   if (!grid) return;
   grid.innerHTML = "";
-  SUBJECTS.forEach(function(sb){
-    var p = store.subjects[sb.id];
-    var card = document.createElement("button");
+  visibleSubjects().forEach(function(sb){
+    var p = ensureSubject(sb.id);
+    var card = document.createElement("div");
     card.className = "subject-card";
-    card.setAttribute("type", "button");
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
     card.setAttribute("data-subject", sb.id);
+    var rm = document.createElement("button");
+    rm.type = "button";
+    rm.className = "subject-remove";
+    rm.setAttribute("aria-label", t("removeSubject") + ": " + sb.title);
+    rm.textContent = "×";
+    rm.onclick = function(ev){ ev.stopPropagation(); removeSubject(sb.id); };
+    card.appendChild(rm);
     var code = document.createElement("span");
     code.className = "code"; code.textContent = sb.code;
     var h = document.createElement("h3");
@@ -3530,13 +4000,93 @@ function renderSubjectGrid(){
     foot.appendChild(meta2); foot.appendChild(pill);
     card.appendChild(code); card.appendChild(h); card.appendChild(meta); card.appendChild(foot);
     card.onclick = function(){ openSubject(sb.id); };
+    card.onkeydown = function(e){ if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openSubject(sb.id); } };
     grid.appendChild(card);
   });
+  var add = document.createElement("button");
+  add.type = "button";
+  add.className = "subject-card subject-add";
+  var plus = document.createElement("span");
+  plus.className = "add-plus";
+  plus.textContent = "+";
+  var ah = document.createElement("h3");
+  ah.textContent = t("addSubjectCard");
+  var am = document.createElement("p");
+  am.className = "smeta";
+  am.textContent = t("addSubjectCardSub");
+  add.appendChild(plus); add.appendChild(ah); add.appendChild(am);
+  add.onclick = function(){ openAddSubject(); };
+  grid.appendChild(add);
+}
+
+/* ================= Subject manager ================= */
+function removeSubject(id){
+  var list = courseSubjectIds(store.profile.course);
+  if (list.length <= 1) { showSaved(t("cannotRemoveLast")); return; }
+  var ix = list.indexOf(id);
+  if (ix === -1) return;
+  list.splice(ix, 1);
+  if (store.active === id) {
+    store.active = list[0];
+    progress = ensureSubject(store.active);
+  }
+  saveProgress();
+  showSaved(t("subjectRemoved"));
+  renderSubjectGrid();
+}
+function openAddSubject(){
+  var list = courseSubjectIds(store.profile.course);
+  var presets = courseCatalog(store.profile.course).filter(function(e){ return list.indexOf(e.id) === -1; });
+  var box = document.getElementById("add-subject-list");
+  box.innerHTML = "";
+  presets.forEach(function(e){
+    var d = subjectDef(e.id);
+    if (!d) return;
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "btn add-subject-opt";
+    b.textContent = d.title;
+    b.onclick = function(){ addPresetSubject(e.id); };
+    box.appendChild(b);
+  });
+  document.getElementById("add-subject-note").textContent = presets.length ? t("addSubjectNote") : t("addSubjectNone");
+  document.getElementById("custom-subject-input").value = "";
+  document.getElementById("add-subject-scrim").classList.remove("hidden");
+  document.getElementById("add-subject-sheet").classList.remove("hidden");
+}
+function closeAddSubject(){
+  document.getElementById("add-subject-scrim").classList.add("hidden");
+  document.getElementById("add-subject-sheet").classList.add("hidden");
+}
+function addPresetSubject(id){
+  var list = courseSubjectIds(store.profile.course);
+  if (list.indexOf(id) === -1) { list.push(id); ensureSubject(id); }
+  saveProgress();
+  showSaved(t("subjectAdded"));
+  closeAddSubject();
+  renderSubjectGrid();
+}
+function addCustomSubject(){
+  var input = document.getElementById("custom-subject-input");
+  var name = (input.value || "").trim().slice(0, 80);
+  if (!name) return;
+  var slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "subject";
+  var id = "c-" + slug + "-" + Math.random().toString(36).slice(2, 6);
+  store.customSubjects.push({ id:id, name:name, course:store.profile.course });
+  var list = courseSubjectIds(store.profile.course);
+  list.push(id);
+  ensureSubject(id);
+  saveProgress();
+  showSaved(t("subjectAdded"));
+  closeAddSubject();
+  renderSubjectGrid();
 }
 function renderHome(){
   showView("home");
-  document.getElementById("unit-pill").textContent = "Year " + (store.profile.academicYear || 1) + " \u00b7 BBA";
-  document.getElementById("footer-text").textContent = "L3ARN \u00b7 BBA Year 1 Study Hub";
+  document.getElementById("unit-pill").textContent = "Year " + (store.profile.academicYear || 1) + " · " + courseShort(store.profile.course);
+  document.getElementById("footer-text").textContent = "L3ARN · " + courseLabel(store.profile.course) + " Year " + (store.profile.academicYear || 1) + " Study Hub";
+  var lede = document.getElementById("home-lede");
+  if (lede) lede.textContent = courseLabel(store.profile.course) + " · Year " + (store.profile.academicYear || 1) + ". " + t("chooseLede2");
   renderStats();
   renderSubjectGrid();
 }
@@ -3562,9 +4112,9 @@ function renderSubjectView(){
   renderStreak();
 }
 function openSubject(id){
-  if (!store.subjects[id]) return;
+  if (!subjectDef(id)) return;
   store.active = id;
-  progress = store.subjects[id];
+  progress = ensureSubject(id);
   view = "subject";
   currentCard = 0; flipped = false; learning = {};
   qi = 0; score = 0; picks = []; answered = false; quizStarted = false;
@@ -3608,7 +4158,7 @@ function goHome(){
       .then(function(r){ return r.json(); }).then(function(d){
         if (d && d.ok && d.progress) {
           store = normalizeStore(d.progress);
-          progress = store.subjects[store.active];
+          progress = store.subjects[store.active] || emptySubjectProgress();
           bumpStreak();
           saveLocal();
           syncProfileName();
