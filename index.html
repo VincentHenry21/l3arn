@@ -271,6 +271,11 @@
 
   /* ---------- Profile ---------- */
   .profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--line);background:var(--surface2);flex:none}
+  .avatar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px;max-width:340px}
+  .avatar-pick{padding:0;border:2px solid var(--line);border-radius:50%;background:none;cursor:pointer;line-height:0;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
+  .avatar-pick img{width:100%;height:auto;border-radius:50%;display:block}
+  .avatar-pick:active{transform:scale(.94)}
+  .avatar-pick.on{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)}
   .profile-initial{display:grid;place-items:center;font-size:44px;font-weight:800;color:#fff;background:var(--navy)}
   .seg{display:flex;gap:6px;flex-wrap:wrap}
   .seg button{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:9px 16px;font-weight:700;font-size:14.5px}
@@ -850,6 +855,13 @@
         <button class="btn" id="remove-pic-btn" onclick="removePic()" data-i18n="removePic">Remove picture</button>
       </div>
       <p class="ink3" style="font-size:13px;margin-top:10px" data-i18n="picNote">Your picture is resized to a small square on this device before it is saved, so it stays light.</p>
+      <h3 style="font-size:18px;font-weight:800;margin-top:22px" data-i18n="defaultAvatars">Choose a default avatar</h3>
+      <div class="avatar-grid" id="avatar-grid">
+        <button type="button" class="avatar-pick" data-avatar="1" onclick="setDefaultAvatar(1)" aria-label="Default avatar 1"><img src="assets/avatar-1.png" alt="Default avatar 1" /></button>
+        <button type="button" class="avatar-pick" data-avatar="2" onclick="setDefaultAvatar(2)" aria-label="Default avatar 2"><img src="assets/avatar-2.png" alt="Default avatar 2" /></button>
+        <button type="button" class="avatar-pick" data-avatar="3" onclick="setDefaultAvatar(3)" aria-label="Default avatar 3"><img src="assets/avatar-3.png" alt="Default avatar 3" /></button>
+        <button type="button" class="avatar-pick" data-avatar="4" onclick="setDefaultAvatar(4)" aria-label="Default avatar 4"><img src="assets/avatar-4.png" alt="Default avatar 4" /></button>
+      </div>
     </div>
     <div class="card" style="margin-top:16px">
       <h3 style="font-size:18px;font-weight:800" data-i18n="genderH">Gender</h3>
@@ -1122,6 +1134,7 @@ var I18N = {
     uploadPic:"Upload picture",
     removePic:"Remove picture",
     picNote:"Your picture is resized to a small square on this device before it is saved, so it stays light.",
+    defaultAvatars:"Choose a default avatar",
     genderH:"Gender",
     male:"Male",
     female:"Female",
@@ -1295,6 +1308,7 @@ var I18N = {
     uploadPic:"ဓာတ်ပုံတင်မည်",
     removePic:"ဓာတ်ပုံဖယ်ရှားမည်",
     picNote:"သင့်ဓာတ်ပုံကို သိမ်းဆည်းခြင်းမပြုမီ ဤစက်တွင် စတုရန်းပုံအသေးအဖြစ် ချုံ့ပေးမည်။",
+    defaultAvatars:"ပုံသေအဗာတာရွေးချယ်မည်",
     genderH:"ကျား/မ",
     male:"ကျား",
     female:"မ",
@@ -1948,7 +1962,7 @@ function mergeProfile(p){
   if (p.gender === "male" || p.gender === "female") d.gender = p.gender;
   var y = Number(p.academicYear);
   if (y >= 1 && y <= 4) d.academicYear = Math.round(y);
-  if (typeof p.picture === "string" && p.picture.indexOf("data:image/") === 0 && p.picture.length <= 150000) d.picture = p.picture;
+  if (typeof p.picture === "string" && p.picture.length <= 150000 && (p.picture.indexOf("data:image/") === 0 || /^assets\/avatar-[1-4]\.png$/.test(p.picture))) d.picture = p.picture;
   return d;
 }
 function emptyStore(){
@@ -3187,6 +3201,9 @@ function renderProfile(){
     b.classList.toggle("on", Number(b.getAttribute("data-year")) === p.academicYear);
   });
   document.getElementById("remove-pic-btn").classList.toggle("hidden", !p.picture);
+  document.querySelectorAll("#avatar-grid .avatar-pick").forEach(function(b){
+    b.classList.toggle("on", p.picture === "assets/avatar-" + b.getAttribute("data-avatar") + ".png");
+  });
   renderHeaderAvatar();
 }
 function renderHeaderAvatar(){
@@ -3262,6 +3279,12 @@ function onPicChosen(ev){
 }
 function removePic(){
   store.profile.picture = null;
+  saveProgress();
+  showSaved(t("savedToast"));
+  renderProfile();
+}
+function setDefaultAvatar(n){
+  store.profile.picture = "assets/avatar-" + n + ".png";
   saveProgress();
   showSaved(t("savedToast"));
   renderProfile();
