@@ -304,6 +304,52 @@
   .ai-note{font-size:13.5px;color:var(--ink3);margin-top:10px;line-height:1.55}
   .ai-warn{background:var(--amber-soft);border-radius:12px;padding:13px 15px;font-size:14.5px;font-weight:600;line-height:1.55}
   .ai-warn b{color:var(--amber)}
+
+  /* ---------- Note blocks (Notion-like) ---------- */
+  .block-row{display:flex;gap:6px;align-items:flex-start;margin-top:8px}
+  .block-row .grip{flex:none;width:30px;min-height:36px;border:1px solid var(--line);background:var(--surface);border-radius:9px;color:var(--ink3);font-weight:800;padding:0;font-size:14px}
+  .block-row .grip:disabled{opacity:.35}
+  .block-row .btext{flex:1;min-width:0;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;color:var(--ink);font-size:15.5px;line-height:1.55;resize:vertical}
+  .block-row .btext:focus{outline:3px solid rgba(14,124,107,.35);border-color:var(--teal)}
+  .block-row .btext.h1{font-size:19px;font-weight:800}
+  .block-row .bnum{flex:none;width:26px;text-align:right;font-weight:800;color:var(--ink3);padding-top:10px;font-size:15px}
+  .block-row .bdot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--teal);margin-top:17px}
+  .block-row .bcheck{flex:none;width:22px;height:22px;margin-top:10px;accent-color:var(--teal)}
+  .block-row .bdel{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--bad);border-radius:9px;padding:6px 9px;font-size:12.5px;font-weight:700;min-height:34px}
+  .block-div{border:0;border-top:1.5px solid var(--line);margin:14px 0 6px;flex:1}
+  .block-add{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .block-add .btn{padding:9px 13px;font-size:13.5px;min-height:40px}
+  .block-type{flex:none;width:118px;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:9px 8px;color:var(--ink);font-size:13.5px;font-weight:700}
+  .note-title{width:100%;background:var(--surface);border:0;border-bottom:1.5px solid var(--line);border-radius:0;padding:10px 2px;color:var(--ink);font-size:20px;font-weight:800}
+  .note-title:focus{outline:none;border-bottom-color:var(--teal)}
+
+  /* ---------- Draw canvas ---------- */
+  .draw-wrap{position:relative;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);margin-top:10px}
+  .draw-wrap canvas{display:block;width:100%;height:auto;touch-action:none}
+  .draw-wrap .draw-main{position:absolute;inset:0;width:100%;height:100%}
+  .draw-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+  .draw-tools .btn{padding:8px 13px;font-size:13.5px;min-height:38px}
+  .draw-tools .btn.on{background:var(--teal);border-color:var(--teal);color:#fff}
+  html[data-theme="dark"] .draw-tools .btn.on{color:#0b1512}
+  .swatch{width:30px;height:30px;min-height:30px;border-radius:50%;border:2px solid var(--line);padding:0}
+  .swatch.on{border-color:var(--ink);outline:2px solid var(--teal);outline-offset:1px}
+  .draw-note{font-size:13px;color:var(--ink3);font-weight:600;margin-top:8px}
+
+  /* ---------- Formula calculator ---------- */
+  .calc-row{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+  .calc-row input{flex:1;min-width:180px;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;color:var(--ink);font-size:16px}
+  .calc-row input:focus{outline:3px solid rgba(14,124,107,.35);border-color:var(--teal)}
+  .calc-result{margin-top:10px;font-size:16px;font-weight:800}
+  .calc-result.bad{color:var(--bad)}
+  .calc-hint{font-size:13px;color:var(--ink3);font-weight:600;margin-top:8px;line-height:1.5}
+
+  /* ---------- Ambient video glow (blurred thumbnail behind the player) ---------- */
+  .vthumb .ambient{position:absolute;inset:-14%;width:128%;height:128%;object-fit:cover;filter:blur(36px) saturate(1.35);opacity:.5;z-index:0;display:none}
+  .vthumb.playing .ambient{display:block}
+  .vthumb iframe{position:relative;z-index:1}
+  @media (prefers-reduced-motion: reduce){ .vthumb .ambient{display:none} }
+  .video-summary{margin-top:12px}
+
   .hidden{display:none !important}
 </style>
 </head>
@@ -573,16 +619,68 @@
   <!-- NOTES -->
   <section id="tab-notes" class="hidden" role="tabpanel" aria-labelledby="btn-notes">
     <div class="section-head">
-      <h2 data-i18n="notesH">Quick Notes</h2>
+      <h2 data-i18n="notesH">Notes</h2>
       <span class="counter" id="notes-count">0 notes</span>
     </div>
-    <p class="lede" data-i18n="notesLede">Jot down a quick note. Notes save on this device, and sync across devices when you are signed in.</p>
+    <p class="lede" data-i18n="notesLede">Build a note from blocks, sketch on it, and work out a formula. Notes save on this device, and sync across devices when you are signed in.</p>
 
-    <div class="card">
-      <label for="note-input" class="counter" style="display:block;margin-bottom:8px" data-i18n="noteLabel">Write a note</label>
-      <textarea id="note-input" class="notebox" data-i18n-ph="notePlaceholder" placeholder="Write a note..."></textarea>
-      <div style="display:flex;justify-content:flex-end;margin-top:12px">
-        <button class="btn primary" onclick="saveNote()" data-i18n="saveNote">Save Note</button>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+      <button class="btn primary" id="new-note-btn" onclick="openNoteEditor(null)" data-i18n="newNote">New note</button>
+    </div>
+
+    <!-- Note editor -->
+    <div class="card hidden" id="note-editor">
+      <input id="note-title" class="note-title" type="text" maxlength="120" data-i18n-ph="noteTitlePh" placeholder="Note title" />
+      <div id="editor-blocks" style="margin-top:6px"></div>
+      <div class="block-add" id="block-add-row">
+        <button class="btn" type="button" onclick="addBlock('h1')" data-i18n="addHeading">Heading</button>
+        <button class="btn" type="button" onclick="addBlock('p')" data-i18n="addText">Text</button>
+        <button class="btn" type="button" onclick="addBlock('bullet')" data-i18n="addBullet">Bullet</button>
+        <button class="btn" type="button" onclick="addBlock('number')" data-i18n="addNumber">Numbered</button>
+        <button class="btn" type="button" onclick="addBlock('check')" data-i18n="addCheck">Checkbox</button>
+        <button class="btn" type="button" onclick="addBlock('divider')" data-i18n="addDivider">Divider</button>
+      </div>
+
+      <h3 style="font-size:16px;font-weight:800;margin-top:22px" data-i18n="drawH">Draw</h3>
+      <div class="draw-tools" id="draw-tools">
+        <button class="btn on" type="button" data-tool="pen" onclick="setDrawTool('pen')" data-i18n="toolPen">Pen</button>
+        <button class="btn" type="button" data-tool="eraser" onclick="setDrawTool('eraser')" data-i18n="toolEraser">Eraser</button>
+        <button class="swatch on" type="button" data-color="#1a2340" style="background:#1a2340" aria-label="Dark ink" onclick="setDrawColor('#1a2340')"></button>
+        <button class="swatch" type="button" data-color="#0e7c6b" style="background:#0e7c6b" aria-label="Teal ink" onclick="setDrawColor('#0e7c6b')"></button>
+        <button class="swatch" type="button" data-color="#b45309" style="background:#b45309" aria-label="Amber ink" onclick="setDrawColor('#b45309')"></button>
+        <button class="swatch" type="button" data-color="#b42318" style="background:#b42318" aria-label="Red ink" onclick="setDrawColor('#b42318')"></button>
+        <button class="btn" type="button" data-size="2" onclick="setDrawSize(2)" data-i18n="sizeThin">Thin</button>
+        <button class="btn on" type="button" data-size="5" onclick="setDrawSize(5)" data-i18n="sizeMedium">Medium</button>
+        <button class="btn" type="button" data-size="9" onclick="setDrawSize(9)" data-i18n="sizeThick">Thick</button>
+        <button class="btn" type="button" onclick="toggleDrawGrid()" id="grid-toggle-btn" data-i18n="gridOn">Grid paper: on</button>
+        <button class="btn" type="button" onclick="clearDrawing()" data-i18n="clearDraw">Clear drawing</button>
+      </div>
+      <div class="draw-wrap" id="draw-wrap">
+        <canvas id="draw-grid" width="760" height="380" aria-hidden="true"></canvas>
+        <canvas id="draw-main" class="draw-main" width="760" height="380" aria-label="Drawing canvas"></canvas>
+      </div>
+      <p class="draw-note" data-i18n="drawNote">Draw with your finger or mouse. The drawing saves with the note.</p>
+
+      <h3 style="font-size:16px;font-weight:800;margin-top:22px" data-i18n="calcH">Formula calculator</h3>
+      <div class="calc-row">
+        <input id="note-calc-input" type="text" inputmode="text" data-i18n-ph="calcPh" placeholder="Try 2 + 2 * 3 or sqrt(16)" aria-label="Formula" />
+        <button class="btn primary" type="button" onclick="doCalc('note-calc-input','note-calc-result')" data-i18n="calcGo">Calculate</button>
+      </div>
+      <div class="calc-result" id="note-calc-result"></div>
+      <p class="calc-hint" data-i18n="calcHint">Supports + − × ÷ % ^ ( ) and sqrt, pow, abs, sin, cos, tan, log, ln, exp, floor, ceil, round, min, max, pi, e.</p>
+
+      <h3 style="font-size:16px;font-weight:800;margin-top:22px" data-i18n="aiNoteH">AI help for this note</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+        <button class="btn" type="button" onclick="aiNoteAction('summarize')" data-i18n="aiSummarize">Summarize note</button>
+        <button class="btn" type="button" onclick="aiNoteAction('plan')" data-i18n="aiPlan">Make a study plan</button>
+        <button class="btn" type="button" onclick="aiNoteAction('expand')" data-i18n="aiExpand">Expand the main point</button>
+      </div>
+      <div id="note-ai-status" class="ai-warn hidden" style="margin-top:12px"></div>
+      <div id="note-ai-result" class="ai-answer" style="margin-top:12px"></div>
+
+      <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+        <button class="btn primary" type="button" onclick="saveEditorNote()" data-i18n="saveNote">Save note</button>
+        <button class="btn" type="button" onclick="closeNoteEditor()" data-i18n="closeEditor">Close</button>
       </div>
     </div>
 
@@ -598,6 +696,15 @@
 <section id="learn-view" class="wrap hidden" style="padding-top:8px;padding-bottom:40px">
   <div class="section-head"><h2 data-i18n="learnH">Learn</h2></div>
   <p class="lede" data-i18n="learnLede">Free guides and videos on writing assignments, doing research, and planning your ideas. Videos play right here in the app.</p>
+  <div class="card" style="margin-bottom:16px">
+    <h3 style="font-size:18px;font-weight:800" data-i18n="calcH">Formula calculator</h3>
+    <div class="calc-row">
+      <input id="learn-calc-input" type="text" inputmode="text" data-i18n-ph="calcPh" placeholder="Try 2 + 2 * 3 or sqrt(16)" aria-label="Formula" />
+      <button class="btn primary" type="button" onclick="doCalc('learn-calc-input','learn-calc-result')" data-i18n="calcGo">Calculate</button>
+    </div>
+    <div class="calc-result" id="learn-calc-result"></div>
+    <p class="calc-hint" data-i18n="calcHint">Supports + − × ÷ % ^ ( ) and sqrt, pow, abs, sin, cos, tan, log, ln, exp, floor, ceil, round, min, max, pi, e.</p>
+  </div>
   <div id="learn-topics"></div>
 </section>
 
@@ -805,8 +912,8 @@ var I18N = {
     nextQ:"Next Question", seeScore:"See My Score", retake:"Retake Quiz", quizDone:"Quiz completed",
     tasksH:"Assignment Four-Stage Breakdown",
     tasksLede:"Your coursework means managing one complete community project through four distinct operational stages, in this order:",
-    notesH:"Quick Notes",
-    notesLede:"Jot down a quick note. Notes save on this device, and sync across devices when you are signed in.",
+    notesH:"Notes",
+    notesLede:"Build a note from blocks, sketch on it, and work out a formula. Notes save on this device, and sync across devices when you are signed in.",
     noteLabel:"Write a note", notePlaceholder:"Write a note...", saveNote:"Save Note",
     noNotes:"No notes yet. Write your first one above.",
     delete:"Delete",
@@ -894,6 +1001,44 @@ var I18N = {
     aiEmpty:"Type a question above to get help.",
     aiQuestions:"Questions asked",
     aiYourQ:"You asked",
+    newNote:"New note",
+    noteTitlePh:"Note title",
+    addHeading:"Heading",
+    addText:"Text",
+    addBullet:"Bullet",
+    addNumber:"Numbered",
+    addCheck:"Checkbox",
+    addDivider:"Divider",
+    blockHeading:"Heading",
+    blockText:"Text",
+    blockBullet:"Bullet",
+    blockNumbered:"Numbered",
+    blockCheckbox:"Checkbox",
+    blockDivider:"Divider",
+    drawH:"Draw",
+    toolPen:"Pen",
+    toolEraser:"Eraser",
+    sizeThin:"Thin",
+    sizeMedium:"Medium",
+    sizeThick:"Thick",
+    gridOn:"Grid paper: on",
+    gridOff:"Grid paper: off",
+    clearDraw:"Clear drawing",
+    drawNote:"Draw with your finger or mouse. The drawing saves with the note.",
+    calcH:"Formula calculator",
+    calcPh:"Try 2 + 2 * 3 or sqrt(16)",
+    calcGo:"Calculate",
+    calcHint:"Supports + − × ÷ % ^ ( ) and sqrt, pow, abs, sin, cos, tan, log, ln, exp, floor, ceil, round, min, max, pi, e.",
+    calcError:"Could not work that out. Check the formula and try again.",
+    aiNoteH:"AI help for this note",
+    aiSummarize:"Summarize note",
+    aiPlan:"Make a study plan",
+    aiExpand:"Expand the main point",
+    aiNoteEmpty:"Write something in the note first, then ask the AI.",
+    editNote:"Edit",
+    closeEditor:"Close",
+    summarizeVideo:"Summarize",
+    aiSummaryHonest:"AI summary from the video title and topic. The AI does not watch the video.",
     aiAnswerLabel:"AI answer",
     legalH:"Terms and more",
     legalLede:"The plain rules for using L3ARN.",
@@ -927,8 +1072,8 @@ var I18N = {
     nextQ:"နောက်မေးခွန်း", seeScore:"အမှတ်ကြည့်မည်", retake:"ပြန်ဖြေမည်", quizDone:"မေးခွန်းဖြေပြီးပါပြီ",
     tasksH:"တာဝန် လေးဆင့် ခွဲခြမ်းစိတ်ဖြာခြင်း",
     tasksLede:"သင့်တာဝန်မှာ ရပ်ရွာစီမံကိန်းတစ်ခုကို အဆင့် ၄ ဆင့်ဖြင့် စီမံခန့်ခွဲရမည်။",
-    notesH:"အမြန်မှတ်စုများ",
-    notesLede:"မှတ်စုအမြန်ရေးပါ။ ဤစက်တွင် သိမ်းဆည်းပြီး ဝင်ရောက်ထားလျှင် စက်အားလုံးတွင် ချိန်ညှိပေးမည်။",
+    notesH:"မှတ်စုများ",
+    notesLede:"ဘလောက်များဖြင့် မှတ်စုတည်ဆောက်ပါ၊ ပုံဆွဲပါ၊ ဖော်မြူလာတွက်ပါ။ ဤစက်တွင် သိမ်းဆည်းပြီး ဝင်ရောက်ထားလျှင် စက်အားလုံးတွင် ချိန်ညှိပေးမည်။",
     noteLabel:"မှတ်စုရေးပါ", notePlaceholder:"မှတ်စုရေးပါ...", saveNote:"မှတ်စုသိမ်းမည်",
     noNotes:"မှတ်စု မရှိသေးပါ။ အထက်တွင် ပထမမှတ်စုရေးပါ။",
     delete:"ဖျက်မည်",
@@ -1016,6 +1161,44 @@ var I18N = {
     aiEmpty:"အကူအညီရရန် အထက်တွင် မေးခွန်းရိုက်ထည့်ပါ။",
     aiQuestions:"မေးခဲ့သောမေးခွန်းများ",
     aiYourQ:"သင်မေးခဲ့သည်",
+    newNote:"မှတ်စုအသစ်",
+    noteTitlePh:"မှတ်စုခေါင်းစဉ်",
+    addHeading:"ခေါင်းစဉ်",
+    addText:"စာသား",
+    addBullet:"အချက်",
+    addNumber:"နံပါတ်စဉ်",
+    addCheck:"အမှန်ခြစ်စာရင်း",
+    addDivider:"ခွဲခြားမျဉ်း",
+    blockHeading:"ခေါင်းစဉ်",
+    blockText:"စာသား",
+    blockBullet:"အချက်",
+    blockNumbered:"နံပါတ်စဉ်",
+    blockCheckbox:"အမှန်ခြစ်",
+    blockDivider:"ခွဲခြားမျဉ်း",
+    drawH:"ပုံဆွဲရန်",
+    toolPen:"ဘောပင်",
+    toolEraser:"ဖျက်စက်",
+    sizeThin:"ပါးပါး",
+    sizeMedium:"အလယ်အလတ်",
+    sizeThick:"ထူထူ",
+    gridOn:"ဇယားကွက်စာရွက်: ဖွင့်",
+    gridOff:"ဇယားကွက်စာရွက်: ပိတ်",
+    clearDraw:"ပုံဖျက်မည်",
+    drawNote:"လက်ချောင်း သို့မဟုတ် မောက်စ်ဖြင့် ပုံဆွဲပါ။ ပုံဆွဲထားသည်ကို မှတ်စုနှင့်အတူ သိမ်းဆည်းပေးမည်။",
+    calcH:"ဖော်မြူလာ တွက်စက်",
+    calcPh:"2 + 2 * 3 သို့မဟုတ် sqrt(16) ကို စမ်းကြည့်ပါ",
+    calcGo:"တွက်မည်",
+    calcHint:"+ − × ÷ % ^ ( ) နှင့် sqrt, pow, abs, sin, cos, tan, log, ln, exp, floor, ceil, round, min, max, pi, e တို့ကို ထောက်ပံ့ပေးသည်။",
+    calcError:"တွက်၍ မရပါ။ ဖော်မြူလာကို စစ်ပြီး ထပ်ကြိုးစားပါ။",
+    aiNoteH:"ဤမှတ်စုအတွက် AI အကူအညီ",
+    aiSummarize:"မှတ်စုအကျဉ်းချုပ်",
+    aiPlan:"လေ့လာမှုအစီအစဉ်လုပ်မည်",
+    aiExpand:"အဓိကအချက်ကို ချဲ့ထွင်မည်",
+    aiNoteEmpty:"ဦးစွာ မှတ်စုတွင် တစ်ခုခု ရေးပါ၊ ပြီးမှ AI ကို မေးပါ။",
+    editNote:"ပြင်မည်",
+    closeEditor:"ပိတ်မည်",
+    summarizeVideo:"အကျဉ်းချုပ်",
+    aiSummaryHonest:"ဗီဒီယိုခေါင်းစဉ်နှင့် အကြောင်းအရာမှ AI အကျဉ်းချုပ်။ AI သည် ဗီဒီယိုကို မကြည့်ပါ။",
     aiAnswerLabel:"AI အဖြေ",
     legalH:"စည်းကမ်းများနှင့် အခြား",
     legalLede:"L3ARN ကို သုံးစွဲခြင်းအတွက် ရိုးရှင်းသောစည်းကမ်းများ။",
@@ -1287,31 +1470,243 @@ function askAI(){
   btn.disabled = true; btn.textContent = t("aiThinking");
   var statusBox = document.getElementById("ai-status");
   statusBox.classList.add("hidden");
-  fetch(WORKER + "/api/ai", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ question: q })
-  }).then(function(r){ return r.json(); }).then(function(d){
+  callAI(q).then(function(res){
     aiBusy = false;
     btn.disabled = false; btn.textContent = t("aiAsk");
-    if (d && d.ok && d.answer) {
-      aiHistory.unshift({ q: q, a: d.answer });
+    if (res.ok) {
+      aiHistory.unshift({ q: q, a: res.answer });
       input.value = "";
       renderAI();
       renderStats();
-    } else if (d && d.error === "not_configured") {
+    } else if (res.error === "not_configured") {
       aiConfigured = false;
       renderAI();
     } else {
       statusBox.textContent = t("aiError");
       statusBox.classList.remove("hidden");
     }
-  }).catch(function(){
-    aiBusy = false;
-    btn.disabled = false; btn.textContent = t("aiAsk");
-    statusBox.textContent = t("aiError");
-    statusBox.classList.remove("hidden");
   });
+}
+
+
+/* ================= Shared AI call ================= */
+// One call path for Ask AI, note help, and video summaries. The note or video
+// context is sent inside the question string; the Worker only ever sees a
+// question, and the Gemini key stays server-side.
+function callAI(question){
+  return fetch(WORKER + "/api/ai", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question: question })
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if (d && d.ok && d.answer) return { ok: true, answer: d.answer };
+    if (d && d.error === "not_configured") return { ok: false, error: "not_configured" };
+    if (d && d.error === "rate_limited") return { ok: false, error: "rate_limited" };
+    return { ok: false, error: "upstream" };
+  }).catch(function(){ return { ok: false, error: "network" }; });
+}
+
+/* ================= Video summary ================= */
+var videoSumBusy = {};
+function summarizeVideo(v, card){
+  if (!v || !card) return;
+  if (videoSumBusy[v.id]) return;
+  var box = card.querySelector(".video-summary");
+  if (!box) return;
+  videoSumBusy[v.id] = true;
+  box.classList.remove("hidden");
+  box.innerHTML = "";
+  var note = document.createElement("div");
+  note.className = "ai-note";
+  note.textContent = t("aiSummaryHonest");
+  var think = document.createElement("div");
+  think.className = "ai-answer"; think.style.marginTop = "6px";
+  think.textContent = t("aiThinking");
+  box.appendChild(note); box.appendChild(think);
+  var topic = "";
+  LEARN_TOPICS.forEach(function(tp){ tp.videos.forEach(function(vv){ if (vv.id === v.id) topic = tp.title; }); });
+  var q = "Give a short summary of what a student would learn from a video titled '" + v.title + "' by " + v.channel + " about " + topic + ". Use 4 to 6 short bullet points.";
+  callAI(q).then(function(res){
+    videoSumBusy[v.id] = false;
+    box.innerHTML = "";
+    var note2 = document.createElement("div");
+    note2.className = "ai-note";
+    note2.textContent = t("aiSummaryHonest");
+    var ans = document.createElement("div");
+    ans.className = "ai-answer"; ans.style.marginTop = "6px";
+    if (res.ok) ans.textContent = res.answer;
+    else if (res.error === "not_configured") ans.textContent = t("aiNotConfigured");
+    else ans.textContent = t("aiError");
+    box.appendChild(note2); box.appendChild(ans);
+  });
+}
+
+/* ================= Formula calculator (safe parser, no eval) ================= */
+var CALC_FUNCS = {
+  sqrt: function(a){ return Math.sqrt(a); },
+  pow: function(a, b){ return Math.pow(a, b); },
+  abs: function(a){ return Math.abs(a); },
+  sin: function(a){ return Math.sin(a); },
+  cos: function(a){ return Math.cos(a); },
+  tan: function(a){ return Math.tan(a); },
+  log: function(a){ return Math.log10(a); },
+  ln: function(a){ return Math.log(a); },
+  exp: function(a){ return Math.exp(a); },
+  floor: function(a){ return Math.floor(a); },
+  ceil: function(a){ return Math.ceil(a); },
+  round: function(a){ return Math.round(a); },
+  min: function(a, b){ return Math.min(a, b); },
+  max: function(a, b){ return Math.max(a, b); }
+};
+function calcTokenize(src){
+  var tokens = [];
+  var i = 0;
+  while (i < src.length) {
+    var ch = src[i];
+    if (ch === " " || ch === "\t") { i++; continue; }
+    if ((ch >= "0" && ch <= "9") || ch === ".") {
+      // A dot straight after a number (2..5) is a typo, not a new number.
+      if (ch === "." && tokens.length > 0 && tokens[tokens.length - 1].t === "num") return null;
+      var num = "", dots = 0;
+      while (i < src.length && ((src[i] >= "0" && src[i] <= "9") || src[i] === ".")) {
+        if (src[i] === ".") { dots++; if (dots > 1) break; }
+        num += src[i]; i++;
+      }
+      // Scientific notation: e followed by an optional sign and digits (2e3 = 2000).
+      // A bare e with no digits after it stays the constant e (2e = 2 x e).
+      if (i < src.length && (src[i] === "e" || src[i] === "E")) {
+        var j = i + 1;
+        if (src[j] === "+" || src[j] === "-") j++;
+        if (j < src.length && src[j] >= "0" && src[j] <= "9") {
+          num += src[i]; i++;
+          if (src[i] === "+" || src[i] === "-") { num += src[i]; i++; }
+          while (i < src.length && src[i] >= "0" && src[i] <= "9") { num += src[i]; i++; }
+        }
+      }
+      var v = parseFloat(num);
+      if (isNaN(v)) return null;
+      tokens.push({ t: "num", v: v });
+      continue;
+    }
+    if ((ch >= "a" && ch <= "z") || (ch >= "A" && ch <= "Z")) {
+      var name = "";
+      while (i < src.length && ((src[i] >= "a" && src[i] <= "z") || (src[i] >= "A" && src[i] <= "Z"))) { name += src[i]; i++; }
+      tokens.push({ t: "name", v: name.toLowerCase() });
+      continue;
+    }
+    if ("+-*/%^(),".indexOf(ch) !== -1) { tokens.push({ t: "op", v: ch }); i++; continue; }
+    return null;
+  }
+  return tokens;
+}
+function calcParse(tokens){
+  var pos = 0;
+  function peek(){ return tokens[pos]; }
+  function next(){ return tokens[pos++]; }
+  function parseExpr(){
+    var v = parseTerm();
+    while (peek() && peek().t === "op" && (peek().v === "+" || peek().v === "-")) {
+      var op = next().v;
+      var r = parseTerm();
+      v = op === "+" ? v + r : v - r;
+    }
+    return v;
+  }
+  function parseTerm(){
+    var v = parseFactor();
+    while (true) {
+      var p = peek();
+      if (p && p.t === "op" && (p.v === "*" || p.v === "/" || p.v === "%")) {
+        var op = next().v;
+        var r = parseFactor();
+        if (op === "*") v = v * r;
+        else if (op === "/") { if (r === 0) throw new Error("div0"); v = v / r; }
+        else v = v % r;
+      } else if (p && (p.t === "num" || p.t === "name" || (p.t === "op" && p.v === "("))) {
+        // Implicit multiplication: 2(3+1), 2pi, 3sqrt(9)
+        v = v * parseFactor();
+      } else break;
+    }
+    return v;
+  }
+  function parseFactor(){
+    var v = parseUnary();
+    var p = peek();
+    if (p && p.t === "op" && p.v === "^") {
+      next();
+      var r = parseFactor();
+      v = Math.pow(v, r);
+    }
+    return v;
+  }
+  function parseUnary(){
+    var p = peek();
+    if (p && p.t === "op" && p.v === "-") { next(); return -parseUnary(); }
+    if (p && p.t === "op" && p.v === "+") { next(); return parseUnary(); }
+    return parsePrimary();
+  }
+  function parsePrimary(){
+    var p = next();
+    if (!p) throw new Error("empty");
+    if (p.t === "num") return p.v;
+    if (p.t === "op" && p.v === "(") {
+      var v = parseExpr();
+      var c = next();
+      if (!c || c.t !== "op" || c.v !== ")") throw new Error("paren");
+      return v;
+    }
+    if (p.t === "name") {
+      if (p.v === "pi") return Math.PI;
+      if (p.v === "e") return Math.E;
+      var fn = CALC_FUNCS[p.v];
+      if (!fn) throw new Error("fn");
+      var o = next();
+      if (!o || o.t !== "op" || o.v !== "(") throw new Error("paren");
+      var args = [];
+      if (peek() && !(peek().t === "op" && peek().v === ")")) {
+        args.push(parseExpr());
+        while (peek() && peek().t === "op" && peek().v === ",") { next(); args.push(parseExpr()); }
+      }
+      var cl = next();
+      if (!cl || cl.t !== "op" || cl.v !== ")") throw new Error("paren");
+      var out = fn.apply(null, args);
+      if (typeof out !== "number" || isNaN(out)) throw new Error("num");
+      return out;
+    }
+    throw new Error("tok");
+  }
+  var result = parseExpr();
+  if (pos !== tokens.length) throw new Error("trailing");
+  return result;
+}
+function evalFormula(src){
+  if (typeof src !== "string") return { ok: false };
+  var s = src.trim().replace(/×/g, "*").replace(/÷/g, "/");
+  if (!s) return { ok: false };
+  if (s.length > 200) return { ok: false };
+  var tokens = calcTokenize(s);
+  if (!tokens || tokens.length === 0) return { ok: false };
+  var v;
+  try { v = calcParse(tokens); } catch (e) { return { ok: false }; }
+  if (typeof v !== "number" || !isFinite(v)) return { ok: false };
+  return { ok: true, value: v };
+}
+function fmtCalcValue(v){
+  if (Number.isInteger(v) && Math.abs(v) < 1e15) return String(v);
+  return String(Math.round(v * 1e10) / 1e10);
+}
+function doCalc(inputId, resultId){
+  var input = document.getElementById(inputId);
+  var out = document.getElementById(resultId);
+  if (!input || !out) return;
+  var r = evalFormula(input.value);
+  if (r.ok) {
+    out.textContent = "= " + fmtCalcValue(r.value);
+    out.classList.remove("bad");
+  } else {
+    out.textContent = t("calcError");
+    out.classList.add("bad");
+  }
 }
 
 /* ================= Progress, sync, streak ================= */
@@ -1345,7 +1740,7 @@ function mergeSubject(p, def){
     known: (p.known && typeof p.known === "object") ? p.known : {},
     quizBest: p.quizBest || null,
     lastQuiz: p.lastQuiz || null,
-    notes: Array.isArray(p.notes) ? p.notes : [],
+    notes: normalizeNotes(p.notes),
     streak: (p.streak && typeof p.streak === "object") ? p.streak : { count:0, lastDay:null }
   };
 }
@@ -1676,12 +2071,60 @@ function restartQuiz(){
   loadQuiz();
 }
 
-/* ================= Notes ================= */
+/* ================= Notes (block editor) ================= */
+var BLOCK_TYPES = ["h1","p","bullet","number","check","divider"];
 function fmtTime(iso){
   try {
     var d = new Date(iso);
     return d.toLocaleString(undefined, { month:"short", day:"numeric", hour:"numeric", minute:"2-digit" });
   } catch (e) { return iso || ""; }
+}
+function newBlockId(){ return "b" + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function newBlock(type){
+  return { id: newBlockId(), type: type, text: "", checked: false };
+}
+// Migrate stored notes to the block shape. Old plain-text notes
+// ({id,text,at}) become one paragraph block; block notes pass through.
+function normalizeNotes(list){
+  if (!Array.isArray(list)) return [];
+  return list.map(function(n){
+    if (!n || typeof n !== "object") return null;
+    var id = typeof n.id === "string" ? n.id : ("n" + Date.now().toString(36) + Math.random().toString(36).slice(2,6));
+    var at = typeof n.at === "string" ? n.at : new Date().toISOString();
+    if (Array.isArray(n.blocks)) {
+      return {
+        id: id,
+        title: typeof n.title === "string" ? n.title : "",
+        blocks: n.blocks.filter(function(b){ return b && typeof b === "object" && BLOCK_TYPES.indexOf(b.type) !== -1; }).map(function(b){
+          return { id: typeof b.id === "string" ? b.id : newBlockId(), type: b.type, text: typeof b.text === "string" ? b.text : "", checked: b.type === "check" ? !!b.checked : false };
+        }),
+        drawing: typeof n.drawing === "string" && n.drawing.indexOf("data:image/") === 0 ? n.drawing : null,
+        grid: n.grid !== false,
+        at: at,
+        updatedAt: typeof n.updatedAt === "string" ? n.updatedAt : at
+      };
+    }
+    var text = typeof n.text === "string" ? n.text : "";
+    return { id: id, title: "", blocks: text ? [{ id: newBlockId(), type: "p", text: text, checked: false }] : [], drawing: null, grid: true, at: at, updatedAt: at };
+  }).filter(Boolean);
+}
+function noteBlocksText(blocks){
+  return (blocks || []).filter(function(b){ return b.type !== "divider" && (b.text || "").trim(); }).map(function(b){ return (b.text || "").trim(); }).join("\n");
+}
+function notePreviewText(n){
+  if (Array.isArray(n.blocks)) {
+    var lines = [];
+    n.blocks.forEach(function(b){
+      if (!b || b.type === "divider") return;
+      var tx = (b.text || "").trim();
+      if (!tx) return;
+      if (b.type === "bullet") lines.push("• " + tx);
+      else if (b.type === "check") lines.push((b.checked ? "✓ " : "") + tx);
+      else lines.push(tx);
+    });
+    return lines.slice(0, 4).join("\n");
+  }
+  return (n.text || "").slice(0, 300);
 }
 function renderNotesCount(){
   var n = (progress.notes || []).length;
@@ -1696,39 +2139,412 @@ function renderNotes(){
   notes.forEach(function(n){
     var d = document.createElement("div");
     d.className = "noteitem";
-    var txt = document.createElement("div");
-    txt.className = "nt"; txt.textContent = n.text;
+    var title = (n.title || "").trim();
+    if (title) {
+      var th = document.createElement("div");
+      th.style.cssText = "font-size:16px;font-weight:800;line-height:1.4";
+      th.textContent = title;
+      d.appendChild(th);
+    }
+    var preview = notePreviewText(n);
+    if (preview) {
+      var txt = document.createElement("div");
+      txt.className = "nt"; txt.textContent = preview;
+      d.appendChild(txt);
+    }
+    if (n.drawing) {
+      var img = document.createElement("img");
+      img.src = n.drawing; img.alt = "Drawing";
+      img.style.cssText = "width:100%;border-radius:10px;margin-top:10px;border:1px solid var(--line);background:var(--surface2)";
+      d.appendChild(img);
+    }
     var meta = document.createElement("div");
     meta.className = "nmeta";
     var tm = document.createElement("span");
-    tm.className = "ntime"; tm.textContent = fmtTime(n.at);
+    tm.className = "ntime"; tm.textContent = fmtTime(n.updatedAt || n.at);
+    var btns = document.createElement("div");
+    btns.style.cssText = "display:flex;gap:8px";
+    var edit = document.createElement("button");
+    edit.className = "delbtn"; edit.style.color = "var(--teal)"; edit.textContent = t("editNote");
+    edit.setAttribute("aria-label", "Edit note");
+    edit.onclick = function(){ openNoteEditor(n.id); };
     var del = document.createElement("button");
     del.className = "delbtn"; del.textContent = t("delete");
     del.setAttribute("aria-label", "Delete note");
     del.onclick = function(){ deleteNote(n.id); };
-    meta.appendChild(tm); meta.appendChild(del);
-    d.appendChild(txt); d.appendChild(meta);
+    btns.appendChild(edit); btns.appendChild(del);
+    meta.appendChild(tm); meta.appendChild(btns);
+    d.appendChild(meta);
     list.appendChild(d);
   });
   renderNotesCount();
-}
-function saveNote(){
-  var input = document.getElementById("note-input");
-  var text = input.value.trim();
-  if (!text) { input.focus(); return; }
-  if (!progress.notes) progress.notes = [];
-  progress.notes.unshift({ id: "n" + Date.now().toString(36) + Math.random().toString(36).slice(2,6), text: text, at: new Date().toISOString() });
-  input.value = "";
-  saveProgress();
-  showSaved(t("savedToast"));
-  renderNotes();
-  input.focus();
 }
 function deleteNote(id){
   progress.notes = (progress.notes || []).filter(function(n){ return n.id !== id; });
   saveProgress();
   showSaved(t("savedToast"));
   renderNotes();
+}
+
+/* ---------- Block editor ---------- */
+var editingNoteId = null;
+var editorBlocks = [];
+var editorDrawing = null;    // saved drawing data URL for the open note
+var editorGrid = true;
+var editorHasDrawing = false; // whether the canvas currently holds ink
+
+function openNoteEditor(id){
+  var note = null;
+  if (id) {
+    (progress.notes || []).forEach(function(n){ if (n.id === id) note = n; });
+  }
+  editingNoteId = id || null;
+  if (note) {
+    editorBlocks = JSON.parse(JSON.stringify(note.blocks || []));
+    editorDrawing = note.drawing || null;
+    editorGrid = note.grid !== false;
+    document.getElementById("note-title").value = note.title || "";
+  } else {
+    editorBlocks = [newBlock("p")];
+    editorDrawing = null;
+    editorGrid = true;
+    document.getElementById("note-title").value = "";
+  }
+  document.getElementById("note-editor").classList.remove("hidden");
+  document.getElementById("note-ai-result").textContent = "";
+  document.getElementById("note-ai-status").classList.add("hidden");
+  renderEditorBlocks();
+  initDrawCanvas();
+  loadEditorDrawing();
+  updateGridToggle();
+  document.getElementById("note-editor").scrollIntoView({ behavior:"smooth", block:"start" });
+}
+function closeNoteEditor(){
+  document.getElementById("note-editor").classList.add("hidden");
+  editingNoteId = null;
+}
+function blockTypeLabel(type){
+  if (type === "h1") return t("blockHeading");
+  if (type === "bullet") return t("blockBullet");
+  if (type === "number") return t("blockNumbered");
+  if (type === "check") return t("blockCheckbox");
+  if (type === "divider") return t("blockDivider");
+  return t("blockText");
+}
+function autoGrow(ta){
+  ta.style.height = "auto";
+  ta.style.height = Math.min(ta.scrollHeight, 240) + "px";
+}
+function renderEditorBlocks(){
+  var host = document.getElementById("editor-blocks");
+  host.innerHTML = "";
+  var num = 0;
+  editorBlocks.forEach(function(b, i){
+    if (b.type !== "number") num = 0;
+    var row = document.createElement("div");
+    row.className = "block-row";
+    var up = document.createElement("button");
+    up.className = "grip"; up.type = "button"; up.textContent = "↑";
+    up.setAttribute("aria-label", "Move block up");
+    up.disabled = i === 0;
+    up.onclick = function(){ moveBlock(i, -1); };
+    var down = document.createElement("button");
+    down.className = "grip"; down.type = "button"; down.textContent = "↓";
+    down.setAttribute("aria-label", "Move block down");
+    down.disabled = i === editorBlocks.length - 1;
+    down.onclick = function(){ moveBlock(i, 1); };
+    row.appendChild(up); row.appendChild(down);
+    if (b.type === "divider") {
+      var hr = document.createElement("hr");
+      hr.className = "block-div";
+      row.appendChild(hr);
+    } else {
+      if (b.type === "bullet") {
+        var dot = document.createElement("span"); dot.className = "bdot"; row.appendChild(dot);
+      } else if (b.type === "number") {
+        num++;
+        var nb = document.createElement("span"); nb.className = "bnum"; nb.textContent = num + ".";
+        row.appendChild(nb);
+      } else if (b.type === "check") {
+        var cb = document.createElement("input");
+        cb.type = "checkbox"; cb.className = "bcheck"; cb.checked = !!b.checked;
+        cb.setAttribute("aria-label", "Check off");
+        cb.onchange = function(){ b.checked = cb.checked; };
+        row.appendChild(cb);
+      }
+      var ta = document.createElement("textarea");
+      ta.className = "btext" + (b.type === "h1" ? " h1" : "");
+      ta.rows = 1;
+      ta.value = b.text || "";
+      ta.setAttribute("aria-label", blockTypeLabel(b.type));
+      ta.oninput = function(){ b.text = ta.value; autoGrow(ta); };
+      row.appendChild(ta);
+      autoGrow(ta);
+    }
+    var sel = document.createElement("select");
+    sel.className = "block-type";
+    sel.setAttribute("aria-label", "Block type");
+    BLOCK_TYPES.forEach(function(tp){
+      var o = document.createElement("option");
+      o.value = tp; o.textContent = blockTypeLabel(tp);
+      if (tp === b.type) o.selected = true;
+      sel.appendChild(o);
+    });
+    sel.onchange = function(){ changeBlockType(i, sel.value); };
+    row.appendChild(sel);
+    var del = document.createElement("button");
+    del.className = "bdel"; del.type = "button"; del.textContent = "✕";
+    del.setAttribute("aria-label", "Delete block");
+    del.onclick = function(){ deleteBlock(i); };
+    row.appendChild(del);
+    host.appendChild(row);
+  });
+}
+function addBlock(type){
+  editorBlocks.push(newBlock(type));
+  renderEditorBlocks();
+}
+function deleteBlock(i){
+  editorBlocks.splice(i, 1);
+  renderEditorBlocks();
+}
+function moveBlock(i, dir){
+  var j = i + dir;
+  if (j < 0 || j >= editorBlocks.length) return;
+  var tmp = editorBlocks[i]; editorBlocks[i] = editorBlocks[j]; editorBlocks[j] = tmp;
+  renderEditorBlocks();
+}
+function changeBlockType(i, type){
+  var b = editorBlocks[i];
+  b.type = type;
+  if (type === "check") b.checked = !!b.checked;
+  renderEditorBlocks();
+}
+function saveEditorNote(){
+  var title = (document.getElementById("note-title").value || "").trim().slice(0, 120);
+  var blocks = editorBlocks.map(function(b){
+    return { id: b.id, type: b.type, text: (b.text || "").slice(0, 2000), checked: b.type === "check" ? !!b.checked : false };
+  }).filter(function(b){ return b.type === "divider" || (b.text || "").trim() !== ""; });
+  var drawing = captureDrawing();
+  if (blocks.length === 0 && !title && !drawing) {
+    document.getElementById("note-title").focus();
+    return;
+  }
+  var now = new Date().toISOString();
+  if (editingNoteId) {
+    var found = null;
+    (progress.notes || []).forEach(function(n){ if (n.id === editingNoteId) found = n; });
+    if (found) {
+      found.title = title; found.blocks = blocks; found.drawing = drawing; found.grid = editorGrid; found.updatedAt = now;
+    }
+  } else {
+    if (!progress.notes) progress.notes = [];
+    progress.notes.unshift({ id: "n" + Date.now().toString(36) + Math.random().toString(36).slice(2,6), title: title, blocks: blocks, drawing: drawing, grid: editorGrid, at: now, updatedAt: now });
+  }
+  saveProgress();
+  showSaved(t("savedToast"));
+  closeNoteEditor();
+  renderNotes();
+}
+
+/* ---------- Draw canvas (pen, eraser, grid paper) ---------- */
+var drawState = { tool: "pen", color: "#1a2340", size: 5, drawing: false, lastX: 0, lastY: 0, ready: false };
+function drawMainCanvas(){ return document.getElementById("draw-main"); }
+function drawGridCanvas(){ return document.getElementById("draw-grid"); }
+function getDrawCtx(){
+  var c = drawMainCanvas();
+  if (!c || !c.getContext) return null;
+  var ctx;
+  try { ctx = c.getContext("2d"); } catch (e) { return null; }
+  // A partial 2D context (some test stubs) is treated as no canvas.
+  if (!ctx) return null;
+  var need = ["save","restore","beginPath","arc","fill","stroke","moveTo","lineTo","clearRect","drawImage"];
+  for (var i = 0; i < need.length; i++) if (typeof ctx[need[i]] !== "function") return null;
+  return ctx;
+}
+function initDrawCanvas(){
+  var c = drawMainCanvas();
+  if (!c || drawState.ready) return;
+  drawState.ready = true;
+  c.addEventListener("pointerdown", drawStart);
+  c.addEventListener("pointermove", drawMove);
+  c.addEventListener("pointerup", drawEnd);
+  c.addEventListener("pointerleave", drawEnd);
+  c.addEventListener("pointercancel", drawEnd);
+  drawGrid();
+}
+function drawPos(ev){
+  var c = drawMainCanvas();
+  var r = c.getBoundingClientRect();
+  var scaleX = c.width / (r.width || 1);
+  var scaleY = c.height / (r.height || 1);
+  return { x: (ev.clientX - r.left) * scaleX, y: (ev.clientY - r.top) * scaleY };
+}
+function drawStart(ev){
+  ev.preventDefault();
+  var p = drawPos(ev);
+  drawState.drawing = true;
+  drawState.lastX = p.x; drawState.lastY = p.y;
+  drawDot(p.x, p.y);
+}
+function drawMove(ev){
+  if (!drawState.drawing) return;
+  ev.preventDefault();
+  var p = drawPos(ev);
+  drawLine(drawState.lastX, drawState.lastY, p.x, p.y);
+  drawState.lastX = p.x; drawState.lastY = p.y;
+}
+function drawEnd(){
+  if (drawState.drawing) { drawState.drawing = false; editorHasDrawing = true; }
+}
+function drawDot(x, y){
+  var ctx = getDrawCtx(); if (!ctx) return;
+  ctx.save();
+  if (drawState.tool === "eraser") ctx.globalCompositeOperation = "destination-out";
+  ctx.fillStyle = drawState.tool === "eraser" ? "#000000" : drawState.color;
+  ctx.beginPath();
+  ctx.arc(x, y, drawState.size / 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  editorHasDrawing = true;
+}
+function drawLine(x1, y1, x2, y2){
+  var ctx = getDrawCtx(); if (!ctx) return;
+  ctx.save();
+  if (drawState.tool === "eraser") ctx.globalCompositeOperation = "destination-out";
+  else ctx.globalCompositeOperation = "source-over";
+  ctx.strokeStyle = drawState.tool === "eraser" ? "#000000" : drawState.color;
+  ctx.lineWidth = drawState.tool === "eraser" ? drawState.size * 3 : drawState.size;
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  ctx.restore();
+  editorHasDrawing = true;
+}
+function setDrawTool(tool){
+  drawState.tool = tool;
+  document.querySelectorAll("#draw-tools [data-tool]").forEach(function(b){
+    b.classList.toggle("on", b.getAttribute("data-tool") === tool);
+  });
+}
+function setDrawColor(color){
+  drawState.color = color;
+  document.querySelectorAll("#draw-tools .swatch").forEach(function(b){
+    b.classList.toggle("on", b.getAttribute("data-color") === color);
+  });
+}
+function setDrawSize(size){
+  drawState.size = size;
+  document.querySelectorAll("#draw-tools [data-size]").forEach(function(b){
+    b.classList.toggle("on", Number(b.getAttribute("data-size")) === size);
+  });
+}
+function drawGrid(){
+  var g = drawGridCanvas();
+  if (!g || !g.getContext) return;
+  var ctx;
+  try { ctx = g.getContext("2d"); } catch (e) { return; }
+  if (!ctx) return;
+  var need = ["beginPath","moveTo","lineTo","stroke","clearRect"];
+  for (var i = 0; i < need.length; i++) if (typeof ctx[need[i]] !== "function") return;
+  ctx.clearRect(0, 0, g.width, g.height);
+  if (!editorGrid) return;
+  var dark = document.documentElement.getAttribute("data-theme") === "dark";
+  ctx.strokeStyle = dark ? "rgba(255,255,255,0.10)" : "rgba(26,35,64,0.10)";
+  ctx.lineWidth = 1;
+  var step = 20, x, y;
+  ctx.beginPath();
+  for (x = step; x < g.width; x += step) { ctx.moveTo(x + 0.5, 0); ctx.lineTo(x + 0.5, g.height); }
+  for (y = step; y < g.height; y += step) { ctx.moveTo(0, y + 0.5); ctx.lineTo(g.width, y + 0.5); }
+  ctx.stroke();
+  ctx.strokeStyle = dark ? "rgba(255,255,255,0.16)" : "rgba(26,35,64,0.16)";
+  ctx.beginPath();
+  for (x = 100; x < g.width; x += 100) { ctx.moveTo(x + 0.5, 0); ctx.lineTo(x + 0.5, g.height); }
+  for (y = 100; y < g.height; y += 100) { ctx.moveTo(0, y + 0.5); ctx.lineTo(g.width, y + 0.5); }
+  ctx.stroke();
+}
+function toggleDrawGrid(){
+  editorGrid = !editorGrid;
+  updateGridToggle();
+  drawGrid();
+}
+function updateGridToggle(){
+  var b = document.getElementById("grid-toggle-btn");
+  if (b) b.textContent = editorGrid ? t("gridOn") : t("gridOff");
+}
+function clearDrawing(){
+  var ctx = getDrawCtx();
+  if (ctx) { var c = drawMainCanvas(); ctx.clearRect(0, 0, c.width, c.height); }
+  editorHasDrawing = false;
+  editorDrawing = null;
+}
+function loadEditorDrawing(){
+  var ctx = getDrawCtx();
+  var c = drawMainCanvas();
+  if (ctx && c) ctx.clearRect(0, 0, c.width, c.height);
+  editorHasDrawing = false;
+  if (!editorDrawing) return;
+  var img = new Image();
+  img.onload = function(){
+    var cx = getDrawCtx();
+    if (cx && c) { cx.clearRect(0, 0, c.width, c.height); cx.drawImage(img, 0, 0, c.width, c.height); }
+    editorHasDrawing = true;
+  };
+  img.src = editorDrawing;
+}
+function captureDrawing(){
+  if (!editorHasDrawing) return null;
+  var c = drawMainCanvas();
+  if (!c || !c.toDataURL) return editorDrawing;
+  var url = null;
+  try { url = c.toDataURL("image/png"); } catch (e) { return editorDrawing; }
+  if (!url || url.length < 100) return editorDrawing;
+  if (url.length <= 120000) return url;
+  try {
+    var small = document.createElement("canvas");
+    small.width = 380; small.height = 190;
+    var sctx = small.getContext("2d");
+    if (!sctx) return editorDrawing;
+    sctx.drawImage(c, 0, 0, small.width, small.height);
+    var j = small.toDataURL("image/jpeg", 0.85);
+    if (j && j.length >= 100 && j.length <= 120000) return j;
+  } catch (e) {}
+  return editorDrawing;
+}
+
+/* ---------- AI help inside a note ---------- */
+var noteAiBusy = false;
+function aiNoteAction(kind){
+  if (noteAiBusy) return;
+  var text = noteBlocksText(editorBlocks);
+  var statusBox = document.getElementById("note-ai-status");
+  var resultBox = document.getElementById("note-ai-result");
+  if (!text) {
+    statusBox.textContent = t("aiNoteEmpty");
+    statusBox.classList.remove("hidden");
+    return;
+  }
+  var clip = text.slice(0, 1200);
+  var q;
+  if (kind === "summarize") q = "Summarize this study note into 4 to 6 short bullet points:\n\n" + clip;
+  else if (kind === "plan") q = "Turn this study note into a short step-by-step study plan:\n\n" + clip;
+  else q = "Explain and expand the main point in this study note in simple words, with a short example:\n\n" + clip;
+  noteAiBusy = true;
+  statusBox.classList.add("hidden");
+  resultBox.textContent = t("aiThinking");
+  callAI(q).then(function(res){
+    noteAiBusy = false;
+    if (res.ok) {
+      resultBox.textContent = res.answer;
+    } else if (res.error === "not_configured") {
+      resultBox.textContent = "";
+      statusBox.innerHTML = "<b>" + t("aiNotConfigured") + "</b>";
+      statusBox.classList.remove("hidden");
+    } else {
+      resultBox.textContent = "";
+      statusBox.textContent = t("aiError");
+      statusBox.classList.remove("hidden");
+    }
+  });
 }
 
 /* ================= Tabs ================= */
@@ -1841,8 +2657,14 @@ function videoCard(v){
   var saveBtn = document.createElement("button");
   saveBtn.className = "btn"; saveBtn.textContent = isSaved(v.id) ? t("savedVideo") : t("saveVideo");
   saveBtn.onclick = function(){ toggleSaveVideo(v.id); };
-  actions.appendChild(watchBtn); actions.appendChild(saveBtn);
-  body.appendChild(title); body.appendChild(ch); body.appendChild(actions);
+  var sumBtn = document.createElement("button");
+  sumBtn.className = "btn"; sumBtn.textContent = t("summarizeVideo");
+  sumBtn.onclick = function(){ summarizeVideo(v, card); };
+  actions.appendChild(watchBtn); actions.appendChild(saveBtn); actions.appendChild(sumBtn);
+  var sumBox = document.createElement("div");
+  sumBox.className = "video-summary hidden";
+  sumBox.setAttribute("data-summary", v.id);
+  body.appendChild(title); body.appendChild(ch); body.appendChild(actions); body.appendChild(sumBox);
   card.appendChild(thumb); card.appendChild(body);
   return card;
 }
@@ -1857,7 +2679,14 @@ function playVideo(id, card){
   frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
   frame.allowFullscreen = true;
   host.innerHTML = "";
+  var glow = document.createElement("img");
+  glow.className = "ambient";
+  glow.src = "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg";
+  glow.alt = "";
+  glow.setAttribute("aria-hidden", "true");
+  host.appendChild(glow);
   host.appendChild(frame);
+  host.classList.add("playing");
 }
 function isSaved(id){ return (store.playlist || []).indexOf(id) !== -1; }
 function toggleSaveVideo(id){
