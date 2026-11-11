@@ -89,9 +89,9 @@
   .menu-btn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;min-height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0;flex:none}
   .menu-btn svg{width:var(--icon);height:var(--icon)}
   .brand{display:flex;align-items:center;flex:none}
-  .brand-logo-tile{display:inline-flex;align-items:center;gap:7px;background:var(--navy);border-radius:12px;padding:5px 10px}
+  .brand{display:inline-flex;align-items:center;gap:8px}
   .brand-logo{height:26px;width:26px;display:block}
-  .brand-word{color:#fff;font-weight:800;font-size:17px;letter-spacing:.04em;line-height:1}
+  .brand-word{color:var(--ink);font-weight:800;font-size:17px;letter-spacing:.04em;line-height:1}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   .unit-pill{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--surface2);border:1px solid var(--line);color:var(--ink2);padding:6px 12px;border-radius:999px}
   .headtools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto}
@@ -251,8 +251,7 @@
   /* ---------- Sidebar navigation (solid highlight, no gradient) ---------- */
   .sidebar{position:fixed;left:0;top:0;bottom:0;width:248px;z-index:50;background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:18px 12px;transform:translateX(-102%);transition:transform .28s ease;overflow-y:auto}
   .sidebar.open{transform:translateX(0)}
-  .sidebar .snav-brand{display:flex;align-items:center;padding:2px 8px 14px}
-  .sidebar .snav-brand .brand-logo-tile{padding:6px 10px}
+  .sidebar .snav-brand{display:flex;align-items:center;gap:8px;padding:2px 8px 14px}
   .sidebar .snav-brand .brand-logo{height:30px;width:30px}
   .sidebar .snav-brand .brand-word{font-size:19px}
   .snav-label{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);padding:12px 12px 8px}
@@ -385,9 +384,7 @@
   .chat-row{display:flex;gap:9px;align-items:flex-end;animation:chatIn .22s ease-out}
   @keyframes chatIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   .chat-row.mine{justify-content:flex-end}
-  .chat-avatar{flex:none;width:32px;height:32px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center}
-  html[data-theme="dark"] .chat-avatar{color:#0b1512}
-  .chat-avatar svg{width:var(--icon-sm);height:var(--icon-sm)}
+  .chat-avatar-img{flex:none;width:32px;height:32px;border-radius:50%;object-fit:cover;display:block;background:transparent}
   .bubble{max-width:78%;padding:11px 14px;border-radius:16px;font-size:15.5px;line-height:1.6;word-break:break-word;white-space:pre-wrap}
   .bubble.mine{background:var(--teal);color:#fff;border-bottom-right-radius:5px}
   html[data-theme="dark"] .bubble.mine{color:#0b1512}
@@ -463,11 +460,17 @@
   .statcard span{font-size:13px;color:var(--ink2);font-weight:600}
 
   /* ---------- Motion (transform + opacity only) ---------- */
-  .view-enter{animation:viewIn .28s ease}
+  .view-enter{animation:viewIn .28s cubic-bezier(.2,.7,.3,1)}
   @keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .btn:active,.subject-card:active,.guide-link:active,.videocard:active,.snav-item:active,.opt:active,.seg button:active{transform:scale(.985)}
   .subject-card,.guide-link,.videocard{transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease}
-  @media (prefers-reduced-motion: reduce){ .view-enter{animation:none} .sidebar{transition:none} .sidebar-scrim{transition:none} }
+  .sidebar{transition:transform .28s cubic-bezier(.2,.7,.3,1)}
+  .sheet-card{animation:sheetIn .25s cubic-bezier(.2,.7,.3,1)}
+  @keyframes sheetIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .chat-row{animation:chatIn .22s cubic-bezier(.2,.7,.3,1)}
+  @keyframes chatIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .flip-inner{transition:transform .3s cubic-bezier(.2,.7,.3,1)}
+  @media (prefers-reduced-motion: reduce){ .view-enter{animation:none} .sidebar{transition:none} .sidebar-scrim{transition:none} .sheet-card{animation:none} .chat-row{animation:none} .flip-inner{transition:none} .app-window{animation:none;transition:none} .float-video{animation:none;transition:none} .float-pill{animation:none;transition:none} .app-loader{transition:none} .terms-gate{animation:none} .auth-screen{animation:none} }
 
   /* ---------- Settings rows and switches ---------- */
   .setrow{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line)}
@@ -482,13 +485,119 @@
   .setsub{font-size:15px;font-weight:800;margin-top:18px}
   .setsub:first-child{margin-top:4px}
 
+
+  /* ---------- App loader ---------- */
+  .app-loader{position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .4s ease}
+  .app-loader.hide{opacity:0;pointer-events:none}
+  .app-loader-logo{width:72px;height:72px;display:block}
+  .app-loader .spinner{width:34px;height:34px}
+  /* ---------- Terms gate ---------- */
+  .terms-gate{position:fixed;inset:0;z-index:150;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+  .terms-gate-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:22px;width:100%;max-width:640px;max-height:88vh;display:flex;flex-direction:column}
+  .terms-gate-body{margin-top:12px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;padding:16px;flex:1;min-height:120px}
+  .terms-gate-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  /* ---------- Auth screen ---------- */
+  .auth-screen{position:fixed;inset:0;z-index:160;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+  .auth-screen-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:22px;width:100%;max-width:480px}
+  .linklike{background:none;border:0;color:var(--teal);font-weight:700;font-size:14.5px;padding:0;cursor:pointer;text-decoration:underline}
+  /* ---------- Ranking ---------- */
+  .rank-badge{display:inline-block;background:var(--teal-soft);color:var(--teal-dark);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:800}
+  .rank-hero .rank-points{font-size:22px;font-weight:800;margin-top:8px}
+  .rank-next{font-size:14.5px;color:var(--ink2);font-weight:700}
+  .rank-bar{height:10px;border-radius:999px;background:var(--surface2);border:1px solid var(--line);margin-top:14px;overflow:hidden}
+  .rank-bar-fill{height:100%;background:var(--teal);border-radius:999px;transition:width .3s cubic-bezier(.2,.7,.3,1)}
+  .rank-row{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .rank-row.me{border-color:var(--teal)}
+  .rank-row .rname{flex:1;min-width:0;font-weight:700}
+  .rank-row .rpts{font-weight:800;white-space:nowrap}
+  .rank-row .rmin{font-size:13px;color:var(--ink2);font-weight:600}
+  /* ---------- Sticky notes on the draw board ---------- */
+  .sticky-layer{position:absolute;inset:0;pointer-events:none;z-index:3}
+  .sticky-note{position:absolute;min-width:90px;min-height:70px;background:#fff8c4;border:1px solid #e8d44d;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden;pointer-events:auto;resize:both}
+  .sticky-head{display:flex;align-items:center;justify-content:space-between;background:#fde68a;cursor:grab;touch-action:none;padding:3px 4px 3px 8px;flex:none}
+  .sticky-head span{font-size:11px;font-weight:800;color:#713f12}
+  .sticky-del{border:0;background:transparent;font-size:16px;line-height:1;padding:2px 6px;cursor:pointer;color:#713f12;min-height:0}
+  .sticky-text{flex:1;border:0;background:transparent;resize:none;padding:6px 8px;font-size:13.5px;line-height:1.45;color:#3f3000;font-family:inherit;outline:none}
+  .draw-slider{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--ink2)}
+  .draw-slider input[type="range"]{width:110px;accent-color:var(--teal)}
+  .draw-size-val{min-width:22px;text-align:center;font-weight:800;color:var(--ink)}
+  /* ---------- iPadOS windows ---------- */
+  #window-layer{position:fixed;inset:0;z-index:80;pointer-events:none}
+  .app-window{position:fixed;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;pointer-events:auto;animation:winIn .25s cubic-bezier(.2,.7,.3,1)}
+  @keyframes winIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+  .win-titlebar{flex:none;display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface2);cursor:grab;touch-action:none;user-select:none}
+  .win-title{flex:1;min-width:0;font-weight:800;font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .win-btn,.win-close{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;width:30px;height:30px;min-height:30px;font-size:17px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .win-body{flex:1;overflow-y:auto;min-height:0}
+  .win-body .wrap{padding-left:16px;padding-right:16px}
+  .win-resize{position:absolute;right:0;bottom:0;width:26px;height:26px;cursor:nwse-resize;touch-action:none;background:linear-gradient(135deg,transparent 50%,var(--line) 50%,var(--line) 60%,transparent 60%,transparent 70%,var(--line) 70%,var(--line) 80%,transparent 80%)}
+  @media (max-width:640px){
+    .app-window:not(.float-video){left:6px !important;right:6px;top:6px !important;bottom:6px;width:auto !important;height:auto !important}
+  }
+  /* ---------- Floating video window ---------- */
+  .float-video{z-index:90}
+  .float-video .win-body{overflow:hidden;display:flex}
+  .float-video iframe{flex:1;width:100%;height:100%;border:0;display:block}
+  .float-pill{position:fixed;z-index:90;right:14px;bottom:16px;max-width:78vw;background:var(--surface);border:1px solid var(--line);border-radius:999px;box-shadow:var(--shadow);padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;animation:winIn .25s cubic-bezier(.2,.7,.3,1)}
+  .float-pill span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .daily-label{font-size:13.5px}
+  .legal-body h3{font-size:19px;font-weight:800;margin:18px 0 8px}
+  .legal-body h3:first-child{margin-top:0}
+  .legal-body p{line-height:1.65;margin-bottom:10px;font-size:15px}
+  .legal-body p.updated{color:var(--ink2);font-size:13.5px}
+
+  .form-row{margin-top:12px}
+  .form-row label{display:block;font-size:13.5px;font-weight:700;color:var(--ink2);margin-bottom:5px}
+  .form-row input,.form-row select{width:100%}
+  .row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .muted{color:var(--ink2);font-size:13.5px;margin-top:10px}
+  .grow{flex:1}
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-sm)}
+  .stat .num{display:block;font-size:22px;font-weight:800;line-height:1.1}
+  .stat .lab{font-size:13px;color:var(--ink2);font-weight:600}
+  @media (max-width:640px){ .stat-grid{grid-template-columns:1fr} }
   .hidden{display:none !important}
 </style>
 </head>
 <body>
+  <div id="app-loader" class="app-loader" aria-hidden="true"><img class="app-loader-logo" src="assets/l3arn-symbol-color.png" alt="L3ARN"><svg class="spinner" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--line)" stroke-width="3"/><path fill="none" stroke="var(--teal)" stroke-width="3" stroke-linecap="round" d="M12 2a10 10 0 0 1 10 10"/></svg><div class="lede" style="margin:0">Loading L3ARN</div></div>
+  <div id="terms-gate" class="terms-gate hidden" role="dialog" aria-modal="true" aria-labelledby="terms-gate-title">
+    <div class="terms-gate-card">
+      <h2 id="terms-gate-title" style="margin:0;font-size:22px">Terms and Conditions</h2>
+      <p class="lede" style="margin:8px 0 0">Please read the Terms and Conditions before using L3ARN.</p>
+      <div class="terms-gate-body legal-body" id="terms-gate-body"></div>
+      <p class="muted hidden" id="terms-decline-note">You need to accept the Terms and Conditions to use L3ARN.</p>
+      <div class="terms-gate-actions">
+        <button class="btn primary grow" onclick="acceptTerms()">Accept</button>
+        <button class="btn" onclick="declineTerms()">Decline</button>
+      </div>
+    </div>
+  </div>
+  <div id="auth-screen" class="auth-screen hidden" role="dialog" aria-modal="true" aria-labelledby="auth-screen-title">
+    <div class="auth-screen-card">
+      <div style="display:flex;align-items:center;gap:10px"><img class="brand-logo" src="assets/l3arn-symbol-color.png" alt="L3ARN"><span class="brand-word">L3ARN</span></div>
+      <h2 id="auth-screen-title" style="margin:16px 0 4px;font-size:22px">Sign in to L3ARN</h2>
+      <p class="lede" style="margin:0 0 14px">Sign in to sync your study progress across devices.</p>
+      <div class="form-row"><label id="auth-name-label" for="auth-name">Your name</label><input id="auth-name" type="text" autocomplete="name" placeholder="Your name"></div>
+      <div class="form-row"><label id="auth-username-label" for="auth-username">Username</label><input id="auth-username" type="text" autocomplete="username" placeholder="username (3 to 30, letters, numbers, _)"></div>
+      <div class="form-row hidden" id="auth-age-row"><label id="auth-age-label" for="auth-age">Age</label><input id="auth-age" type="number" inputmode="numeric" min="1" max="120" placeholder="Your age"></div>
+      <div class="form-row"><label id="auth-pin-label" for="auth-pin">4-digit PIN</label><input id="auth-pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="4-digit PIN"></div>
+      <p class="muted hidden" id="auth-error" style="color:var(--red);font-weight:700"></p>
+      <div class="row"><button class="btn primary grow" id="auth-submit" onclick="doAuth()">Sign in</button></div>
+      <div class="row" style="justify-content:space-between;align-items:center"><button class="linklike" id="auth-mode-toggle" onclick="toggleAuthMode()">Create a new account</button><button class="linklike" onclick="closeAuth(true)">Continue as guest</button></div>
+    </div>
+  </div>
+  <div id="window-layer"></div>
+  <div id="float-video" class="app-window float-video hidden" role="dialog" aria-label="Video player">
+    <div class="win-titlebar" id="float-titlebar"><span class="win-title" id="float-title">Video</span><button class="win-btn" id="float-min" aria-label="Minimize video">-</button><button class="win-close" id="float-close" aria-label="Close video">x</button></div>
+    <div class="win-body" id="float-body"></div>
+    <div class="win-resize" id="float-resize" aria-hidden="true"></div>
+  </div>
+  <button id="float-pill" class="float-pill hidden"><span id="float-pill-title">Video</span><span aria-hidden="true">+</span></button>
 
 <aside class="sidebar" id="sidebar" aria-label="App sections">
-  <div class="snav-brand"><span class="brand-logo-tile"><img class="brand-logo" src="assets/l3arn-symbol-white.png" alt="" width="1200" height="1200" /><span class="brand-word">L3ARN</span></span></div>
+  <div class="snav-brand"><img class="brand-logo" src="assets/l3arn-symbol-black.png" alt="" width="1200" height="1200" /><span class="brand-word">L3ARN</span></div>
   <button class="snav-profile" id="snav-profile" type="button" onclick="showMain('profile')" aria-label="Open profile">
     <span id="snav-avatar-wrap"><img id="snav-avatar-img" class="avatar snav-avatar hidden" alt="" /><span id="snav-avatar-init" class="avatar avatar-init snav-avatar hidden" aria-hidden="true"></span></span>
     <span class="snav-profile-text">
@@ -529,6 +638,10 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
     <span data-i18n="navHistory">History</span>
   </button>
+  <button class="snav-item" id="nav-ranking" aria-selected="false" onclick="showMain('ranking')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 5H4a3 3 0 0 0 3 4M17 5h3a3 3 0 0 1-3 4"/></svg>
+    <span data-i18n="navRanking">Ranking</span>
+  </button>
 </aside>
 <div class="sidebar-scrim" id="sidebar-scrim" onclick="closeSidebar()" aria-hidden="true"></div>
 <div class="app-main">
@@ -537,7 +650,7 @@
     <button class="menu-btn" id="menu-btn" onclick="toggleSidebar()" aria-label="Open menu" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
-    <div class="brand"><span class="brand-logo-tile"><img class="brand-logo" src="assets/l3arn-symbol-white.png" alt="" width="1200" height="1200" /><span class="brand-word">L3ARN</span></span></div>
+    <div class="brand"><img class="brand-logo" src="assets/l3arn-symbol-black.png" alt="" width="1200" height="1200" /><span class="brand-word">L3ARN</span></div>
     <span class="unit-pill" id="unit-pill">Year 1 · BBA</span>
     <div class="headtools">
       <span class="streak-pill" id="streak-pill" title="Daily streak">
@@ -546,60 +659,21 @@
       </span>
       <span class="sync-pill hidden" id="sync-pill"><span class="dot"></span><span id="sync-text">Synced</span></span>
       <button class="toolbtn hidden" id="back-btn" onclick="goHome()" aria-label="Back to all subjects">&#8592; <span data-i18n="backToSubjects">All subjects</span></button>
-      <button class="toolbtn" id="lang-btn" onclick="toggleLang()" aria-label="Switch language">EN · မြန်မာ</button>
-      <button class="toolbtn" id="theme-btn" onclick="toggleTheme()" aria-label="Switch theme">
-        <svg id="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
-        <svg id="theme-icon-sun" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        <span id="theme-label">Dark</span>
-      </button>
       <span class="header-profile" id="header-profile">
         <span id="header-profile-name"></span>
         <span id="header-profile-sub"></span>
       </span>
       <img id="header-avatar-img" class="avatar hidden" alt="Profile picture" />
       <span id="header-avatar-init" class="avatar avatar-init hidden" aria-hidden="true"></span>
-      <button class="toolbtn" id="auth-btn" onclick="openAuth()">Sign in</button>
     </div>
   </div>
 </header>
-
-<div class="wrap">
-  <!-- Auth panel -->
-  <section class="authcard hidden" id="auth-panel" aria-label="Sign in">
-    <h2 data-i18n="signInTitle">Sign in to sync</h2>
-    <p data-i18n="signInNote">First time here? Signing in creates your account. Your progress then syncs across all your devices.</p>
-    <div class="field">
-      <label for="auth-name" data-i18n="nameLabel">Display name</label>
-      <input id="auth-name" type="text" autocomplete="nickname" maxlength="40" placeholder="Your name" />
-    </div>
-    <div class="field">
-      <label for="auth-pin" data-i18n="pinLabel">PIN (4 digits)</label>
-      <input id="auth-pin" type="password" inputmode="numeric" autocomplete="off" maxlength="4" pattern="[0-9]{4}" placeholder="••••" />
-    </div>
-    <div class="auth-err" id="auth-err"></div>
-    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-      <button class="btn primary" id="signin-submit" onclick="doSignIn()" data-i18n="signIn">Sign in</button>
-      <button class="btn" onclick="closeAuth(true)" data-i18n="guest">Continue as guest</button>
-    </div>
-    <p style="margin-top:12px;font-size:13.5px" class="ink3" data-i18n="guestNote">Guest mode works fully on this device. Sign in any time to sync across devices.</p>
-  </section>
-
-  <!-- Signed-in bar -->
-  <section class="authcard hidden" id="user-bar" aria-label="Account">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-      <div>
-        <h2 style="font-size:17px"><span data-i18n="signedInAs">Signed in as</span> <span id="user-name"></span></h2>
-        <p style="margin-top:4px;font-size:14px" class="ink2" data-i18n="syncNote">Your flashcards, quiz best, notes, and streak sync across all your devices.</p>
-      </div>
-      <button class="btn" onclick="doSignOut()" data-i18n="signOut">Sign out</button>
-    </div>
-  </section>
-</div>
 
 <!-- Subject picker home -->
 <section id="home-view" class="wrap" style="padding-top:8px;padding-bottom:40px">
   <div class="section-head">
     <h2 data-i18n="chooseSubject">Choose a subject</h2>
+    <button class="btn" onclick="openUpload()" data-i18n="uploadTextbook">Upload textbook</button>
   </div>
   <p class="lede" id="home-lede">ATHE BBA Program · Year 1. Pick a subject to revise with flashcards, check your knowledge, and track your assignment.</p>
   <div class="subject-grid" id="subject-grid"></div>
@@ -669,6 +743,7 @@
       <h3 data-i18n="emptyTitle">No study material yet</h3>
       <p class="empty-note"></p>
     </div>
+    <div id="uploaded-lesson" class="card hidden"></div>
   </section>
 
   <!-- QUIZ -->
@@ -810,19 +885,17 @@
       <div class="draw-tools" id="draw-tools">
         <button class="btn on" type="button" data-tool="pen" onclick="setDrawTool('pen')" data-i18n="toolPen">Pen</button>
         <button class="btn" type="button" data-tool="eraser" onclick="setDrawTool('eraser')" data-i18n="toolEraser">Eraser</button>
-        <button class="swatch on" type="button" data-color="#1a2340" style="background:#1a2340" aria-label="Dark ink" onclick="setDrawColor('#1a2340')"></button>
-        <button class="swatch" type="button" data-color="#0e7c6b" style="background:#0e7c6b" aria-label="Teal ink" onclick="setDrawColor('#0e7c6b')"></button>
-        <button class="swatch" type="button" data-color="#b45309" style="background:#b45309" aria-label="Amber ink" onclick="setDrawColor('#b45309')"></button>
-        <button class="swatch" type="button" data-color="#b42318" style="background:#b42318" aria-label="Red ink" onclick="setDrawColor('#b42318')"></button>
-        <button class="btn" type="button" data-size="2" onclick="setDrawSize(2)" data-i18n="sizeThin">Thin</button>
-        <button class="btn on" type="button" data-size="5" onclick="setDrawSize(5)" data-i18n="sizeMedium">Medium</button>
-        <button class="btn" type="button" data-size="9" onclick="setDrawSize(9)" data-i18n="sizeThick">Thick</button>
+        <button class="swatch on" type="button" data-color="#000000" style="background:#000000;border:1px solid var(--line)" aria-label="Black ink" onclick="setDrawColor('#000000')"></button>
+        <button class="swatch" type="button" data-color="#ffffff" style="background:#ffffff;border:1px solid var(--line)" aria-label="White ink" onclick="setDrawColor('#ffffff')"></button>
+        <label class="draw-slider">Thickness <input type="range" id="draw-size-slider" min="1" max="20" step="1" value="5" oninput="setDrawSize(parseInt(this.value, 10), this)"><span class="draw-size-val" id="draw-size-value">5</span></label>
+        <button class="btn" type="button" id="draw-sticky-btn" onclick="addStickyNote()" data-i18n="addStickyNote">Add sticky note</button>
         <button class="btn" type="button" onclick="toggleDrawGrid()" id="grid-toggle-btn" data-i18n="gridOn">Grid paper: on</button>
         <button class="btn" type="button" onclick="clearDrawing()" data-i18n="clearDraw">Clear drawing</button>
       </div>
       <div class="draw-wrap" id="draw-wrap">
         <canvas id="draw-grid" width="760" height="380" aria-hidden="true"></canvas>
         <canvas id="draw-main" class="draw-main" width="760" height="380" aria-label="Drawing canvas"></canvas>
+        <div class="sticky-layer" id="sticky-layer"></div>
       </div>
       <p class="draw-note" data-i18n="drawNote">Draw with your finger or mouse. The drawing saves with the note.</p>
 
@@ -869,6 +942,17 @@
     </div>
     <div class="calc-result" id="learn-calc-result"></div>
     <p class="calc-hint" data-i18n="calcHint">Supports + − × ÷ % ^ ( ) and sqrt, pow, abs, sin, cos, tan, log, ln, exp, floor, ceil, round, min, max, pi, e.</p>
+  </div>
+  <div id="learn-suggested"></div>
+  <div class="card" id="upload-card" style="margin-bottom:16px">
+    <div class="section-head">
+      <h2 style="font-size:17px;margin:0" data-i18n="uploadTitle">Upload a PDF or textbook</h2>
+    </div>
+    <p class="lede" data-i18n="uploadLede">Upload a PDF or text file and the AI will make flashcards and a lesson from it.</p>
+    <div class="field"><label for="upload-subject">Subject</label><select id="upload-subject"></select></div>
+    <div class="field"><label for="upload-file">File</label><input id="upload-file" type="file" accept=".pdf,.txt" onchange="onUploadFileChosen()"></div>
+    <div class="row"><button class="btn primary grow" id="upload-generate" onclick="generateFromUpload()" data-i18n="uploadGenerate">Generate flashcards and lesson</button></div>
+    <p class="muted hidden" id="upload-status"></p>
   </div>
   <div id="learn-topics"></div>
 </section>
@@ -922,6 +1006,7 @@
           <h3 id="profile-name" style="font-size:21px;font-weight:800">Guest</h3>
           <p class="ink2" id="profile-meta" style="font-size:14.5px;margin-top:4px"></p>
           <p class="ink2" id="profile-stats" style="font-size:14.5px;margin-top:4px"></p>
+          <span id="profile-rank-badge" class="rank-badge" style="margin-top:8px"></span>
         </div>
       </div>
       <div class="field" style="margin-top:16px">
@@ -966,6 +1051,7 @@
         <button type="button" onclick="setYear(3)" data-year="3">Year 3</button>
         <button type="button" onclick="setYear(4)" data-year="4">Year 4</button>
       </div>
+      <p class="ink2" id="study-profile-account" style="font-size:14.5px;margin-top:12px"></p>
     </div>
     <div class="card" style="margin-top:16px">
       <h3 style="font-size:18px;font-weight:800" data-i18n="genderH">Gender</h3>
@@ -979,6 +1065,8 @@
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
         <button class="btn" onclick="openLegal('terms')" data-i18n="termsLink">Terms and Conditions</button>
         <button class="btn" onclick="openLegal('privacy')" data-i18n="privacyLink">Privacy Policy</button>
+        <button class="btn" onclick="openLegal('cookies')" data-i18n="cookiesLink">Cookies</button>
+        <button class="btn" onclick="openLegal('disclaimer')" data-i18n="disclaimerLink">Disclaimer</button>
         <button class="btn" onclick="openLegal('about')" data-i18n="aboutLink">About</button>
       </div>
     </div>
@@ -1092,12 +1180,35 @@
 </section>
 
 <!-- Legal -->
+<section id="ranking-view" class="wrap hidden" style="padding-top:8px;padding-bottom:40px">
+  <div class="section-head">
+    <h2 data-i18n="rankingTitle">Ranking</h2>
+  </div>
+  <div class="card rank-hero">
+    <span id="rank-badge" class="rank-badge">Novice</span>
+    <div class="rank-points"><span id="rank-points">0</span> <span data-i18n="rankPoints">points</span></div>
+    <div class="rank-next" id="rank-next"></div>
+    <div class="rank-bar"><div class="rank-bar-fill" id="rank-bar-fill" style="width:0%"></div></div>
+  </div>
+  <div class="stat-grid" id="rank-stats">
+    <div class="stat"><span class="num" id="rank-study-time">0 min</span><span class="lab" data-i18n="rankStudyTime">Study time</span></div>
+    <div class="stat"><span class="num" id="rank-videos">0</span><span class="lab" data-i18n="rankVideos">Videos learned</span></div>
+    <div class="stat"><span class="num" id="rank-cards">0</span><span class="lab" data-i18n="rankCards">Flashcards known</span></div>
+  </div>
+  <h3 style="margin:22px 0 4px" data-i18n="rankLeaderboard">Leaderboard</h3>
+  <div id="rank-leaderboard"></div>
+  <h3 style="margin:22px 0 4px" data-i18n="rankLadder">Rank ladder</h3>
+  <div id="rank-ladder"></div>
+</section>
+
 <section id="legal-view" class="wrap hidden" style="padding-top:8px;padding-bottom:40px">
   <div class="section-head"><h2 data-i18n="legalH">Terms and more</h2></div>
   <p class="lede" data-i18n="legalLede">The plain rules for using L3ARN.</p>
   <div class="tabs" role="tablist" aria-label="Legal pages">
     <button class="tab" role="tab" id="legal-tab-terms" aria-selected="true" onclick="showLegal('terms')" data-i18n="termsLink">Terms and Conditions</button>
     <button class="tab" role="tab" id="legal-tab-privacy" aria-selected="false" onclick="showLegal('privacy')" data-i18n="privacyLink">Privacy Policy</button>
+    <button class="tab" role="tab" id="legal-tab-cookies" aria-selected="false" onclick="showLegal('cookies')" data-i18n="cookiesLink">Cookies</button>
+    <button class="tab" role="tab" id="legal-tab-disclaimer" aria-selected="false" onclick="showLegal('disclaimer')" data-i18n="disclaimerLink">Disclaimer</button>
     <button class="tab" role="tab" id="legal-tab-about" aria-selected="false" onclick="showLegal('about')" data-i18n="aboutLink">About</button>
   </div>
   <div class="card legal-body" id="legal-body" style="margin-top:16px"></div>
@@ -1109,6 +1220,10 @@
     <a class="footlink" href="#" onclick="openLegal('terms');return false;" data-i18n="termsLink">Terms and Conditions</a>
     <span aria-hidden="true"> · </span>
     <a class="footlink" href="#" onclick="openLegal('privacy');return false;" data-i18n="privacyLink">Privacy Policy</a>
+    <span aria-hidden="true"> · </span>
+    <a class="footlink" href="#" onclick="openLegal('cookies');return false;" data-i18n="cookiesLink">Cookies</a>
+    <span aria-hidden="true"> · </span>
+    <a class="footlink" href="#" onclick="openLegal('disclaimer');return false;" data-i18n="disclaimerLink">Disclaimer</a>
     <span aria-hidden="true"> · </span>
     <a class="footlink" href="#" onclick="openLegal('about');return false;" data-i18n="aboutLink">About</a>
   </div>
@@ -1215,7 +1330,7 @@ var I18N = {
     noNotes:"No notes yet. Write your first one above.",
     delete:"Delete",
     streak:"{n} day streak",
-    knownNote:"{n} of 6 cards marked as known",
+    knownNote:"{n} cards marked as known",
     notesCount:"{n} notes", notesCount1:"1 note",
     themeDark:"Dark", themeLight:"Light",
     chooseSubject:"Choose a subject",
@@ -1259,6 +1374,52 @@ var I18N = {
     langToggle:"Switch language",
     historyViewH:"History",
     historyViewLede:"What you have watched and asked, newest first.",
+    navRanking: "Ranking",
+    rankingTitle: "Ranking",
+    rankPoints: "points",
+    rankStudyTime: "Study time",
+    rankVideos: "Videos learned",
+    rankCards: "Flashcards known",
+    rankLeaderboard: "Leaderboard",
+    rankLadder: "Rank ladder",
+    rankNext: "{n} points to {r}",
+    rankMax: "Top rank reached",
+    rankYou: "You",
+    rankMinutes: "{n} min",
+    rankHours: "{h} h {m} min",
+    uploadTextbook: "Upload textbook",
+    uploadTitle: "Upload a PDF or textbook",
+    uploadLede: "Upload a PDF or text file and the AI will make flashcards and a lesson from it.",
+    uploadGenerate: "Generate flashcards and lesson",
+    uploadFileTooBig: "That file is too big. Please choose a file under 5 MB.",
+    uploadFileType: "Please choose a PDF or a text (.txt) file.",
+    uploadNoFile: "Please choose a file first.",
+    uploadReading: "Reading your file...",
+    uploadGenerating: "The AI is making flashcards and a lesson...",
+    uploadSaved: "Saved",
+    uploadNotSetUp: "AI generation is not set up yet",
+    uploadError: "Something went wrong. Please try again.",
+    uploadPdfError: "The PDF reader could not load. Please check your connection and try again.",
+    uploadCutOff: "AI read the first 8000 characters of this file",
+    uploadedFrom: "From your upload",
+    uploadedLesson: "Lesson",
+    deleteUploaded: "Delete uploaded material",
+    deleteUploadedConfirm: "Delete the uploaded flashcards and lesson for this subject?",
+    cookiesLink: "Cookies",
+    disclaimerLink: "Disclaimer",
+    suggestedForYou: "Suggested for you",
+    generalStudy: "General study skills",
+    updatedDaily: "Updated daily",
+    signUpTitle: "Create your account",
+    createAccount: "Create a new account",
+    backToSignIn: "Back to sign in",
+    wrongUsername: "That username does not match this account.",
+    wrongName: "That name does not match this account.",
+    ageLabel: "Age",
+    usernameLabel: "Username",
+    guestContinue: "Continue as guest",
+    addStickyNote: "Add sticky note",
+    
     aiQuestionsH:"AI questions",
     learnH:"Learn",
     learnLede:"Free guides and videos on writing assignments, doing research, and planning your ideas. Videos play right here in the app.",
@@ -1428,7 +1589,7 @@ var I18N = {
     noNotes:"မှတ်စု မရှိသေးပါ။ အထက်တွင် ပထမမှတ်စုရေးပါ။",
     delete:"ဖျက်မည်",
     streak:"{n} ရက် ဆက်တိုက်",
-    knownNote:"၆ ကတ်အနက် {n} ကတ် သိပြီ",
+    knownNote:"{n} ကတ် သိပြီ",
     notesCount:"မှတ်စု {n} ခု", notesCount1:"မှတ်စု ၁ ခု",
     themeDark:"အမှောင်", themeLight:"အလင်း",
     chooseSubject:"ဘာသာရပ်ရွေးချယ်ပါ",
@@ -1472,6 +1633,52 @@ var I18N = {
     langToggle:"ဘာသာစကား ပြောင်းမည်",
     historyViewH:"မှတ်တမ်း",
     historyViewLede:"သင်ကြည့်ရှုခဲ့ပြီး မေးခဲ့သည်များ၊ အသစ်မှ အဟောင်းသို့။",
+    navRanking: "Ranking",
+    rankingTitle: "Ranking",
+    rankPoints: "points",
+    rankStudyTime: "Study time",
+    rankVideos: "Videos learned",
+    rankCards: "Flashcards known",
+    rankLeaderboard: "Leaderboard",
+    rankLadder: "Rank ladder",
+    rankNext: "{r} ရောက်ဖို့ {n} points လို",
+    rankMax: "Top rank reached",
+    rankYou: "You",
+    rankMinutes: "{n} min",
+    rankHours: "{h} h {m} min",
+    uploadTextbook: "Upload textbook",
+    uploadTitle: "Upload a PDF or textbook",
+    uploadLede: "Upload a PDF or text file and the AI will make flashcards and a lesson from it.",
+    uploadGenerate: "Generate flashcards and lesson",
+    uploadFileTooBig: "That file is too big. Please choose a file under 5 MB.",
+    uploadFileType: "Please choose a PDF or a text (.txt) file.",
+    uploadNoFile: "Please choose a file first.",
+    uploadReading: "Reading your file...",
+    uploadGenerating: "The AI is making flashcards and a lesson...",
+    uploadSaved: "Saved",
+    uploadNotSetUp: "AI generation is not set up yet",
+    uploadError: "Something went wrong. Please try again.",
+    uploadPdfError: "The PDF reader could not load. Please check your connection and try again.",
+    uploadCutOff: "AI read the first 8000 characters of this file",
+    uploadedFrom: "From your upload",
+    uploadedLesson: "Lesson",
+    deleteUploaded: "Delete uploaded material",
+    deleteUploadedConfirm: "Delete the uploaded flashcards and lesson for this subject?",
+    cookiesLink: "Cookies",
+    disclaimerLink: "Disclaimer",
+    suggestedForYou: "Suggested for you",
+    generalStudy: "General study skills",
+    updatedDaily: "Updated daily",
+    signUpTitle: "Create your account",
+    createAccount: "Create a new account",
+    backToSignIn: "Back to sign in",
+    wrongUsername: "That username does not match this account.",
+    wrongName: "That name does not match this account.",
+    ageLabel: "Age",
+    usernameLabel: "Username",
+    guestContinue: "Continue as guest",
+    addStickyNote: "Add sticky note",
+    
     aiQuestionsH:"AI မေးခွန်းများ",
     learnH:"သင်ယူရန်",
     learnLede:"တာဝန်ပေးချက်ရေးနည်း၊ သုတေသနလုပ်နည်း၊ အတွေးအခေါ်ချမှတ်နည်းများအတွက် အခမဲ့လမ်းညွှန်များနှင့် ဗီဒီယိုများ။ ဗီဒီယိုများကို ဤအက်ပ်ထဲတွင် တိုက်ရိုက်ကြည့်နိုင်သည်။",
@@ -1624,7 +1831,7 @@ function applyLang(){
   document.querySelectorAll("[data-i18n-ph]").forEach(function(el){
     el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph")));
   });
-  document.getElementById("lang-btn").classList.toggle("on", lang === "my");
+  var lb = document.getElementById("lang-btn"); if (lb) lb.classList.toggle("on", lang === "my");
   syncA11yControls();
   renderStreak(); renderKnownNote(); renderNotesCount(); updateSyncLabel(); updateThemeLabel();
   renderStats(); renderSubjectGrid(); renderEmptyNotes();
@@ -1639,6 +1846,7 @@ function applyLang(){
   else if (view === "settings") renderSettings();
   else if (view === "history") renderHistory();
   renderHeaderAvatar();
+  setAuthMode(authMode);
 }
 function setLang(l){
   if (l !== "en" && l !== "my") return;
@@ -1659,9 +1867,17 @@ function setTheme(mode){
 }
 function updateThemeLabel(){
   var dark = theme === "dark";
-  document.getElementById("theme-icon-moon").classList.toggle("hidden", dark);
-  document.getElementById("theme-icon-sun").classList.toggle("hidden", !dark);
-  document.getElementById("theme-label").textContent = dark ? t("themeLight") : t("themeDark");
+  var moon = document.getElementById("theme-icon-moon"); if (moon) moon.classList.toggle("hidden", dark);
+  var sun = document.getElementById("theme-icon-sun"); if (sun) sun.classList.toggle("hidden", !dark);
+  var lbl = document.getElementById("theme-label"); if (lbl) lbl.textContent = dark ? t("themeLight") : t("themeDark");
+  updateBrandLogo();
+}
+function updateBrandLogo(){
+  var dark = theme === "dark";
+  var src = dark ? "assets/l3arn-symbol-white.png" : "assets/l3arn-symbol-black.png";
+  document.querySelectorAll(".topbar .brand-logo, .sidebar .brand-logo").forEach(function(img){
+    img.setAttribute("src", src);
+  });
 }
 function toggleTheme(){ setTheme(theme === "dark" ? "light" : "dark"); }
 
@@ -1908,6 +2124,8 @@ function profileSubLine(){
   var m = displayMajor();
   if (m) parts.push(m);
   parts.push("Year " + (store.profile.academicYear || 1));
+  if (store.profile.username) parts.push("@" + store.profile.username);
+  if (typeof store.profile.age === "number") parts.push("Age " + store.profile.age);
   return parts.join(" · ");
 }
 var view = "home";   // home | subject
@@ -1947,6 +2165,106 @@ var LEARN_TOPICS = [
 ];
 var ALL_VIDEOS = {};
 LEARN_TOPICS.forEach(function(tp){ tp.videos.forEach(function(v){ ALL_VIDEOS[v.id] = v; }); });
+
+var FIELD_VIDEOS = {
+  marketing: [
+    {id: "FsbSDJHCZFA", title: "4Ps of Marketing Mix | The GO-TO-MARKET Framework To Define Your Strategy", channel: "Inside The Product"},
+    {id: "A6BT58G-Rvs", title: "Marketing Mix", channel: "principalppgcas principal"},
+    {id: "mC1GToMkNgQ", title: "Principles of Marketing Full course | Learn Marketing from Basic to Advanced", channel: "Accounting Guy"},
+    {id: "sX5V-_Ys98Q", title: "Business English Vocabulary: Marketing Mix 4 P's", channel: "Business English - Learn with Business English Pod"},
+    {id: "fY66u8Nnx-U", title: "The full guide to marketing mix: different models and usage", channel: "Alberto Carniel"},
+    {id: "w-aJ-Qvvxfg", title: "What is Branding? Explained in 2 Minutes", channel: "Anwesha Bose"}
+  ],
+  finance: [
+    {id: "QMFrVtEg2Lo", title: "Two Financial Statements Every Business Owner Must Understand", channel: "Raise Fortune"},
+    {id: "pXAh7viuODc", title: "Financial Statements for Beginners | Balance Sheet, Income Statement, Cash Flow, Change in Equity", channel: "Accounting Guy"},
+    {id: "dYchK5_k6rk", title: "How Accounting Actually Flows | Transaction to Financial Statements (Step-by-Step)", channel: "Ayotunde Ajibola"},
+    {id: "dxu5jiIfUos", title: "How to Read a Balance Sheet: What Your Business Owns and Owes", channel: "Stephennohga"},
+    {id: "Lrb2Wh7oXJs", title: "Accounting for Beginners | Part 2 | Debits and Credits | Journal Entries", channel: "Counttuts"},
+    {id: "RRKUSwT9EYE", title: "Double-Entry Accounting Explained: Debits, Credits and the Accounting Equation", channel: "BANKING & FINANCE ACADEMY"}
+  ],
+  management: [
+    {id: "u5Zq8HtRgs8", title: "Functions of Management Explained Simply", channel: "The Learning Studio"},
+    {id: "ZqxkRa7pQBs", title: "Four Functions of Managers - Planning, Organizing, Leading and Controlling", channel: "The Learning Kurve"},
+    {id: "a9XcKZKy2XQ", title: "Management Functions", channel: "GreggU"},
+    {id: "X6RObZecBHI", title: "Leadership and Management | Part 3 of 4: The Four Functions of Management", channel: "HumberEDU"},
+    {id: "ER2UXffJSk4", title: "Effective Leadership and Risk Management Skills", channel: "Insight Global Training Academy-IGTA INTERNATIONAL"},
+    {id: "bI9RZjF-538", title: "Human Resource Management (HRM) Explained in 10 minutes", channel: "Leaders Talk - ThinkEduca"}
+  ],
+  entrepreneurship: [
+    {id: "o_dOAyevYZs", title: "How to Start a Business Step by Step: 7 Steps, Explained", channel: "People Explained Daily"},
+    {id: "iOu2vlXKNAA", title: "How to Start a Business in 2026 | Find an Idea, Validate It and Build a Brand From Scratch", channel: "BRANDÉRA"},
+    {id: "qxXe-R8Td2E", title: "How to Start a Business: The Step-by-Step Checklist (Free Download)", channel: "Avolv | by Peyton Thompson"},
+    {id: "wxyGeUkPYFM", title: "10 Tips for Starting your Own Business [ Must Watch]", channel: "Young Entrepreneurs Forum"},
+    {id: "QFTdrw2g2a4", title: "The Ultimate Guide to Writing a Business Plan (Step-by-Step)", channel: "LivePlan"},
+    {id: "XK9XYa5-MCw", title: "HOW TO WRITE A BUSINESS PLAN STEP BY STEP + FILL IN THE BLANK BUSINESS PLAN TEMPLATE", channel: "Destiny Adams"}
+  ],
+  computing: [
+    {id: "hoglzQO3xWg", title: "What Is Python? Day 1 | Python Step by Step (Free 30-Day Python Course)", channel: "Data Science with Adel"},
+    {id: "CANA74X0kSk", title: "C Programming for Beginners - Full Tutorial (gcc, Pointers, Grade Calculator Project)", channel: "Back To Code"},
+    {id: "3dwnJ0op3SU", title: "Episode 01 How Programming Actually Works", channel: "The Computer Science Tutor"},
+    {id: "VJagoWvoKic", title: "Episode 05: Your First C Program", channel: "Anastasios Drakopoulos"},
+    {id: "Gv1-MPl1yRk", title: "Lecture 01 Introduction to Web Development", channel: "LearnWith Farhan"},
+    {id: "pjJ4Pd4Mc4M", title: "Learn to Program: Variables, If, Loops, Functions and Bugs in Python (Computer Science 101, Part 2)", channel: "CosmosBF"}
+  ],
+  ged: [
+    {id: "cybt6QHUeBY", title: "Math GED prep", channel: "GED exam prep"},
+    {id: "3oxq0A3p7CA", title: "GED Mathematical Reasoning practice test", channel: "GED exam prep"},
+    {id: "mYfhySOnhuw", title: "Ultimate GED Math Study Guide and Practice Test to Pass Easily Part 1", channel: "Test Prep Champions"},
+    {id: "KaaROcyokoQ", title: "GED Formula Sheet Practice | Area, Volume, Slope, and More", channel: "GED exam prep"},
+    {id: "3zAFrn_JmGw", title: "GED Math Practice Test Questions and Answers", channel: "Latestexamprep"},
+    {id: "YMLWyft6QUg", title: "GED Math fraction questions", channel: "GED exam prep"}
+  ],
+  igcse: [
+    {id: "U1P-Cqjri8U", title: "Cell Structure and Organisation (I) | Cambridge IGCSE Biology", channel: "HomeSchool Asia"},
+    {id: "WgCKKFWapp0", title: "IGCSE Biology 0610 Paper 4 Extended Revision (Part 2) | Exam-Style Questions", channel: "Nur Nabi Sir - IGCSE, O Level and A Level"},
+    {id: "2Sm9o2mD4_A", title: "ALL of CIE IGCSE Biology! | The ONLY revision video you need! | 2025 onwards", channel: "Science with Hazel"},
+    {id: "lSTM-hoiZfg", title: "Diffusion Explained | Cambridge IGCSE Biology 0610 | Ep. 6", channel: "Science with Sophie"},
+    {id: "Rau4ClPV914", title: "PHOTOSYNTHESIS and LEAF STRUCTURE | IGCSE BIOLOGY Full Lesson", channel: "T. PACIFIQUE"},
+    {id: "it_wWcyJhlU", title: "Nephron Diagram and Structure Explained | IGCSE Biology", channel: "Moon n Star"}
+  ]
+};
+var GENERAL_POOL = [
+  {id: "UuOWNNvupik", title: "How to Write an Essay: 4 Minute Step-by-step Guide", channel: "Scribbr"},
+  {id: "6VmG6B_Gaf4", title: "Writing essays at UWA: Get started on essay structure", channel: "University of Western Australia"},
+  {id: "LdQeaDN9Qic", title: "Introduction to academic research", channel: "Laurentian University"},
+  {id: "dsuHdKNvnDw", title: "Unlock the Research Process: From Curiosity to Clarity", channel: "UNF Library"},
+  {id: "RB4T7_SGhaI", title: "Thinking About the Topic: Brainstorming", channel: "Wisconsin Technical College System"},
+  {id: "FXdjwHkTKbA", title: "Thinking About the Topic: Generating Ideas", channel: "Wisconsin Technical College System"},
+  {id: "E7CwqNHn_Ns", title: "Taking Notes: Crash Course Study Skills #1", channel: "CrashCourse"},
+  {id: "IlU-zDU6aQ0", title: "Marty Lobdell - Study Less Study Smart", channel: "Pierce College District WA"},
+  {id: "QJIyX7IOzJY", title: "Study Skills and Exam Preparation", channel: "TU Dublin"},
+  {id: "eG3k-G2YUgs", title: "Active Study Techniques", channel: "TU Dublin"},
+  {id: "gez0PbPFazk", title: "Exam Techniques", channel: "TU Dublin"},
+  {id: "13li8qfha1U", title: "HOW TO TAKE EFFECTIVE NOTES: improve your learning in college classes", channel: "Dennis Learning Center at Ohio State"}
+];
+
+Object.keys(FIELD_VIDEOS).forEach(function(k){ FIELD_VIDEOS[k].forEach(function(v){ ALL_VIDEOS[v.id] = v; }); });
+GENERAL_POOL.forEach(function(v){ ALL_VIDEOS[v.id] = v; });
+function videoById(id){ return ALL_VIDEOS[id] || null; }
+function dailyPick(pool, count, dateStr){
+  var d = dateStr || (function(){ var n = new Date(); return n.getFullYear() + "-" + String(n.getMonth() + 1).padStart(2, "0") + "-" + String(n.getDate()).padStart(2, "0"); })();
+  var seed = 0;
+  for (var i = 0; i < d.length; i++) seed = (seed * 31 + d.charCodeAt(i)) >>> 0;
+  function rnd(){ seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }
+  var arr = pool.slice();
+  for (var j = arr.length - 1; j > 0; j--){ var k = Math.floor(rnd() * (j + 1)); var tmp = arr[j]; arr[j] = arr[k]; arr[k] = tmp; }
+  return arr.slice(0, count);
+}
+function suggestedGroup(){
+  var p = store.profile || {};
+  var course = String(p.course || "");
+  var major = String(p.major || "").toLowerCase();
+  if (course === "ged") return "ged";
+  if (course === "igcse") return "igcse";
+  if (course.indexOf("ncc-comp") === 0) return "computing";
+  if (major.indexOf("marketing") !== -1) return "marketing";
+  if (major.indexOf("finance") !== -1 || major.indexOf("accounting") !== -1) return "finance";
+  if (major.indexOf("human resource") !== -1 || major.indexOf("management") !== -1) return "management";
+  if (major.indexOf("entrepreneurship") !== -1) return "entrepreneurship";
+  if (major.indexOf("software") !== -1 || major.indexOf("computing") !== -1 || major.indexOf("web development") !== -1 || major.indexOf("computer") !== -1) return "computing";
+  return null;
+}
 
 /* ================= Schedule: real BBA timetable ================= */
 var SCHEDULE = {
@@ -1998,32 +2316,250 @@ function fmtDateLong(d){ return d.toLocaleDateString(undefined, { weekday:"long"
 var legalPage = "terms";
 var LEGAL = {
   terms: { body:
-    '<h3>Terms and Conditions</h3>' +
-    '<p class="updated">Last updated: 11 November 2026</p>' +
-    '<p>L3ARN is a free study hub for BBA Year 1 students. It helps you revise with flashcards, check your knowledge with quizzes, track assignments, keep notes, watch study videos, and ask the built-in AI for study help.</p>' +
-    '<p>Use the app for your own study. Do not use it to present someone else\'s work as your own. Your assignments must follow your college\'s rules on academic honesty, including how AI help may be used.</p>' +
-    '<p>Your account is protected by a display name and a 4-digit PIN that only you should know. Keep your PIN private. If someone else learns your PIN, they can open your synced progress.</p>' +
-    '<p>The notes, flashcard progress, playlist, and profile details you add belong to you. The study material in the app is provided for revision only.</p>' +
-    '<p>L3ARN is provided as is, for study. It comes with no guarantee that any answer, video, guide, or study tip is complete or correct. Always check important facts against your course material and your teachers.</p>' +
-    '<p>These terms may change when the app changes. The version shown in the app is the one that applies.</p>'
+    "<h3>Terms and Conditions</h3>" +
+    "<p class=\"updated\">Last updated: 11 November 2026</p>" +
+    "<h3>1. Acceptance of these terms</h3>" +
+    "<p>Welcome to L3ARN. L3ARN is a free study app and study space for students. It helps you revise with flashcards, check your knowledge with quizzes, follow assignment breakdowns, keep notes, watch study videos, save a playlist, check your class and exam schedule, ask the built-in AI for study help, and turn your own uploaded material into flashcards and lessons.</p>" +
+    "<p>These Terms and Conditions are the rules for using L3ARN. When you open the app and accept these terms, you agree to follow them. If you do not agree with these terms, do not use the app. The app shows these terms the first time you open it, and you can read them again at any time from the Terms and more section in the app.</p>" +
+    "<p>These terms apply to the L3ARN web app, including every feature inside it, on any device you use. They apply whether you use the app as a guest or signed in. If any part of these terms cannot be enforced, the rest of the terms still apply. If we do not enforce a term at once, that does not mean we have given up the right to enforce it later.</p>" +
+    "<p>The app is run by the student who built it, in Myanmar. It is a personal study project, not a company and not a school. Nothing in these terms creates a partnership, employment, or agency relationship between you and the person who runs the app.</p>" +
+    "<h3>2. Description of the service</h3>" +
+    "<p>L3ARN is a study hub. Its features include flashcards for revision, quiz checks with explanations, assignment breakdowns, a block-based notes editor with drawing and a formula calculator, a Learn section with free guides and YouTube videos, a playlist and watch history, a class and exam schedule, a study profile with college, course, major, and academic year, a ranking system based on study time, videos learned, and flashcards known, an Ask AI chat, and an upload feature that turns a PDF or text file into flashcards and a lesson.</p>" +
+    "<p>The app is free to use. There are no fees, no paid plans, and no adverts in the app. The app does not sell anything. Some features need an internet connection, for example syncing your progress, playing YouTube videos, and asking the AI. Other features, such as reading flashcards you have already loaded and writing notes, work on your device.</p>" +
+    "<p>The study material in the app starts with Unit 8, Managing a Work-Based Team Project, for BBA Year 1 students. Other subjects open as empty study hubs until material is added, either by the app owner or by you through the upload feature. The app does not promise that every subject will have complete study material. You can add your own subjects and your own notes at any time.</p>" +
+    "<p>We may change, add, or remove features as the app grows. When a feature changes in a way that affects how you use the app, we will say so in the app where it matters. We do not promise that any particular feature will stay the same forever.</p>" +
+    "<h3>3. Eligibility</h3>" +
+    "<p>L3ARN is made for students. You can use it if you are a student who wants to study and revise. There is no minimum age set by the app itself, but if you are under 18, you should use the app with the knowledge of a parent, guardian, or teacher. The app does not ask for your age at sign-up for advertising or tracking, and it does not check it.</p>" +
+    "<p>You can use the app as a guest without signing in. Guest mode works fully on one device. Your progress, notes, and settings stay on that device only. If you want your progress to follow you across devices, you can sign in with a display name, a username, and a 4-digit PIN. Signing in creates an account on the sync server.</p>" +
+    "<p>You are responsible for using the app in a way that follows the laws of your country and the rules of your college. The app is a study tool. It is not a substitute for attending class, reading your course material, or following your teachers.</p>" +
+    "<h3>4. Your account, display name, username, and PIN</h3>" +
+    "<p>When you sign in, you choose a display name, a username, and a 4-digit PIN. Your display name can be any name you like, up to 40 characters. It is shown in the app as your name. Your username is a unique name for your account, made of lowercase letters, numbers, and underscores, from 3 to 30 characters. It is how the server finds your account, and it is shown in your profile. Your PIN is four digits that only you should know. The app never shows your PIN back to you, and the person who runs the app cannot see your PIN.</p>" +
+    "<p>The sync server stores only a one-way hash of your PIN, never the PIN itself. A hash is a scrambled value that cannot be turned back into your PIN. When you sign in, the app checks the hash, not the PIN. This means that if you forget your PIN, it cannot be recovered or reset from the server. If you forget your PIN, you will need to start a new account with a new username and PIN, and your old synced progress will not be reachable.</p>" +
+    "<p>When you create an account, you also give your age. Your age is a number, and it is shown in your profile. It is stored with your account and is not shared with anyone. It is not used for advertising or tracking.</p>" +
+    "<p>Keep your PIN private. Do not share it with anyone, do not write it where others can see it, and do not use a PIN that is easy to guess, such as your birth year or 1234. You are responsible for everything done with your account while you are signed in. If you think someone else has learned your PIN, sign out, and stop using that account. You can delete your account at any time, as described in section 15.</p>" +
+    "<p>You may only have one account per username on the sync server. If you sign in on a new device with the same display name, username, and PIN, your synced progress will load onto that device. If two devices make different changes while offline, the server keeps the most recent change for each item.</p>" +
+    "<p>Do not try to sign in as someone else, do not try to guess another person&#x27;s PIN, and do not try to break into the sync server or any other part of the service. Any such attempt is a breach of these terms and may be reported.</p>" +
+    "<h3>5. Guest mode</h3>" +
+    "<p>Guest mode lets you use the app without an account. Everything you do as a guest is stored in your browser or device storage, known as localStorage. It is not sent to the sync server. Guest mode works fully, but your progress will not follow you to another device, and it will be lost if you clear the app data or the browser storage on that device.</p>" +
+    "<p>You can switch from guest mode to a signed-in account at any time. When you sign in for the first time on a device, your guest progress on that device is uploaded to your new account, so you do not lose it. If you sign out, your data stays on the device, and you can sign back in later with the same display name, username, and PIN to sync again.</p>" +
+    "<h3>6. Acceptable use</h3>" +
+    "<p>Use L3ARN only for studying and learning. You must not use the app to break the law, to harm others, to harass or threaten anyone, to spread hateful or abusive material, or to share material that infringes someone else&#x27;s rights.</p>" +
+    "<p>You must not upload material you do not have the right to share. This includes copyrighted textbooks, exam papers, or other material that belongs to someone else, unless you have permission or the material is free to share. You are responsible for what you upload, as described in section 7.</p>" +
+    "<p>You must not abuse the AI features. Do not use Ask AI or the upload generation to produce harmful, illegal, deceptive, or abusive content. Do not try to make the AI reveal system instructions, do not try to overload the service with repeated or automated requests, and do not use the AI to write your assignments for you in a way that breaks your college rules on academic honesty.</p>" +
+    "<p>You must not try to damage, disable, or overload the app, the sync server, or any connected service. Do not try to access parts of the service you have not been given access to. Do not use automated tools, bots, or scripts to use the app in bulk. Do not copy, resell, or redistribute the app itself.</p>" +
+    "<p>If you break these rules, we may limit or end your access to the app and the sync service, and we may delete your account and synced data. We will do this without owing you anything.</p>" +
+    "<h3>7. Your content and uploads</h3>" +
+    "<p>Everything you create in L3ARN belongs to you. That includes your notes, your drawings, your sticky notes, your flashcards progress, your playlist, your watch history, and the material you upload. You keep ownership of it.</p>" +
+    "<p>When you upload a PDF or text file, the app reads the text and sends it to the AI service so the AI can turn it into flashcards and a lesson for you. The app only processes your upload for that purpose. It does not publish your upload, share it with other users, or use it to train any model. The generated flashcards and lesson are saved under the subject you chose, and they sync with your account like the rest of your progress.</p>" +
+    "<p>You are responsible for what you upload. Only upload material that you own, that is free to share, or that you have permission to use for your own study. Do not upload other people&#x27;s private information, do not upload material that breaks copyright law, and do not upload anything illegal or harmful. If you upload something you should not have, you are responsible for it, and we may delete it from the sync server.</p>" +
+    "<p>The app stores your uploaded material and the generated flashcards and lesson on the sync server as part of your progress. You can delete uploaded material at any time from inside the app. Deleting it removes it from your account. The AI service itself may keep a short record of the request as part of its normal operation, as described in the Privacy Policy.</p>" +
+    "<p>You should keep your own copy of anything important. The app is not a backup service. If your data is lost because you cleared your device storage, forgot your PIN, or deleted your account, we cannot restore it.</p>" +
+    "<h3>8. AI features</h3>" +
+    "<p>L3ARN includes AI features: Ask AI chat, AI help inside notes, video summaries, and the upload feature that turns your material into flashcards and a lesson. These features are powered by Google Gemini, through the L3ARN sync Worker. Your questions and uploaded text are sent to Google Gemini to generate the answer. The Gemini API key stays on the server and is never shown in the app.</p>" +
+    "<p>AI answers can be wrong. The AI may misunderstand your question, may give an answer that is incomplete or out of date, and may invent facts that sound correct but are not. Always check AI answers against your course material and your teachers before you rely on them for an assignment or an exam. Never submit AI-generated text as your own work unless your college allows it, and always follow your college rules on academic honesty.</p>" +
+    "<p>Video summaries are made from the video title and topic only. The AI does not watch the video. A summary is a short guide to what the video is about, not a transcript and not a replacement for watching the video.</p>" +
+    "<p>The generated flashcards and lessons from your uploads are made only from the text you uploaded. The AI does not add facts from outside your file, but it can still make mistakes, miss important points, or phrase things in a way that changes the meaning. Check the generated material before you study from it.</p>" +
+    "<p>AI features are provided free of charge, and they may be limited, slow, or unavailable at times, for example if the AI service is busy or unreachable. The app will tell you if the AI is not set up or cannot be reached. We do not promise that the AI will always be available or that it will always answer.</p>" +
+    "<h3>9. Intellectual property</h3>" +
+    "<p>The L3ARN name, the L3ARN symbol logo, the design of the app, and the app itself belong to the student who built L3ARN. You may use the app for your own study, but you may not copy the app, sell it, claim it as your own, or use the L3ARN name or logo for your own product or service without permission.</p>" +
+    "<p>The study material built into the app, such as the Unit 8 flashcards, quiz questions, and assignment breakdown, is provided for your revision. You may use it for your own study. Do not republish it as your own work.</p>" +
+    "<p>Third-party content in the app belongs to its creators. The free guides link to their original sources, such as university and library websites. The videos in the Learn section are hosted by YouTube and belong to their creators and channels. Watching a video in the app is the same as watching it on YouTube. The app does not claim any rights over third-party content, and your use of that content is also covered by the terms of the original source or platform.</p>" +
+    "<p>If you believe content in the app infringes your rights, contact us through the app as described in section 18, and we will look into it.</p>" +
+    "<h3>10. Third-party services</h3>" +
+    "<p>L3ARN uses third-party services to work. YouTube hosts and plays the study videos. Google Gemini powers the AI features. Cloudflare runs the sync Worker and stores synced data in its KV store. GitHub Pages hosts the app itself. The free guides link to their original websites.</p>" +
+    "<p>These third-party services have their own terms and privacy policies, and your use of them through L3ARN is also covered by those terms. We do not control those services. If a third-party service changes, stops working, or removes content, the app may lose that feature, and we are not responsible for it.</p>" +
+    "<p>When you play a YouTube video in the app, YouTube may collect data about the playback under Google privacy policy. When you ask the AI a question, Google Gemini processes your question under Google terms. When you sign in, Cloudflare stores your synced data under Cloudflare terms. The Privacy Policy explains what each service receives in more detail.</p>" +
+    "<h3>11. Data and privacy</h3>" +
+    "<p>A short summary is given here. The full Privacy Policy is a separate page in the app, and it is part of these terms. Please read it.</p>" +
+    "<p>The app stores your study data on your device first, in localStorage. If you sign in, the same data is also stored on the Cloudflare sync server so it follows you across devices. Signing in needs only a display name, a username, your age, and a 4-digit PIN. The server stores a one-way hash of your PIN, never the PIN itself.</p>" +
+    "<p>The app does not show adverts, does not use analytics trackers, and does not sell your data. Questions you type into Ask AI and text you upload are sent to Google Gemini to generate an answer. Videos you play are hosted by YouTube.</p>" +
+    "<p>You can delete your account and your synced data at any time, as described in section 15. The Privacy Policy explains what is collected, how it is used, where it is stored, and how to delete it.</p>" +
+    "<h3>12. Availability and changes to the service</h3>" +
+    "<p>L3ARN is a free study project run by one student. It is provided as is, and it may not always be available. The app, the sync server, the AI features, or the videos may be slow, interrupted, or unavailable at times, for example during maintenance, when a third-party service is down, or when the hosting changes.</p>" +
+    "<p>We may change the app at any time, including adding or removing features, changing the design, or changing these terms. When a change matters to how you use the app, we will say so in the app. Your continued use of the app after a change means you accept the change.</p>" +
+    "<p>We do not promise that the app will always work, that your data will never be lost, or that any particular feature will stay available. Keep your own copies of anything important. If the app or the sync service stops working permanently, we will say so in the app if we can.</p>" +
+    "<h3>13. Limitation of liability</h3>" +
+    "<p>L3ARN is provided as is and as available, without any warranty of any kind. We do not promise that the app, the study material, the AI answers, the generated flashcards and lessons, or the videos are complete, correct, up to date, or fit for any particular purpose.</p>" +
+    "<p>To the fullest extent allowed by law, the person who runs L3ARN is not liable for any loss or damage that comes from using the app. This includes loss of data, loss of study progress, poor grades or exam results, or any other loss, whether it comes from the app itself, from AI answers that were wrong, from third-party content, or from the app being unavailable.</p>" +
+    "<p>You use the app at your own risk. If you rely on the app for an assignment or an exam, check everything against your official course material and your teachers. The app is a study aid, not a guarantee of any result.</p>" +
+    "<p>Nothing in these terms limits any rights you have under the law that cannot be limited, and nothing in these terms excludes liability for anything that cannot be excluded by law.</p>" +
+    "<h3>14. Indemnification</h3>" +
+    "<p>You agree to take responsibility for your own use of the app. If your use of the app, your uploads, or your breach of these terms causes a claim, loss, or cost for the person who runs L3ARN, you agree to cover that claim, loss, or cost, to the extent allowed by law. This includes reasonable costs that come from dealing with the claim.</p>" +
+    "<p>This section does not apply to anything that was caused by the app itself or by the person who runs it.</p>" +
+    "<h3>15. Termination and account deletion</h3>" +
+    "<p>You can stop using L3ARN at any time. You do not need to tell us. If you are signed in, you can delete your account from inside the app. Deleting your account removes your account and your synced progress from the sync server. Data that is only on your device stays on your device until you clear it yourself.</p>" +
+    "<p>We may limit or end your access to the app or the sync service if you break these terms, if you abuse the service, or if we need to protect the service or other users. We may also delete your account and synced data in that case. We will not owe you anything if we do this.</p>" +
+    "<p>If the app or the sync service is closed down, your synced data will be deleted with it. Your data on your own device stays on your device until you clear it.</p>" +
+    "<p>Sections that should continue after termination, such as intellectual property, limitation of liability, and governing law, will continue to apply.</p>" +
+    "<h3>16. Governing law</h3>" +
+    "<p>These terms are governed by the laws of Myanmar. Any dispute about these terms or about your use of L3ARN will be dealt with under the laws of Myanmar. If a dispute cannot be settled by talking it through, it will be handled by the courts of Myanmar, to the extent allowed by law.</p>" +
+    "<p>If any part of these terms is found to be unenforceable under Myanmar law, the rest of the terms still apply.</p>" +
+    "<h3>17. Changes to these terms</h3>" +
+    "<p>We may change these terms when the app changes. When we change them, we will update the date at the top of this page and show the new version in the app. The version shown in the app is the one that applies.</p>" +
+    "<p>If a change is important, we may ask you to accept the new terms before you continue using the app. If you keep using the app after the terms change, you accept the new terms. If you do not agree with a change, stop using the app and delete your account if you have one.</p>" +
+    "<h3>18. Contact</h3>" +
+    "<p>L3ARN is run by the student who built it, in Myanmar. There is no company office, no phone number, and no email address published for the app. If you need help, have a question about these terms, or want to report a problem, use the support options inside the app. If you want your account deleted and cannot do it from inside the app, contact us through the app with your display name and username and we will help.</p>" +
+    "<p>Please do not send us passwords, PINs, or other private information. We will never ask you for your PIN.</p>"
   },
   privacy: { body:
-    '<h3>Privacy Policy</h3>' +
-    '<p class="updated">Last updated: 11 November 2026</p>' +
-    '<p>L3ARN stores your study data on your own device first: your flashcard progress, quiz results, notes, playlist, watch history, profile picture, gender, and academic year.</p>' +
-    '<p>If you sign in, that same data is also stored on the sync server so it follows you across your devices. Signing in needs only a display name and a 4-digit PIN. The server stores a one-way hash of your PIN, never the PIN itself.</p>' +
-    '<p>We do not sell your data, show adverts, or track you across other sites. There are no analytics trackers in the app.</p>' +
-    '<p>Videos in the Learn section are hosted by YouTube and play inside the app. When you play a video, YouTube may collect data under Google\'s privacy policy.</p>' +
-    '<p>Questions you type into Ask AI are sent to the sync server, which forwards them to Google Gemini to generate an answer. Your questions are not stored with your account.</p>' +
-    '<p>Your synced data stays on the server until you ask for it to be removed. To remove it, sign out and contact the app owner with your display name, or delete the app data on your device and stop using the account.</p>'
+    "<h3>Privacy Policy</h3>" +
+    "<p class=\"updated\">Last updated: 11 November 2026</p>" +
+    "<h3>1. Introduction</h3>" +
+    "<p>This Privacy Policy explains what L3ARN collects, how it is used, where it is stored, and how you can delete it. L3ARN is a free study app and study space for students, run by the student who built it, in Myanmar. It is a personal study project, not a company and not a school.</p>" +
+    "<p>L3ARN collects as little as possible. It does not show adverts, does not use analytics trackers, and does not sell your data to anyone. Most of your study data stays on your own device. If you sign in, the same data is also stored on a sync server so it follows you across devices.</p>" +
+    "<p>By using L3ARN, you agree to this policy. If you do not agree, do not use the app. If you have a question about this policy, contact us through the app, as described in section 12.</p>" +
+    "<h3>2. What we collect</h3>" +
+    "<p>L3ARN collects only what it needs to work. There are two kinds of data: data that stays on your device, and data that is synced when you sign in.</p>" +
+    "<p>When you sign in, we collect your display name, your username, your age, and a one-way hash of your 4-digit PIN. Your PIN itself is never stored, never shown, and never sent anywhere in a readable form. A hash is a scrambled value that cannot be turned back into your PIN. We store the hash only so the server can check your PIN when you sign in.</p>" +
+    "<p>We collect your study progress. This includes which subjects you have added, which flashcards you have marked as known, your quiz best scores and last quiz results, your study streak, your notes and drawings and sticky notes, your uploaded material and the flashcards and lessons generated from it, your study time in seconds, and your ranking points.</p>" +
+    "<p>We collect your playlist and your watch history, meaning the videos you have saved and the videos you have watched, with the time you watched them. We collect your profile details, such as your college, course, major, academic year, gender, profile picture, username, and age, when you choose to set them.</p>" +
+    "<p>We collect your app settings, such as your language, theme, text size, contrast, motion, font, and layout density choices, and whether you have accepted the Terms and Conditions. These settings are stored on your device only.</p>" +
+    "<p>We do not collect your real name, your email address, your phone number, your location, or your contacts. We do not ask for them, and the app has no place to enter them. Your display name can be any name you like, and it does not have to be your real name.</p>" +
+    "<p>We do not collect your browsing history, your device identifier, or any advertising identifier. We do not use cookies for tracking or advertising. The Cookies Policy explains what the app does use.</p>" +
+    "<h3>3. How we use your data</h3>" +
+    "<p>We use your data only to run the app for you. Your study progress is used to show your flashcards, quizzes, notes, streak, and ranking, and to pick up where you left off. Your playlist and watch history are used to show your saved and watched videos. Your profile details are used to show your study profile and to suggest videos for your course and major.</p>" +
+    "<p>Your study time, videos learned, and flashcards known are used to work out your ranking points and rank. Your course and major are used to choose the suggested videos in the Learn section. Your notes and drawings are shown back to you, and nowhere else.</p>" +
+    "<p>Your questions to Ask AI and the text you upload are sent to Google Gemini so the AI can generate an answer, flashcards, and a lesson. The AI service processes your text only to answer you. It does not publish your text.</p>" +
+    "<p>We do not use your data for advertising, we do not use it to build a profile of you for anyone else, and we do not share it with anyone except the third parties described in section 5, who need it to run their part of the service.</p>" +
+    "<p>We do not sell your data. We do not rent your data. We do not trade your data for anything.</p>" +
+    "<h3>4. Where your data is stored</h3>" +
+    "<p>Your data is stored in two places. First, on your own device, in your browser storage, known as localStorage. This includes your progress, notes, settings, playlist, watch history, and profile. It stays on that device unless you clear it.</p>" +
+    "<p>Second, if you sign in, your progress, notes, playlist, watch history, and profile are also stored on the sync server, which runs on Cloudflare Workers and stores data in Cloudflare KV. The server stores your data under a key that belongs to your account, and it can only be read with your account token. The token is stored on your device after you sign in.</p>" +
+    "<p>Your PIN is stored only as a one-way hash on the server. It cannot be turned back into your PIN. If you forget your PIN, it cannot be recovered, and you will need to start a new account.</p>" +
+    "<p>Your settings, such as language and theme, and your Terms acceptance, are stored on your device only. They are not sent to the server.</p>" +
+    "<p>Data that is synced is sent over an encrypted connection. Data on your device is protected by your device lock and browser, not by the app. Anyone who can unlock your device and open the app can see your study data on that device.</p>" +
+    "<h3>5. Third parties</h3>" +
+    "<p>L3ARN uses third-party services to work. Each one receives only what it needs for its part of the service, and each has its own privacy policy.</p>" +
+    "<p>Cloudflare runs the sync Worker and stores your synced data in its KV store. Cloudflare receives your display name, username, age, PIN hash, study progress, notes, playlist, watch history, and profile when you sign in and sync. Cloudflare also sees the technical details of the connection, such as your IP address, because it runs the server.</p>" +
+    "<p>Google Gemini powers the AI features. When you ask a question, use AI help in notes, ask for a video summary, or upload a file for flashcards and lessons, your question or your uploaded text is sent to Google Gemini, which is run by Google. Google processes it under Google privacy policy. The Gemini API key stays on the server and is never shown in the app. The AI does not watch videos; video summaries are made from the video title and topic only.</p>" +
+    "<p>YouTube hosts and plays the study videos. When you play a video in the app, YouTube receives the request to play that video, and it may set cookies and collect playback data under Google privacy policy. The app uses the privacy-enhanced YouTube embed, but YouTube may still collect data when a video plays.</p>" +
+    "<p>GitHub Pages hosts the app itself. When you open the app, GitHub serves the page files. GitHub may log the request as part of running its hosting service.</p>" +
+    "<p>The free guides in the Learn section link to their original websites, such as university and library sites. If you tap a guide link, you leave the app and the original website privacy policy applies.</p>" +
+    "<p>We do not share your data with any other third party. We do not share it with advertisers, data brokers, or analytics companies, because the app uses none of them.</p>" +
+    "<h3>6. Cookies and local storage</h3>" +
+    "<p>L3ARN uses localStorage on your device to store your settings, progress, notes, playlist, watch history, profile, and Terms acceptance. Local storage is storage in your browser that stays on your device. It is not a cookie, and it is not sent to any advertiser.</p>" +
+    "<p>The app itself sets no tracking cookies, no advertising cookies, and no analytics cookies. It does not use any analytics service.</p>" +
+    "<p>Third parties may set cookies when you use their features. YouTube embeds may set cookies when a video plays. Google services may set cookies when you use the AI features. The Cookies Policy explains this in full, including how to clear or manage storage.</p>" +
+    "<p>You can clear the app data from your browser settings, which removes everything stored on that device. You can also delete your account and clear your data from inside the app, as described in section 7.</p>" +
+    "<h3>7. Data retention and deletion</h3>" +
+    "<p>We keep your synced data for as long as your account exists and you use the app. If you stop using the app, your synced data stays on the server until you delete your account. We do not delete it automatically after a fixed time, because students may return after a break.</p>" +
+    "<p>You can delete your account at any time from inside the app. Deleting your account removes your account and your synced progress from the sync server, including your display name, username, age, PIN hash, study progress, notes, uploaded material, playlist, watch history, and profile. After deletion, your token stops working, and your data cannot be recovered from the server.</p>" +
+    "<p>Deleting your account does not delete data that is only on your device. To remove that, clear the app data from your browser settings, or use the clear data option in the app if it is available.</p>" +
+    "<p>If you are a guest, your data is only on your device. Clearing your browser storage or the app data removes it. There is nothing to delete on the server, because guest data is never sent there.</p>" +
+    "<p>If we need to delete your account because you broke the Terms and Conditions, we will delete your synced data at the same time.</p>" +
+    "<h3>8. Security</h3>" +
+    "<p>We protect your data in the ways that fit a free study project. Your connection to the sync server is encrypted. Your PIN is stored only as a one-way hash, never in readable form. Your account token is stored on your device only, and it is needed to read or change your synced data. The AI service key stays on the server and is never shown in the app.</p>" +
+    "<p>No system is perfectly secure. If someone can unlock your device, they can open the app and see your study data on that device. If someone learns your PIN, they can sign in as you from another device. Keep your PIN private, keep your device locked, and sign out if you use a shared device.</p>" +
+    "<p>If we learn that the sync server has been breached in a way that affects your data, we will say so in the app if we can, and we will take steps to protect the service.</p>" +
+    "<h3>9. Children&#x27;s privacy</h3>" +
+    "<p>L3ARN is made for students. It does not ask for your age for advertising or tracking, and it does not collect your real name, email, phone number, or location. If you are under 18, you should use the app with the knowledge of a parent, guardian, or teacher.</p>" +
+    "<p>Your age is collected only when you create an account, so the app can show it in your profile. It is stored with your account and is not shared with anyone. It is not used for advertising or tracking.</p>" +
+    "<p>Parents and guardians can ask for a child&#x27;s account to be deleted by contacting us through the app with the display name and username of the account. We will delete the account and its synced data.</p>" +
+    "<p>We do not knowingly collect data from children for advertising, and we do not share children&#x27;s data with advertisers, because the app has no advertising at all.</p>" +
+    "<h3>10. Your choices</h3>" +
+    "<p>You choose what to share with the app. You can use the app as a guest without signing in, and guest data stays on your device only. You can sign in to sync across devices, and you can sign out at any time. You can change your profile details, your playlist, and your notes at any time. You can delete uploaded material, notes, and your whole account from inside the app.</p>" +
+    "<p>You can change your language, theme, text size, contrast, motion, and font in Settings at any time. These are stored on your device only.</p>" +
+    "<p>You can stop the app from syncing by signing out. Signing out does not delete the data on your device, but it stops new changes from being sent to the server until you sign in again.</p>" +
+    "<p>You can ask for your account to be deleted if you cannot delete it from inside the app, by contacting us through the app with your display name and username.</p>" +
+    "<h3>11. Changes to this policy</h3>" +
+    "<p>We may change this Privacy Policy when the app changes. When we change it, we will update the date at the top of this page and show the new version in the app. The version shown in the app is the one that applies.</p>" +
+    "<p>If a change is important, we may tell you in the app before it takes effect. If you keep using the app after the policy changes, you accept the new policy. If you do not agree with a change, stop using the app and delete your account if you have one.</p>" +
+    "<h3>12. Contact</h3>" +
+    "<p>L3ARN is run by the student who built it, in Myanmar. There is no company office, no phone number, and no email address published for the app. If you have a question about this policy, want a copy of your data, or want your account deleted, contact us through the app with your display name and username, and we will help.</p>" +
+    "<p>Please do not send us passwords, PINs, or other private information. We will never ask you for your PIN.</p>"
+  },
+  cookies: { body:
+    "<h3>Cookies Policy</h3>" +
+    "<p class=\"updated\">Last updated: 11 November 2026</p>" +
+    "<h3>1. What cookies and local storage are</h3>" +
+    "<p>A cookie is a small file that a website asks your browser to store on your device. The website can read it back later. Cookies are often used to remember that you are signed in, to remember your settings, or to track what you do across websites for advertising and analytics.</p>" +
+    "<p>Local storage is a different kind of storage in your browser. It is a place on your device where a web app can save data, such as your settings and your progress, so it is still there when you come back. Unlike cookies, local storage is not sent to a server automatically. The app reads it and writes it on your device only, and it is sent to the sync server only when you sign in and the app syncs your progress.</p>" +
+    "<p>This policy explains what L3ARN itself uses, what third parties may set, and how you can clear or manage storage.</p>" +
+    "<h3>2. What L3ARN itself uses</h3>" +
+    "<p>L3ARN uses localStorage on your device to save your settings and your progress. This includes your language, theme, text size, contrast, motion, font, and layout density, your study progress, notes, drawings, and sticky notes, your playlist and watch history, your profile details, and whether you have accepted the Terms and Conditions.</p>" +
+    "<p>If you sign in, the app also stores your account token on your device, in localStorage. The token is what lets the app read and write your synced data without asking you to sign in every time. It stays on your device until you sign out or delete your account.</p>" +
+    "<p>L3ARN sets no tracking cookies. L3ARN sets no advertising cookies. L3ARN sets no analytics cookies. L3ARN does not use any analytics service, and it does not use any advertising service. The app does not track you across websites, and it does not build a profile of you for advertising.</p>" +
+    "<p>The app does not use cookies to remember your sign-in. It uses the token in localStorage, as described above. If you clear your browser storage, you will be signed out on that device, and you will need to sign in again.</p>" +
+    "<p>The app may store a small amount of data in your browser cache, which is how browsers remember page files so the app loads faster. This is normal browser behaviour, and it does not contain your personal data.</p>" +
+    "<h3>3. What third parties may set</h3>" +
+    "<p>L3ARN uses third-party services, and those services may set their own cookies or use their own storage when you use their features.</p>" +
+    "<p>YouTube hosts and plays the study videos. When you play a video in the app, YouTube may set cookies on your device and collect data about the playback, under Google privacy policy. The app uses the privacy-enhanced YouTube embed, which is meant to limit tracking, but YouTube may still set cookies when a video plays. If you do not want YouTube cookies, do not play videos in the app.</p>" +
+    "<p>Google Gemini powers the AI features. When you ask a question, use AI help in notes, ask for a video summary, or upload a file for flashcards and lessons, Google services may set cookies or collect data as part of processing your request, under Google privacy policy. The AI request is sent from the sync server, not directly from your browser, but Google may still process it under its own terms.</p>" +
+    "<p>Cloudflare runs the sync Worker and stores your synced data. Cloudflare may set technical cookies or use its own storage as part of running its service and protecting it. These are needed for the sync service to work.</p>" +
+    "<p>GitHub Pages hosts the app itself. When you open the app, GitHub serves the page files, and it may log the request as part of running its hosting service.</p>" +
+    "<p>The free guides in the Learn section link to their original websites. If you tap a guide link, you leave the app, and that website may set its own cookies under its own policy.</p>" +
+    "<p>We do not control third-party cookies. If you want to know exactly what a third party sets, read that service privacy policy.</p>" +
+    "<h3>4. How to clear or manage storage in your browser</h3>" +
+    "<p>You can clear the app data from your browser at any time. Clearing the app data removes everything the app stored on that device, including your settings, your progress, your notes, your playlist, your watch history, your profile, your Terms acceptance, and your account token. After clearing, you will be signed out on that device, and you will need to sign in again to sync.</p>" +
+    "<p>How to clear storage depends on your browser. In most browsers, you can open the browser settings, find the privacy or site data section, find the L3ARN site, and clear its data. On iPhone Safari, you can go to Settings, then Safari, then Advanced, then Website Data, find the L3ARN site, and remove it. In other browsers, look for a clear browsing data or clear site data option.</p>" +
+    "<p>Clearing cookies in your browser will also remove any third-party cookies that YouTube or Google set while you used the app. You can also block third-party cookies in your browser settings, but this may stop some features from working, such as video playback.</p>" +
+    "<p>If you only want to stop the app from syncing, sign out from inside the app instead of clearing storage. Signing out removes your token and stops new changes from being sent to the server, but it keeps your data on the device.</p>" +
+    "<h3>5. How to clear or manage storage in the app</h3>" +
+    "<p>Inside the app, you can manage your data in several ways. You can change your language, theme, text size, contrast, motion, and font in Settings at any time. These are stored on your device only.</p>" +
+    "<p>You can delete individual notes, drawings, sticky notes, and uploaded material from inside the app. Deleting them removes them from your account and from the sync server.</p>" +
+    "<p>You can delete your account from inside the app. Deleting your account removes your account and your synced progress from the sync server, including your display name, username, age, PIN hash, study progress, notes, uploaded material, playlist, watch history, and profile. After deletion, your token stops working.</p>" +
+    "<p>Deleting your account does not delete data that is only on your device. To remove that, clear the app data from your browser settings, as described in section 4.</p>" +
+    "<p>If you are a guest, your data is only on your device. Clearing your browser storage or the app data removes it completely. There is nothing to delete on the server, because guest data is never sent there.</p>" +
+    "<h3>6. How long your data stays stored</h3>" +
+    "<p>Data in localStorage stays on your device until you clear it or delete it from inside the app. There is no automatic expiry date. Your settings, progress, notes, playlist, watch history, and profile will still be there the next time you open the app, even weeks or months later, unless you clear your browser storage.</p>" +
+    "<p>Your account token stays on your device until you sign out, delete your account, or clear your browser storage. After that, you will need to sign in again.</p>" +
+    "<p>Your synced data stays on the sync server for as long as your account exists. If you stop using the app, your synced data stays on the server until you delete your account. We do not delete it automatically after a fixed time, because students may return after a break.</p>" +
+    "<p>Third-party cookies, such as those set by YouTube when you play a video, last as long as the third party sets them to last. Some last only for the session, and some last longer. You can clear them from your browser settings at any time.</p>" +
+    "<h3>7. Cookies and your privacy</h3>" +
+    "<p>L3ARN is designed to collect as little as possible. The app itself sets no tracking cookies, no advertising cookies, and no analytics cookies, so there is no cookie on your device that follows you around the web or tells an advertiser what you do.</p>" +
+    "<p>Local storage is used only to make the app work for you: to remember your settings, to save your study progress on your device, and to keep you signed in. It is not shared with advertisers, data brokers, or analytics companies, because the app uses none of them.</p>" +
+    "<p>Third-party cookies come only from the services you choose to use inside the app, such as playing a YouTube video or asking the AI a question. If you do not play videos and do not use the AI, those services set nothing. You are in control: you can clear storage, block third-party cookies in your browser, or simply not use a feature.</p>" +
+    "<p>If you have a question about cookies or storage in L3ARN, contact us through the app, as described in the Privacy Policy.</p>" +
+    "<h3>8. Changes to this policy</h3>" +
+    "<p>We may change this Cookies Policy when the app changes. When we change it, we will update the date at the top of this page and show the new version in the app. The version shown in the app is the one that applies.</p>" +
+    "<p>If a change is important, we may tell you in the app before it takes effect. If you keep using the app after the policy changes, you accept the new policy. If you do not agree with a change, stop using the app and delete your account if you have one.</p>"
+  },
+  disclaimer: { body:
+    "<h3>Disclaimer</h3>" +
+    "<p class=\"updated\">Last updated: 11 November 2026</p>" +
+    "<h3>1. Study content is for learning only</h3>" +
+    "<p>L3ARN is a study aid. The flashcards, quizzes, assignment breakdowns, notes, guides, and videos in the app are provided to help you learn and revise. They are not a substitute for your official course material, your class notes, your textbooks, or your teachers.</p>" +
+    "<p>Always check what you study in the app against your official course material and your teachers. If the app and your course disagree, your course is right. The app does not set your syllabus, does not mark your work, and does not decide what will be in your exams. The app is a companion to your real course, not a replacement for it, and the best results come from using it alongside your classes, your textbooks, and your teachers.</p>" +
+    "<h3>2. AI content can be inaccurate</h3>" +
+    "<p>The AI features in L3ARN, including Ask AI chat, AI help in notes, video summaries, and the flashcards and lessons generated from your uploads, are powered by Google Gemini. AI answers can be wrong. The AI may misunderstand your question, may give an answer that is incomplete or out of date, and may invent facts that sound correct but are not.</p>" +
+    "<p>Video summaries are made from the video title and topic only. The AI does not watch the video. A summary is a short guide to what the video is about, not a transcript and not a replacement for watching the video.</p>" +
+    "<p>The flashcards and lessons generated from your uploads are made only from the text you uploaded, but the AI can still make mistakes, miss important points, or phrase things in a way that changes the meaning. Check all AI content before you rely on it for an assignment or an exam. Never submit AI-generated text as your own work unless your college allows it, and always follow your college rules on academic honesty.</p>" +
+    "<h3>3. Exam preparation is preparation only</h3>" +
+    "<p>L3ARN includes exam preparation pathways and study material for qualifications such as ATHE, NCC, GED, and IGCSE. These are preparation aids only. L3ARN is not affiliated with, endorsed by, or connected to any exam board, qualification body, or college, and no partnership is claimed or implied.</p>" +
+    "<p>The app does not set exam questions, does not mark exams, and does not decide exam results. Using the app does not guarantee that you will pass any exam or achieve any grade.</p>" +
+    "<h3>4. No guarantee of grades or exam results</h3>" +
+    "<p>L3ARN gives no guarantee of grades, exam results, or academic success. How well you do depends on many things, including your study, your attendance, your understanding of the material, and your exam performance. The app is one tool among many, and it cannot promise any outcome.</p>" +
+    "<p>The ranking system in the app, including points and ranks, is a way to track your own study habits. It is not a measure of your ability, and it is not recognised by any college or exam board.</p>" +
+    "<h3>5. Third-party content and links</h3>" +
+    "<p>The app includes content from third parties, including YouTube videos and free guides that link to their original sources. That content belongs to its creators and sources, and it is provided as it is. We do not control it, we do not guarantee that it is correct or complete, and we are not responsible for it.</p>" +
+    "<p>If a video is removed from YouTube, a guide link stops working, or a third-party service changes, the app may lose that content. We are not responsible for third-party content, links, or services, and your use of them is covered by their own terms.</p>" +
+    "<h3>6. Your uploads and your responsibility</h3>" +
+    "<p>When you upload a PDF or text file, the app reads it and the AI turns it into flashcards and a lesson for you. You are responsible for what you upload. Only upload material that you own, that is free to share, or that you have permission to use for your own study. Do not upload other people&#x27;s private information, and do not upload material that breaks copyright law.</p>" +
+    "<p>The app does not check whether your upload is correct, lawful, or yours to share. If you upload something you should not have, that is your responsibility. The generated flashcards and lessons are made only from the text you uploaded, but they can still contain mistakes, so check them before you study from them.</p>" +
+    "<h3>7. Health, safety, and other advice</h3>" +
+    "<p>L3ARN is a study app, not a health app, not a medical app, and not a source of professional advice. Nothing in the app is medical, legal, financial, or professional advice. If you need advice about your health, your finances, or your legal rights, talk to a qualified professional.</p>" +
+    "<p>Studying for long periods can be tiring. Take breaks, rest your eyes, and look after yourself. The app does not track your health, and it does not tell you how long you should study. The study time and ranking features are only a way to track your own habits, and they are not a recommendation to study for any particular length of time.</p>" +
+    "<h3>8. The app is provided as is</h3>" +
+    "<p>L3ARN is a free study project run by the student who built it. It is provided as is and as available, without any warranty of any kind. The app, the sync service, the AI features, and the videos may be slow, interrupted, or unavailable at times. We do not promise that the app will always work, that your data will never be lost, or that any feature will stay available.</p>" +
+    "<p>To the fullest extent allowed by law, the person who runs L3ARN is not liable for any loss or damage that comes from using the app, including loss of data, loss of study progress, poor grades or exam results, or any other loss.</p>" +
+    "<p>If you need help with your studies, talk to your teachers. If you need help with the app, contact us through the app.</p>" +
+    "<h3>9. Availability and changes</h3>" +
+    "<p>L3ARN may change over time. Features may be added, changed, or removed. The study material, the videos, and the AI features may change or stop working if a third-party service changes. The app may be unavailable during maintenance or when a service it depends on is down.</p>" +
+    "<p>We may change this disclaimer when the app changes. When we change it, we will update the date at the top of this page and show the new version in the app. The version shown in the app is the one that applies.</p>" +
+    "<h3>10. If you disagree with this disclaimer</h3>" +
+    "<p>If you do not agree with this disclaimer, do not use the app. You can stop using it at any time, and you can delete your account from inside the app if you have one. Deleting your account removes your synced data from the server, as described in the Privacy Policy.</p>" +
+    "<p>If any part of this disclaimer is found to be unenforceable, the rest of it still applies. Nothing in this disclaimer limits any rights you have under the law that cannot be limited.</p>" +
+    "<h3>11. Contact and questions</h3>" +
+    "<p>L3ARN is run by the student who built it, in Myanmar. There is no company office, no phone number, and no email address published for the app. If you have a question about this disclaimer, about the study content, or about the AI features, contact us through the app, and we will help.</p>" +
+    "<p>Please do not send us passwords, PINs, or other private information. We will never ask you for your PIN. If you spot a mistake in the study material or in an AI answer, tell us through the app so it can be checked and fixed.</p>"
   },
   about: { body:
-    '<h3>About L3ARN</h3>' +
-    '<p class="updated">L3ARN · BBA Year 1 Study Hub</p>' +
-    '<p>L3ARN is a study space for all BBA Year 1 students. It started with Unit 8, Managing a Work-Based Team Project, and covers all four Year 1 subjects: Managing a Work-Based Team Project, Entrepreneurship, Marketing Mix, and Financial Accounting.</p>' +
-    '<p>What you can do here: revise with flashcards, test yourself with quizzes, follow the four-stage assignment breakdown, keep quick notes, learn from free guides and videos, save a playlist, check your class and exam schedule, and ask the built-in AI for study help.</p>' +
-    '<p>Your progress, notes, and streak sync across your devices when you sign in. Everything is free to use.</p>' +
-    '<p>L3ARN is a student project. It is not affiliated with any college. The study guides and videos link out to their original free sources.</p>'
+    "<h3>About L3ARN</h3>" +
+    "<p class=\"updated\">L3ARN \u00b7 BBA Year 1 Study Hub</p>" +
+    "<p>L3ARN is a study space for all BBA Year 1 students. It started with Unit 8, Managing a Work-Based Team Project, and covers all four Year 1 subjects: Managing a Work-Based Team Project, Entrepreneurship, Marketing Mix, and Financial Accounting.</p>" +
+    "<p>What you can do here: revise with flashcards, test yourself with quizzes, follow the four-stage assignment breakdown, keep quick notes, learn from free guides and videos, save a playlist, check your class and exam schedule, and ask the built-in AI for study help.</p>" +
+    "<p>Your progress, notes, and streak sync across your devices when you sign in. Everything is free to use.</p>" +
+    "<p>L3ARN is a student project. It is not affiliated with any college. The study guides and videos link out to their original free sources.</p>"
   }
 };
 function openLegal(page){
@@ -2036,7 +2572,7 @@ function openLegal(page){
 }
 function showLegal(page){
   legalPage = page;
-  ["terms","privacy","about"].forEach(function(p){
+  ["terms","privacy","cookies","disclaimer","about"].forEach(function(p){
     var b = document.getElementById("legal-tab-" + p);
     if (b) b.setAttribute("aria-selected", p === page ? "true" : "false");
   });
@@ -2053,9 +2589,6 @@ function fmtChatTime(ts){
   try {
     return new Date(ts).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
   } catch (e) { return ""; }
-}
-function aiAvatarSVG(){
-  return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 5.6L19.5 9l-5.6 1.9L12 16.5l-1.9-5.6L4.5 9l5.6-1.4L12 2zM19 14l.9 2.6 2.6.9-2.6.9L19 21l-.9-2.6-2.6-.9 2.6-.9L19 14z"/></svg>';
 }
 function renderAI(){
   var host = document.getElementById("ai-history");
@@ -2093,9 +2626,10 @@ function renderAI(){
     if (item.a !== null && item.a !== undefined) {
       var row2 = document.createElement("div");
       row2.className = "chat-row";
-      var av = document.createElement("span");
-      av.className = "chat-avatar";
-      av.innerHTML = aiAvatarSVG();
+      var av = document.createElement("img");
+      av.className = "chat-avatar-img";
+      av.src = "assets/ai-avatar.png";
+      av.alt = "L3ARN AI";
       var b2 = document.createElement("div");
       b2.className = "bubble theirs" + (item.error ? " err" : "");
       b2.appendChild(document.createTextNode(item.a));
@@ -2111,9 +2645,10 @@ function renderAI(){
   if (aiTyping) {
     var trow = document.createElement("div");
     trow.className = "chat-row";
-    var tav = document.createElement("span");
-    tav.className = "chat-avatar";
-    tav.innerHTML = aiAvatarSVG();
+    var tav = document.createElement("img");
+    tav.className = "chat-avatar-img";
+    tav.src = "assets/ai-avatar-thinking.png";
+    tav.alt = "L3ARN AI is thinking";
     var tb = document.createElement("div");
     tb.className = "bubble theirs";
     tb.innerHTML = '<span class="typing" aria-label="' + t("aiThinking") + '"><i></i><i></i><i></i></span>';
@@ -2407,11 +2942,12 @@ var WORKER = "https://l3arn-sync.henryvincent383.workers.dev";
 var LS_PROGRESS = "l3arn-progress-v1";
 var LS_AUTH = "l3arn-auth-v1";
 var LS_GUEST = "l3arn-guest-dismissed";
+var LS_TERMS = "l3arn-terms-accepted";
 
 function emptySubjectProgress(){
-  return { known:{}, quizBest:null, lastQuiz:null, notes:[], streak:{ count:0, lastDay:null } };
+  return { known:{}, quizBest:null, lastQuiz:null, notes:[], streak:{ count:0, lastDay:null }, studySeconds:0, uploaded:null, uploadedKnown:{} };
 }
-function emptyProfile(){ return { name:"", gender:null, academicYear:1, picture:null, college:"NMA College", course:"athe-bba", major:"Business Administration" }; }
+function emptyProfile(){ return { name:"", gender:null, academicYear:1, picture:null, college:"NMA College", course:"athe-bba", major:"Business Administration", username:"", age:null }; }
 function mergeProfile(p){
   var d = emptyProfile();
   if (!p || typeof p !== "object") return d;
@@ -2423,6 +2959,9 @@ function mergeProfile(p){
   if (typeof p.college === "string" && p.college.trim()) d.college = p.college.trim().slice(0, 80);
   if (typeof p.course === "string" && p.course.trim()) d.course = p.course.trim().slice(0, 80);
   if (typeof p.major === "string") d.major = p.major.trim().slice(0, 80);
+  if (typeof p.username === "string" && /^[a-z0-9_]{3,30}$/.test(p.username)) d.username = p.username;
+  var ageNum = Number(p.age);
+  if (isFinite(ageNum) && ageNum >= 1 && ageNum <= 120) d.age = Math.floor(ageNum);
   return d;
 }
 function emptyStore(){
@@ -2439,11 +2978,149 @@ function mergeSubject(p, def){
     quizBest: p.quizBest || null,
     lastQuiz: p.lastQuiz || null,
     notes: normalizeNotes(p.notes),
-    streak: (p.streak && typeof p.streak === "object") ? p.streak : { count:0, lastDay:null }
+    streak: (p.streak && typeof p.streak === "object") ? p.streak : { count:0, lastDay:null },
+    studySeconds: (typeof p.studySeconds === "number" && isFinite(p.studySeconds)) ? Math.max(0, Math.floor(p.studySeconds)) : 0,
+    uploaded: normalizeUploaded(p.uploaded),
+    uploadedKnown: (p.uploadedKnown && typeof p.uploadedKnown === "object") ? p.uploadedKnown : {}
   };
+}
+function normalizeUploaded(u){
+  if (!u || typeof u !== "object") return null;
+  var cards = [];
+  if (Array.isArray(u.cards)) u.cards.slice(0, 12).forEach(function(c){
+    if (c && typeof c.q === "string" && typeof c.a === "string") cards.push({q: String(c.q).slice(0, 300), a: String(c.a).slice(0, 600)});
+  });
+  return {cards: cards, lesson: typeof u.lesson === "string" ? String(u.lesson).slice(0, 6000) : "", sourceName: typeof u.sourceName === "string" ? String(u.sourceName).slice(0, 120) : "", at: typeof u.at === "number" ? u.at : Date.now()};
 }
 // Normalise stored/server progress into the per-subject store shape.
 // Backward compatible: a flat old-shape object is Unit 8's progress.
+
+function escHtml(s){
+  return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+var RANKS = [
+  {min: 0, name: "Novice"},
+  {min: 100, name: "Scholar"},
+  {min: 300, name: "Achiever"},
+  {min: 600, name: "Expert"},
+  {min: 1000, name: "Master"},
+  {min: 2000, name: "Legend"}
+];
+function rankFor(points){
+  var cur = RANKS[0];
+  for (var i = 0; i < RANKS.length; i++) if (points >= RANKS[i].min) cur = RANKS[i];
+  return cur;
+}
+function nextRankFor(points){
+  for (var i = 0; i < RANKS.length; i++) if (RANKS[i].min > points) return RANKS[i];
+  return null;
+}
+function totalStudySeconds(){
+  var total = 0;
+  Object.keys(store.subjects).forEach(function(id){ var p = store.subjects[id]; if (p && typeof p.studySeconds === "number") total += p.studySeconds; });
+  return total;
+}
+function videosLearnedCount(){
+  var seen = {};
+  (store.watchHistory || []).forEach(function(w){ if (w && w.videoId) seen[w.videoId] = true; });
+  return Object.keys(seen).length;
+}
+function totalKnownCards(){
+  var total = 0;
+  Object.keys(store.subjects).forEach(function(id){
+    var p = store.subjects[id];
+    if (!p) return;
+    total += Object.keys(p.known || {}).filter(function(k){ return p.known[k]; }).length;
+    total += Object.keys(p.uploadedKnown || {}).filter(function(k){ return p.uploadedKnown[k]; }).length;
+  });
+  return total;
+}
+function totalPoints(){
+  return Math.floor(totalStudySeconds() / 60) + videosLearnedCount() * 10 + totalKnownCards() * 5;
+}
+function fmtStudyTime(sec){
+  if (sec < 3600) return t("rankMinutes").replace("{n}", Math.floor(sec / 60));
+  return t("rankHours").replace("{h}", Math.floor(sec / 3600)).replace("{m}", Math.floor((sec % 3600) / 60));
+}
+var studyTimerId = null;
+var studyAccum = 0;
+var studyLastFlush = 0;
+function isStudying(){
+  if (document.hidden) return false;
+  if (view === "subject") return true;
+  if (view === "learn" && isFloatOpen()) return true;
+  if (view === "ai") return false;
+  return false;
+}
+function startStudyTimer(){
+  if (studyTimerId) return;
+  studyTimerId = setInterval(function(){
+    if (!isStudying()) return;
+    studyAccum += 1;
+    var p = progress;
+    if (p){
+      p.studySeconds = (p.studySeconds || 0) + 1;
+      if (Date.now() - studyLastFlush >= 30000){ studyLastFlush = Date.now(); saveLocal(); if (auth && auth.token) saveProgress(true); }
+    }
+  }, 1000);
+}
+function flushStudyTime(){
+  if (!studyAccum) return;
+  studyAccum = 0;
+  saveLocal();
+  if (auth && auth.token) saveProgress(true);
+}
+function studySecondsForSubject(id){
+  var p = store.subjects[id];
+  return (p && typeof p.studySeconds === "number") ? p.studySeconds : 0;
+}
+function pointsForSubject(id){
+  var p = store.subjects[id];
+  if (!p) return 0;
+  var known = Object.keys(p.known || {}).filter(function(k){ return p.known[k]; }).length;
+  var uknown = Object.keys(p.uploadedKnown || {}).filter(function(k){ return p.uploadedKnown[k]; }).length;
+  return Math.floor(studySecondsForSubject(id) / 60) + (known + uknown) * 5;
+}
+function renderRanking(){
+  var pts = totalPoints();
+  var rank = rankFor(pts);
+  var next = nextRankFor(pts);
+  var badge = document.getElementById("rank-badge");
+  if (badge) badge.textContent = rank.name;
+  var ptsEl = document.getElementById("rank-points");
+  if (ptsEl) ptsEl.textContent = String(pts);
+  var nextEl = document.getElementById("rank-next");
+  if (nextEl) nextEl.textContent = next ? t("rankNext").replace("{n}", next.min - pts).replace("{r}", next.name) : t("rankMax");
+  var fill = document.getElementById("rank-bar-fill");
+  if (fill){
+    if (next){ var prevMin = rank.min; fill.style.width = Math.max(0, Math.min(100, Math.round((pts - prevMin) / (next.min - prevMin) * 100))) + "%"; }
+    else fill.style.width = "100%";
+  }
+  var st = document.getElementById("rank-study-time");
+  if (st) st.textContent = fmtStudyTime(totalStudySeconds());
+  var v = document.getElementById("rank-videos");
+  if (v) v.textContent = String(videosLearnedCount());
+  var c = document.getElementById("rank-cards");
+  if (c) c.textContent = String(totalKnownCards());
+  var lb = document.getElementById("rank-leaderboard");
+  if (lb){
+    var rows = visibleSubjects().map(function(sub){
+      var p = store.subjects[sub.id] || emptySubjectProgress();
+      return {id: sub.id, title: sub.title, seconds: studySecondsForSubject(sub.id), points: pointsForSubject(sub.id), known: Object.keys(p.known || {}).filter(function(k){ return p.known[k]; }).length + Object.keys(p.uploadedKnown || {}).filter(function(k){ return p.uploadedKnown[k]; }).length};
+    }).sort(function(a, b){ return b.points - a.points || b.seconds - a.seconds; });
+    lb.innerHTML = rows.map(function(r, i){
+      var me = r.id === store.active;
+      return '<div class="rank-row' + (me ? " me" : "") + '"><span class="rmin">#' + (i + 1) + '</span><span class="rname">' + escHtml(r.title) + (me ? ' (' + escHtml(t("rankYou")) + ')' : "") + '</span><span class="rmin">' + escHtml(fmtStudyTime(r.seconds)) + ' · ' + r.known + ' ' + escHtml(t("rankCards")) + '</span><span class="rpts">' + r.points + '</span></div>';
+    }).join("");
+  }
+  var lad = document.getElementById("rank-ladder");
+  if (lad){
+    lad.innerHTML = RANKS.map(function(r){
+      return '<div class="rank-row' + (r.name === rank.name ? " me" : "") + '"><span class="rname">' + escHtml(r.name) + '</span><span class="rpts">' + r.min + '+</span></div>';
+    }).join("");
+  }
+}
+
 function normalizeStore(raw){
   var s = emptyStore();
   if (!raw || typeof raw !== "object") return s;
@@ -2565,57 +3242,91 @@ function updateSyncLabel(){
 }
 
 /* ================= Auth ================= */
+
+var authMode = "signin"; // "signin" or "signup"
 function openAuth(){
-  document.getElementById("auth-panel").classList.remove("hidden");
-  document.getElementById("auth-panel").scrollIntoView({ behavior:"smooth", block:"center" });
+  showAuthScreen();
+}
+function showAuthScreen(){
+  var sc = document.getElementById("auth-screen");
+  if (!sc) return;
+  setAuthMode(authMode);
+  sc.classList.remove("hidden");
   var n = document.getElementById("auth-name"); if (n) n.focus();
 }
+function hideAuthScreen(){
+  var sc = document.getElementById("auth-screen");
+  if (sc) sc.classList.add("hidden");
+}
+function setAuthMode(mode){
+  authMode = mode;
+  var title = document.getElementById("auth-screen-title");
+  var submit = document.getElementById("auth-submit");
+  var toggle = document.getElementById("auth-mode-toggle");
+  var ageRow = document.getElementById("auth-age-row");
+  if (title) title.textContent = mode === "signup" ? t("signUpTitle") : t("signInTitle");
+  if (submit) submit.textContent = mode === "signup" ? t("createAccount") : t("signIn");
+  if (toggle) toggle.textContent = mode === "signup" ? t("backToSignIn") : t("createAccount");
+  if (ageRow) ageRow.classList.toggle("hidden", mode !== "signup");
+  var err = document.getElementById("auth-error");
+  if (err) err.classList.add("hidden");
+}
+function toggleAuthMode(){ setAuthMode(authMode === "signup" ? "signin" : "signup"); }
+function showAuthErr(msg){
+  var el = document.getElementById("auth-error");
+  if (!el) return;
+  el.textContent = msg; el.classList.remove("hidden");
+}
 function closeAuth(asGuest){
-  document.getElementById("auth-panel").classList.add("hidden");
+  hideAuthScreen();
   if (asGuest) { try { localStorage.setItem(LS_GUEST, "1"); } catch (e) {} }
   refreshAuthUI();
 }
 function refreshAuthUI(){
-  var signedIn = !!auth;
-  document.getElementById("user-bar").classList.toggle("hidden", !signedIn);
-  if (signedIn) document.getElementById("user-name").textContent = auth.name;
-  var btn = document.getElementById("auth-btn");
-  btn.textContent = signedIn ? auth.name : t("signIn");
-  btn.onclick = signedIn ? function(){ doSignOut(); } : openAuth;
-  if (!signedIn) {
-    var dismissed = false;
-    try { dismissed = localStorage.getItem(LS_GUEST) === "1"; } catch (e) {}
-    document.getElementById("auth-panel").classList.toggle("hidden", dismissed);
-  } else {
-    document.getElementById("auth-panel").classList.add("hidden");
+  var note = document.getElementById("settings-account-note");
+  if (note) {
+    if (auth) {
+      var u = auth.username ? " (@" + auth.username + (typeof auth.age === "number" ? " · Age " + auth.age : "") + ")" : "";
+      note.textContent = t("signedInAs") + " " + (auth.name || "") + u + " · " + t("syncNote");
+    } else {
+      note.textContent = t("signInNote");
+    }
   }
   updateSyncLabel();
 }
-function showAuthErr(msg){
-  var el = document.getElementById("auth-err");
-  el.textContent = msg; el.classList.add("show");
-}
-function doSignIn(){
-  var name = document.getElementById("auth-name").value.trim();
-  var pin = document.getElementById("auth-pin").value.trim();
-  var err = document.getElementById("auth-err"); err.classList.remove("show");
-  if (name.length < 2) { showAuthErr(t("nameLabel") + " · " + t("signInTitle")); return; }
+function doAuth(){
+  var name = (document.getElementById("auth-name").value || "").trim();
+  var username = (document.getElementById("auth-username").value || "").trim().toLowerCase();
+  var pin = (document.getElementById("auth-pin").value || "").trim();
+  var ageEl = document.getElementById("auth-age");
+  var age = ageEl ? parseInt(ageEl.value, 10) : NaN;
+  var err = document.getElementById("auth-error"); if (err) err.classList.add("hidden");
+  if (name.length < 2) { showAuthErr(t("wrongName")); return; }
+  if (!/^[a-z0-9_]{3,30}$/.test(username)) { showAuthErr(t("wrongUsername")); return; }
   if (!/^\d{4}$/.test(pin)) { showAuthErr(t("pinLabel")); return; }
-  var btn = document.getElementById("signin-submit");
+  if (authMode === "signup" && (!isFinite(age) || age < 1 || age > 120)) { showAuthErr(t("ageLabel")); return; }
+  var btn = document.getElementById("auth-submit");
   btn.disabled = true; btn.textContent = t("syncing");
+  var body = { name: name, username: username, pin: pin };
+  if (authMode === "signup") body.age = age;
   fetch(WORKER + "/auth", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: name, pin: pin })
+    body: JSON.stringify(body)
   }).then(function(r){ return r.json().then(function(d){ return { status:r.status, d:d }; }); }).then(function(res){
-    btn.disabled = false; btn.textContent = t("signIn");
+    btn.disabled = false; btn.textContent = authMode === "signup" ? t("createAccount") : t("signIn");
     if (!res.d || !res.d.ok) {
-      showAuthErr(res.d && res.d.error === "wrong pin" ? t("wrongPin") : t("authError"));
+      var e = res.d && res.d.error ? String(res.d.error).toLowerCase() : "";
+      var msg = t("authError");
+      if (e.indexOf("pin") !== -1) msg = t("wrongPin");
+      else if (e.indexOf("username") !== -1) msg = t("wrongUsername");
+      else if (e.indexOf("name") !== -1) msg = t("wrongName");
+      showAuthErr(msg);
       return;
     }
-    auth = { name: res.d.name, token: res.d.token };
+    auth = { name: res.d.name, username: res.d.username || username, age: (typeof res.d.age === "number" ? res.d.age : (authMode === "signup" ? age : null)), token: res.d.token };
     try { localStorage.setItem(LS_AUTH, JSON.stringify(auth)); localStorage.removeItem(LS_GUEST); } catch (e) {}
-    // Load the server copy. If the server has none, upload this device's progress.
+    hideAuthScreen();
     syncState = "syncing"; updateSyncLabel();
     fetch(WORKER + "/progress", { headers: { "x-l3arn-token": auth.token } })
       .then(function(r){ return r.json(); }).then(function(d){
@@ -2636,15 +3347,17 @@ function doSignIn(){
         refreshAuthUI(); renderAll();
       });
   }).catch(function(){
-    btn.disabled = false; btn.textContent = t("signIn");
+    btn.disabled = false; btn.textContent = authMode === "signup" ? t("createAccount") : t("signIn");
     showAuthErr(t("authError"));
   });
 }
+function doSignIn(){ doAuth(); }
 function doSignOut(){
   auth = null;
   try { localStorage.removeItem(LS_AUTH); localStorage.removeItem(LS_GUEST); } catch (e) {}
   syncState = "guest";
   refreshAuthUI();
+  renderAll();
 }
 
 /* ================= Flashcards ================= */
@@ -2659,33 +3372,74 @@ function knownCount(p){
   return n;
 }
 function renderKnownNote(){
+  var deck = deckCards();
+  var known = 0;
+  deck.forEach(function(_, i){ if (deckKnown(i)) known++; });
   document.getElementById("fc-progress-note").textContent =
-    t("knownNote").replace("{n}", knownCount());
-  document.getElementById("fc-progress").style.width = (knownCount() / flashcards.length * 100) + "%";
+    t("knownNote").replace("{n}", known);
+  document.getElementById("fc-progress").style.width = (deck.length ? (known / deck.length * 100) : 0) + "%";
 }
+
+function deckCards(){
+  var deck = flashcards.map(function(c, i){ return {kind:"builtin", index:i, cat:c.cat, title:c.title, answer:c.answer, tip:c.tip}; });
+  var up = (progress.uploaded && progress.uploaded.cards) || [];
+  up.forEach(function(c, i){ deck.push({kind:"uploaded", index:i, cat:t("uploadedFrom"), title:c.q, answer:escHtml(c.a), tip:""}); });
+  return deck;
+}
+function hasUploadedCards(){ return !!((progress.uploaded && progress.uploaded.cards && progress.uploaded.cards.length)); }
+function deckKnown(i){
+  var d = deckCards()[i];
+  if (!d) return false;
+  if (d.kind === "uploaded") return !!(progress.uploadedKnown && progress.uploadedKnown[d.index]);
+  return !!progress.known[d.index];
+}
+function renderUploadedLesson(){
+  var box = document.getElementById("uploaded-lesson");
+  if (!box) return;
+  var up = progress.uploaded;
+  if (!up || !up.cards || !up.cards.length) { box.classList.add("hidden"); box.innerHTML = ""; return; }
+  box.classList.remove("hidden");
+  var h = '<h3 style="font-size:18px;font-weight:800">' + escHtml(t("uploadedLesson")) + '</h3>';
+  h += '<p class="ink2" style="font-size:14px;margin-top:4px">' + escHtml(up.sourceName || "") + '</p>';
+  h += '<div style="white-space:pre-wrap;line-height:1.65;margin-top:10px">' + escHtml(up.lesson || "") + '</div>';
+  h += '<div style="margin-top:14px"><button class="btn" onclick="deleteUploadedMaterial()">' + escHtml(t("deleteUploaded")) + '</button></div>';
+  box.innerHTML = h;
+}
+function deleteUploadedMaterial(){
+  if (!confirm(t("deleteUploadedConfirm"))) return;
+  progress.uploaded = null;
+  progress.uploadedKnown = {};
+  currentCard = 0;
+  saveProgress();
+  showSaved(t("savedToast"));
+  renderSubjectView();
+}
+
 function renderCard(){
-  if (!currentSubject().ready) return;
-  var c = flashcards[currentCard];
+  var deck = deckCards();
+  if (deck.length === 0) return;
+  if (currentCard >= deck.length) currentCard = 0;
+  var c = deck[currentCard];
   document.getElementById("fc-cat-front").textContent = c.cat;
   document.getElementById("fc-cat-back").textContent = c.cat;
   document.getElementById("fc-title").textContent = c.title;
   document.getElementById("fc-answer").innerHTML = c.answer;
-  document.getElementById("fc-tip").innerHTML = "<b>Remember:</b> " + c.tip;
-  document.getElementById("fc-counter").textContent = "Card " + (currentCard+1) + " of " + flashcards.length;
+  document.getElementById("fc-tip").innerHTML = c.tip ? "<b>Remember:</b> " + c.tip : "";
+  document.getElementById("fc-counter").textContent = "Card " + (currentCard+1) + " of " + deck.length;
   flipped = false;
   document.getElementById("flipcard").classList.remove("flipped");
-  var isKnown = !!progress.known[currentCard];
+  var isKnown = deckKnown(currentCard);
   var isLearning = !!learning[currentCard];
   document.getElementById("btn-know").classList.toggle("marked", isKnown);
   document.getElementById("btn-learning").classList.toggle("marked", isLearning && !isKnown);
   var dots = document.getElementById("fc-dots");
   dots.innerHTML = "";
-  flashcards.forEach(function(_, i){
+  deck.forEach(function(_, i){
     var b = document.createElement("button");
     b.textContent = i+1;
     b.setAttribute("aria-label", "Go to card " + (i+1));
     if (i === currentCard) b.classList.add("on");
-    if (progress.known[i]) b.classList.add("known");
+    if (deckKnown(i)) b.classList.add("known");
     b.onclick = function(){ currentCard = i; renderCard(); };
     dots.appendChild(b);
   });
@@ -2695,15 +3449,22 @@ function flipCard(){
   flipped = !flipped;
   document.getElementById("flipcard").classList.toggle("flipped", flipped);
 }
-function nextCard(){ currentCard = (currentCard + 1) % flashcards.length; renderCard(); }
-function prevCard(){ currentCard = (currentCard - 1 + flashcards.length) % flashcards.length; renderCard(); }
+function nextCard(){ currentCard = (currentCard + 1) % deckCards().length; renderCard(); }
+function prevCard(){ currentCard = (currentCard - 1 + deckCards().length) % deckCards().length; renderCard(); }
 function markCard(knows){
-  if (knows) { progress.known[currentCard] = true; delete learning[currentCard]; }
-  else { delete progress.known[currentCard]; learning[currentCard] = true; }
+  var d = deckCards()[currentCard];
+  if (!d) return;
+  if (d.kind === "uploaded") {
+    if (!progress.uploadedKnown) progress.uploadedKnown = {};
+    if (knows) progress.uploadedKnown[d.index] = true; else delete progress.uploadedKnown[d.index];
+  } else {
+    if (knows) progress.known[d.index] = true; else delete progress.known[d.index];
+  }
+  if (knows) delete learning[currentCard]; else learning[currentCard] = true;
   saveProgress();
   showSaved(t("savedToast"));
   renderCard();
-  if (currentCard < flashcards.length - 1) { setTimeout(nextCard, 220); }
+  if (currentCard < deckCards().length - 1) { setTimeout(nextCard, 220); }
 }
 
 /* ================= Quiz ================= */
@@ -2871,7 +3632,7 @@ function renderNotes(){
     }
     if (n.drawing) {
       var img = document.createElement("img");
-      img.src = n.drawing; img.alt = "Drawing";
+      img.src = parseDrawingData(n.drawing).image; img.alt = "Drawing";
       img.style.cssText = "width:100%;border-radius:10px;margin-top:10px;border:1px solid var(--line);background:var(--surface2)";
       d.appendChild(img);
     }
@@ -2916,6 +3677,7 @@ function openNoteEditor(id){
     (progress.notes || []).forEach(function(n){ if (n.id === id) note = n; });
   }
   editingNoteId = id || null;
+  editorStickies = [];
   if (note) {
     editorBlocks = JSON.parse(JSON.stringify(note.blocks || []));
     editorDrawing = note.drawing || null;
@@ -3065,7 +3827,7 @@ function saveEditorNote(){
 }
 
 /* ---------- Draw canvas (pen, eraser, grid paper) ---------- */
-var drawState = { tool: "pen", color: "#1a2340", size: 5, drawing: false, lastX: 0, lastY: 0, ready: false };
+var drawState = { tool: "pen", color: "#000000", size: 5, drawing: false, lastX: 0, lastY: 0, ready: false };
 function drawMainCanvas(){ return document.getElementById("draw-main"); }
 function drawGridCanvas(){ return document.getElementById("draw-grid"); }
 function getDrawCtx(){
@@ -3137,6 +3899,120 @@ function drawLine(x1, y1, x2, y2){
   ctx.restore();
   editorHasDrawing = true;
 }
+
+var editorStickies = [];
+function parseDrawingData(dataUrl){
+  if (!dataUrl) return { image: null, stickies: [] };
+  var idx = dataUrl.indexOf("#stickies=");
+  if (idx === -1) return { image: dataUrl, stickies: [] };
+  var image = dataUrl.slice(0, idx);
+  var stickies = [];
+  try {
+    var raw = decodeURIComponent(dataUrl.slice(idx + 10));
+    var arr = JSON.parse(raw);
+    if (Array.isArray(arr)) stickies = arr.filter(function(st){ return st && typeof st.text === "string"; }).slice(0, 10).map(function(st){
+      return { id: String(st.id || ("s" + Math.random().toString(36).slice(2, 8))), x: Math.max(0, Math.min(90, Number(st.x) || 0)), y: Math.max(0, Math.min(90, Number(st.y) || 0)), w: Math.max(10, Math.min(80, Number(st.w) || 28)), h: Math.max(8, Math.min(80, Number(st.h) || 20)), text: String(st.text).slice(0, 200) };
+    });
+  } catch (e) {}
+  return { image: image, stickies: stickies };
+}
+function serializeStickies(){
+  return editorStickies.map(function(st){
+    var el = document.querySelector('.sticky-note[data-sticky-id="' + st.id + '"]');
+    if (el) {
+      var wrap = document.getElementById("draw-wrap");
+      var r = wrap ? wrap.getBoundingClientRect() : null;
+      var er = el.getBoundingClientRect();
+      if (r && r.width) {
+        st.x = Math.max(0, Math.min(90, (er.left - r.left) / r.width * 100));
+        st.y = Math.max(0, Math.min(90, (er.top - r.top) / r.height * 100));
+        st.w = Math.max(10, Math.min(80, er.width / r.width * 100));
+        st.h = Math.max(8, Math.min(80, er.height / r.height * 100));
+      }
+      var ta = el.querySelector("textarea");
+      if (ta) st.text = ta.value.slice(0, 200);
+    }
+    return { id: st.id, x: Math.round(st.x * 10) / 10, y: Math.round(st.y * 10) / 10, w: Math.round(st.w * 10) / 10, h: Math.round(st.h * 10) / 10, text: st.text || "" };
+  });
+}
+function drawingWithStickies(imageUrl){
+  if (!editorStickies.length) return imageUrl || null;
+  var frag = "#stickies=" + encodeURIComponent(JSON.stringify(serializeStickies()));
+  if (!imageUrl) return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" + frag;
+  return imageUrl + frag;
+}
+function renderStickyLayer(){
+  var layer = document.getElementById("sticky-layer");
+  if (!layer) return;
+  layer.innerHTML = "";
+  editorStickies.forEach(function(st){
+    var note = document.createElement("div");
+    note.className = "sticky-note";
+    note.setAttribute("data-sticky-id", st.id);
+    note.style.left = st.x + "%";
+    note.style.top = st.y + "%";
+    note.style.width = st.w + "%";
+    note.style.height = st.h + "%";
+    var head = document.createElement("div");
+    head.className = "sticky-head";
+    var label = document.createElement("span");
+    label.textContent = "Note";
+    var del = document.createElement("button");
+    del.type = "button";
+    del.className = "sticky-del";
+    del.textContent = "×";
+    del.setAttribute("aria-label", "Delete sticky note");
+    del.onclick = function(ev){ ev.stopPropagation(); deleteStickyNote(st.id); };
+    head.appendChild(label); head.appendChild(del);
+    var ta = document.createElement("textarea");
+    ta.className = "sticky-text";
+    ta.value = st.text || "";
+    ta.setAttribute("aria-label", "Sticky note text");
+    ta.placeholder = "Write here";
+    ta.oninput = function(){ st.text = ta.value.slice(0, 200); };
+    note.appendChild(head); note.appendChild(ta);
+    layer.appendChild(note);
+    attachStickyDrag(note, st, head);
+  });
+}
+function attachStickyDrag(note, st, head){
+  head.addEventListener("pointerdown", function(ev){
+    ev.preventDefault();
+    var wrap = document.getElementById("draw-wrap");
+    if (!wrap) return;
+    var r = wrap.getBoundingClientRect();
+    var startX = ev.clientX, startY = ev.clientY;
+    var origX = st.x, origY = st.y;
+    function move(e){
+      var dx = r.width ? (e.clientX - startX) / r.width * 100 : 0;
+      var dy = r.height ? (e.clientY - startY) / r.height * 100 : 0;
+      st.x = Math.max(0, Math.min(90, origX + dx));
+      st.y = Math.max(0, Math.min(90, origY + dy));
+      note.style.left = st.x + "%";
+      note.style.top = st.y + "%";
+    }
+    function up(){
+      document.removeEventListener("pointermove", move);
+      document.removeEventListener("pointerup", up);
+    }
+    document.addEventListener("pointermove", move);
+    document.addEventListener("pointerup", up);
+  });
+}
+function addStickyNote(){
+  if (editorStickies.length >= 10) return;
+  var st = { id: "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), x: 8 + Math.random() * 20, y: 8 + Math.random() * 15, w: 30, h: 22, text: "" };
+  editorStickies.push(st);
+  renderStickyLayer();
+  var layer = document.getElementById("sticky-layer");
+  var ta = layer && layer.querySelector('.sticky-note[data-sticky-id="' + st.id + '"] textarea');
+  if (ta) ta.focus();
+}
+function deleteStickyNote(id){
+  editorStickies = editorStickies.filter(function(st){ return st.id !== id; });
+  renderStickyLayer();
+}
+
 function setDrawTool(tool){
   drawState.tool = tool;
   document.querySelectorAll("#draw-tools [data-tool]").forEach(function(b){
@@ -3150,10 +4026,11 @@ function setDrawColor(color){
   });
 }
 function setDrawSize(size){
-  drawState.size = size;
-  document.querySelectorAll("#draw-tools [data-size]").forEach(function(b){
-    b.classList.toggle("on", Number(b.getAttribute("data-size")) === size);
-  });
+  drawState.size = Math.max(1, Math.min(20, Number(size) || 5));
+  var slider = document.getElementById("draw-size-slider");
+  if (slider) slider.value = String(drawState.size);
+  var val = document.getElementById("draw-size-value");
+  if (val) val.textContent = String(drawState.size);
 }
 function drawGrid(){
   var g = drawGridCanvas();
@@ -3193,39 +4070,49 @@ function clearDrawing(){
   if (ctx) { var c = drawMainCanvas(); ctx.clearRect(0, 0, c.width, c.height); }
   editorHasDrawing = false;
   editorDrawing = null;
+  editorStickies = [];
+  renderStickyLayer();
 }
 function loadEditorDrawing(){
   var ctx = getDrawCtx();
   var c = drawMainCanvas();
   if (ctx && c) ctx.clearRect(0, 0, c.width, c.height);
   editorHasDrawing = false;
-  if (!editorDrawing) return;
+  var parsed = parseDrawingData(editorDrawing);
+  editorStickies = parsed.stickies;
+  renderStickyLayer();
+  if (!parsed.image) return;
   var img = new Image();
   img.onload = function(){
     var cx = getDrawCtx();
     if (cx && c) { cx.clearRect(0, 0, c.width, c.height); cx.drawImage(img, 0, 0, c.width, c.height); }
     editorHasDrawing = true;
   };
-  img.src = editorDrawing;
+  img.src = parsed.image;
 }
 function captureDrawing(){
-  if (!editorHasDrawing) return null;
-  var c = drawMainCanvas();
-  if (!c || !c.toDataURL) return editorDrawing;
-  var url = null;
-  try { url = c.toDataURL("image/png"); } catch (e) { return editorDrawing; }
-  if (!url || url.length < 100) return editorDrawing;
-  if (url.length <= 120000) return url;
-  try {
-    var small = document.createElement("canvas");
-    small.width = 380; small.height = 190;
-    var sctx = small.getContext("2d");
-    if (!sctx) return editorDrawing;
-    sctx.drawImage(c, 0, 0, small.width, small.height);
-    var j = small.toDataURL("image/jpeg", 0.85);
-    if (j && j.length >= 100 && j.length <= 120000) return j;
-  } catch (e) {}
-  return editorDrawing;
+  var base = null;
+  if (editorHasDrawing) {
+    var c = drawMainCanvas();
+    if (c && c.toDataURL) {
+      try { base = c.toDataURL("image/png"); } catch (e) { base = null; }
+      if (!base || base.length < 100) base = editorDrawing ? parseDrawingData(editorDrawing).image : null;
+      if (base && base.length > 120000) {
+        try {
+          var small = document.createElement("canvas");
+          small.width = 380; small.height = 190;
+          var sctx = small.getContext("2d");
+          if (sctx) {
+            sctx.drawImage(c, 0, 0, small.width, small.height);
+            var j = small.toDataURL("image/jpeg", 0.85);
+            if (j && j.length >= 100 && j.length <= 120000) base = j;
+          }
+        } catch (e) {}
+      }
+    }
+    if (!base) base = editorDrawing ? parseDrawingData(editorDrawing).image : null;
+  }
+  return drawingWithStickies(base);
 }
 
 /* ---------- AI help inside a note ---------- */
@@ -3289,20 +4176,14 @@ function updateHeroForView(){
   else if (view === "legal") titleKey = "legalH";
   else if (view === "settings") titleKey = "settingsH";
   else if (view === "history") titleKey = "historyViewH";
+  else if (view === "ranking") titleKey = "rankingTitle";
   if (!titleKey) return;
   document.getElementById("footer-text").textContent = "L3ARN · " + t(titleKey);
 }
 function showMain(v){
-  if (v === "profile") { openProfile(); return; }
   if (v === "subject") { goHome(); return; }
-  showView(v);
-  if (v === "home") renderHome();
-  if (v === "learn") renderLearn();
-  if (v === "playlist") renderPlaylist();
-  if (v === "schedule") renderSchedule();
-  if (v === "ai") { renderAI(); probeAI(); }
-  if (v === "settings") renderSettings();
-  if (v === "history") renderHistory();
+  if (v === "home") { showView("home"); renderHome(); return; }
+  openSectionWindow(v);
   updateHeroForView();
   renderStats();
   window.scrollTo({ top: 0 });
@@ -3326,15 +4207,15 @@ function closeSidebar(){
   if (mb) mb.setAttribute("aria-expanded", "false");
 }
 document.addEventListener("keydown", function(e){
-  if (e.key === "Escape") closeSidebar();
+  if (e.key === "Escape") {
+    if (winStack.length) { closeSectionWindow(winStack[winStack.length - 1].v); return; }
+    closeSidebar();
+  }
 });
 
 /* ================= Settings ================= */
 function renderSettings(){
-  var note = document.getElementById("settings-account-note");
-  if (note) {
-    note.textContent = auth ? t("signedInAs") + " " + (auth.name || "") + " · " + t("syncNote") : t("signInNote");
-  }
+  refreshAuthUI();
   renderStats();
   syncA11yControls();
 }
@@ -3389,7 +4270,44 @@ function renderHistory(){
   });
 }
 /* ================= Learn ================= */
+
+function renderSuggested(){
+  var host = document.getElementById("learn-suggested");
+  if (!host) return;
+  host.innerHTML = "";
+  var n = new Date();
+  var today = n.getFullYear() + "-" + String(n.getMonth() + 1).padStart(2, "0") + "-" + String(n.getDate()).padStart(2, "0");
+  var group = suggestedGroup();
+  var pool = group ? FIELD_VIDEOS[group] : null;
+  var label = document.createElement("p");
+  label.className = "lede daily-label";
+  label.textContent = t("updatedDaily") + " · " + today;
+  host.appendChild(label);
+  function sectionCard(title, videos){
+    var card = document.createElement("div");
+    card.className = "card";
+    card.style.marginBottom = "16px";
+    var h = document.createElement("h3");
+    h.style.cssText = "font-size:20px;font-weight:800";
+    h.textContent = title;
+    card.appendChild(h);
+    var grid = document.createElement("div");
+    grid.className = "videogrid";
+    videos.forEach(function(v){ grid.appendChild(videoCard(v)); });
+    card.appendChild(grid);
+    host.appendChild(card);
+  }
+  var suggested = pool ? dailyPick(pool, 3, today) : dailyPick(GENERAL_POOL, 3, today);
+  sectionCard(t("suggestedForYou"), suggested);
+  var suggestedIds = {};
+  suggested.forEach(function(v){ suggestedIds[v.id] = true; });
+  var general = dailyPick(GENERAL_POOL.filter(function(v){ return !suggestedIds[v.id]; }), 6, today);
+  sectionCard(t("generalStudy"), general);
+}
+
 function renderLearn(){
+  renderSuggested();
+  fillUploadSubjectOptions();
   var host = document.getElementById("learn-topics");
   host.innerHTML = "";
   LEARN_TOPICS.forEach(function(tp){
@@ -3467,25 +4385,117 @@ function videoCard(v){
   card.appendChild(thumb); card.appendChild(body);
   return card;
 }
-function playVideo(id, card){
-  var v = ALL_VIDEOS[id]; if (!v || !card) return;
+
+var floatVideoId = null;
+var floatMinimized = false;
+function isFloatOpen(){ return floatVideoId !== null && !floatMinimized; }
+function floatVideoEl(){ return document.getElementById("float-video"); }
+function openFloatVideo(id){
+  var v = videoById(id);
+  if (!v) return;
   recordWatch(id);
-  var host = card.querySelector(".vthumb");
-  if (!host || host.querySelector("iframe")) return;
-  var frame = document.createElement("iframe");
-  frame.src = "https://www.youtube-nocookie.com/embed/" + id + "?rel=0&autoplay=1";
+  floatVideoId = id;
+  floatMinimized = false;
+  var win = floatVideoEl();
+  var title = document.getElementById("float-title");
+  if (title) title.textContent = v.title;
+  var pillTitle = document.getElementById("float-pill-title");
+  if (pillTitle) pillTitle.textContent = v.title;
+  var body = document.getElementById("float-body");
+  var frame = body.querySelector("iframe");
+  if (!frame) {
+    frame = document.createElement("iframe");
+    frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    frame.allowFullscreen = true;
+    body.appendChild(frame);
+  }
   frame.title = v.title;
-  frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-  frame.allowFullscreen = true;
-  host.innerHTML = "";
-  var glow = document.createElement("img");
-  glow.className = "ambient";
-  glow.src = "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg";
-  glow.alt = "";
-  glow.setAttribute("aria-hidden", "true");
-  host.appendChild(glow);
-  host.appendChild(frame);
-  host.classList.add("playing");
+  frame.src = "https://www.youtube-nocookie.com/embed/" + id + "?rel=0&autoplay=1";
+  win.classList.remove("hidden");
+  document.getElementById("float-pill").classList.add("hidden");
+  positionFloatDefault();
+  bringWindowToFront(win);
+}
+function positionFloatDefault(){
+  var win = floatVideoEl();
+  if (!win || win.dataset.placed) return;
+  var w = Math.min(420, window.innerWidth - 24);
+  var h = Math.round(w * 9 / 16) + 48;
+  win.style.width = w + "px";
+  win.style.height = h + "px";
+  win.style.right = "14px";
+  win.style.top = "76px";
+  win.dataset.placed = "1";
+}
+function closeFloatVideo(){
+  var win = floatVideoEl();
+  var body = document.getElementById("float-body");
+  var frame = body.querySelector("iframe");
+  if (frame) frame.src = "about:blank";
+  win.classList.add("hidden");
+  document.getElementById("float-pill").classList.add("hidden");
+  floatVideoId = null;
+  floatMinimized = false;
+}
+function minimizeFloatVideo(){
+  var win = floatVideoEl();
+  win.classList.add("hidden");
+  document.getElementById("float-pill").classList.remove("hidden");
+  floatMinimized = true;
+}
+function restoreFloatVideo(){
+  var win = floatVideoEl();
+  win.classList.remove("hidden");
+  document.getElementById("float-pill").classList.add("hidden");
+  floatMinimized = false;
+  bringWindowToFront(win);
+}
+function attachWindowDrag(win, handle){
+  handle.addEventListener("pointerdown", function(ev){
+    if (ev.target && ev.target.closest && ev.target.closest("button")) return;
+    ev.preventDefault();
+    var startX = ev.clientX, startY = ev.clientY;
+    var r = win.getBoundingClientRect();
+    var origLeft = r.left, origTop = r.top;
+    win.style.right = "auto"; win.style.bottom = "auto";
+    win.style.left = origLeft + "px"; win.style.top = origTop + "px";
+    function move(e){
+      var nx = Math.max(0, Math.min(window.innerWidth - 80, origLeft + (e.clientX - startX)));
+      var ny = Math.max(0, Math.min(window.innerHeight - 60, origTop + (e.clientY - startY)));
+      win.style.left = nx + "px"; win.style.top = ny + "px";
+    }
+    function up(){
+      document.removeEventListener("pointermove", move);
+      document.removeEventListener("pointerup", up);
+    }
+    document.addEventListener("pointermove", move);
+    document.addEventListener("pointerup", up);
+  });
+}
+function attachWindowResize(win, handle, minW, minH){
+  handle.addEventListener("pointerdown", function(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    var startX = ev.clientX, startY = ev.clientY;
+    var r = win.getBoundingClientRect();
+    var origW = r.width, origH = r.height;
+    function move(e){
+      var w = Math.max(minW || 280, Math.min(window.innerWidth - 12, origW + (e.clientX - startX)));
+      var h = Math.max(minH || 220, Math.min(window.innerHeight - 12, origH + (e.clientY - startY)));
+      win.style.width = w + "px";
+      win.style.height = h + "px";
+    }
+    function up(){
+      document.removeEventListener("pointermove", move);
+      document.removeEventListener("pointerup", up);
+    }
+    document.addEventListener("pointermove", move);
+    document.addEventListener("pointerup", up);
+  });
+}
+
+function playVideo(id, card){
+  openFloatVideo(id);
 }
 function isSaved(id){ return (store.playlist || []).indexOf(id) !== -1; }
 function toggleSaveVideo(id){
@@ -3507,6 +4517,143 @@ function recordWatch(id){
   store.watchHistory = h.slice(0, 200);
   saveProgress(true);
   renderStats();
+}
+
+
+var uploadFileText = "";
+var uploadFileName = "";
+var uploadTruncated = false;
+var pdfJsPromise = null;
+function loadPdfJs(){
+  if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  if (pdfJsPromise) return pdfJsPromise;
+  pdfJsPromise = new Promise(function(resolve, reject){
+    var s = document.createElement("script");
+    s.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+    s.onload = function(){ resolve(window.pdfjsLib || null); };
+    s.onerror = function(){ reject(new Error("pdfjs load failed")); };
+    document.head.appendChild(s);
+  });
+  return pdfJsPromise;
+}
+function extractPdfText(buf){
+  return loadPdfJs().then(function(pdfjs){
+    if (!pdfjs) throw new Error("pdfjs missing");
+    pdfjs.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    return pdfjs.getDocument({ data: buf }).promise;
+  }).then(function(pdf){
+    var texts = [];
+    var chain = Promise.resolve();
+    for (var p = 1; p <= pdf.numPages; p++) {
+      (function(pageNum){
+        chain = chain.then(function(){ return pdf.getPage(pageNum); }).then(function(page){
+          return page.getTextContent();
+        }).then(function(tc){
+          var txt = "";
+          tc.items.forEach(function(it){ txt += (it.str || "") + " "; });
+          texts.push(txt);
+        });
+      })(p);
+    }
+    return chain.then(function(){ return texts.join("\n"); });
+  });
+}
+function fillUploadSubjectOptions(){
+  var sel = document.getElementById("upload-subject");
+  if (!sel) return;
+  sel.innerHTML = "";
+  visibleSubjects().forEach(function(sb){
+    var op = document.createElement("option");
+    op.value = sb.id; op.textContent = sb.title;
+    sel.appendChild(op);
+  });
+  if (store.active) sel.value = store.active;
+}
+function openUpload(){
+  fillUploadSubjectOptions();
+  showMain("learn");
+  setTimeout(function(){
+    var card = document.getElementById("upload-card");
+    if (card) card.scrollIntoView({ behavior:"smooth", block:"center" });
+    var f = document.getElementById("upload-file"); if (f) f.focus();
+  }, 60);
+}
+function setUploadStatus(msg, show){
+  var el = document.getElementById("upload-status");
+  if (!el) return;
+  el.textContent = msg || "";
+  el.classList.toggle("hidden", !show);
+}
+function onUploadFileChosen(){
+  var input = document.getElementById("upload-file");
+  var file = input && input.files && input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { setUploadStatus(t("uploadFileTooBig"), true); input.value = ""; return; }
+  var isPdf = /\.pdf$/i.test(file.name) || file.type === "application/pdf";
+  var isTxt = /\.txt$/i.test(file.name) || file.type === "text/plain";
+  if (!isPdf && !isTxt) { setUploadStatus(t("uploadFileType"), true); input.value = ""; return; }
+  setUploadStatus(t("uploadReading"), true);
+  var reader = new FileReader();
+  if (isTxt) {
+    reader.onload = function(){ handleUploadText(String(reader.result || ""), file.name); };
+    reader.readAsText(file);
+  } else {
+    reader.onload = function(){
+      extractPdfText(reader.result).then(function(text){
+        handleUploadText(text, file.name);
+      }).catch(function(){
+        setUploadStatus(t("uploadPdfError"), true);
+      });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+}
+function handleUploadText(text, fileName){
+  uploadFileText = text || "";
+  uploadFileName = fileName || "";
+  uploadTruncated = uploadFileText.length > 8000;
+  if (uploadTruncated) uploadFileText = uploadFileText.slice(0, 8000);
+  setUploadStatus(uploadTruncated ? t("uploadCutOff") : "", uploadTruncated);
+}
+function generateFromUpload(){
+  var sel = document.getElementById("upload-subject");
+  var subjectId = sel ? sel.value : store.active;
+  var input = document.getElementById("upload-file");
+  if (!uploadFileText) {
+    if (input && input.files && input.files[0]) { onUploadFileChosen(); return; }
+    setUploadStatus(t("uploadNoFile"), true);
+    return;
+  }
+  var sb = subjectDef(subjectId);
+  var subjectTitle = sb ? sb.title : "";
+  setUploadStatus(t("uploadGenerating"), true);
+  var btn = document.getElementById("upload-generate");
+  if (btn) btn.disabled = true;
+  fetch(WORKER + "/api/generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: uploadFileText, subject: subjectTitle })
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if (btn) btn.disabled = false;
+    if (!d || !d.ok || d.error === "not_configured") {
+      setUploadStatus(t("uploadNotSetUp"), true);
+      return;
+    }
+    var up = normalizeUploaded({ cards: d.cards || [], lesson: d.lesson || "", sourceName: uploadFileName, at: Date.now() });
+    if (!up || !up.cards.length) { setUploadStatus(t("uploadError"), true); return; }
+    var p = ensureSubject(subjectId);
+    p.uploaded = up;
+    p.uploadedKnown = {};
+    saveProgress();
+    showSaved(t("uploadSaved"));
+    setUploadStatus("", false);
+    uploadFileText = "";
+    if (input) input.value = "";
+    openSubject(subjectId);
+  }).catch(function(){
+    if (btn) btn.disabled = false;
+    setUploadStatus(t("uploadError"), true);
+  });
 }
 
 /* ================= Playlist + Watch History ================= */
@@ -3653,11 +4800,19 @@ function renderProfile(){
   var name = displayName();
   document.getElementById("profile-name").textContent = profileNameLine();
   document.getElementById("profile-meta").textContent = profileSubLine();
+  var rb = document.getElementById("profile-rank-badge");
+  if (rb) rb.textContent = rankFor(totalPoints()).name + " · " + totalPoints() + " " + t("rankPoints");
+  var acc = document.getElementById("study-profile-account");
+  if (acc) {
+    if (auth && auth.username) acc.textContent = t("signedInAs") + " " + auth.name + " (@" + auth.username + (typeof auth.age === "number" ? " · Age " + auth.age : "") + ")";
+    else if (store.profile.username) acc.textContent = "@" + store.profile.username + (typeof store.profile.age === "number" ? " · Age " + store.profile.age : "");
+    else acc.textContent = "";
+  }
   var totalKnown = 0, totalNotes = 0, best = 0;
   Object.keys(store.subjects).forEach(function(id){
     var sp = store.subjects[id];
     if (!sp) return;
-    totalKnown += knownCount(sp);
+    totalKnown += knownCount(sp) + Object.keys(sp.uploadedKnown || {}).filter(function(k){ return sp.uploadedKnown[k]; }).length;
     totalNotes += (sp.notes || []).length;
     var c = (sp.streak && sp.streak.count) || 0; if (c > best) best = c;
   });
@@ -3729,6 +4884,14 @@ function syncProfileName(){
     store.profile.name = auth.name.slice(0, 40);
     saveLocal();
   }
+  if (auth && auth.username && !store.profile.username) {
+    store.profile.username = auth.username;
+    saveLocal();
+  }
+  if (auth && typeof auth.age === "number" && (store.profile.age === null || store.profile.age === undefined)) {
+    store.profile.age = auth.age;
+    saveLocal();
+  }
 }
 function setProfileName(v){
   store.profile.name = (v || "").trim().slice(0, 40);
@@ -3789,6 +4952,7 @@ function saveProfileField(){
   renderProfile();
   renderHeaderAvatar();
   updateHeroForView();
+  if (view === "learn") renderLearn();
 }
 function setCollege(v){
   if (v === "__other") {
@@ -3835,6 +4999,7 @@ function applyCourse(c){
   updateHeroForView();
   renderProfile();
   renderHeaderAvatar();
+  if (view === "learn") renderLearn();
 }
 function setMajor(v){
   if (v === "__other") {
@@ -3910,21 +5075,166 @@ function renderAll(){
   else if (view === "legal") { updateHeroForView(); showLegal(legalPage); renderStats(); }
   else if (view === "settings") { updateHeroForView(); renderSettings(); renderStats(); }
   else if (view === "history") { updateHeroForView(); renderHistory(); renderStats(); }
+  else if (view === "ranking") { updateHeroForView(); renderRanking(); renderStats(); }
   renderStreak(); renderNotes(); refreshAuthUI(); renderHeaderAvatar();
 }
 
 /* ================= Subject picker + views ================= */
-function showView(v){
+
+var winStack = [];
+var winZ = 100;
+function sectionTitle(v){
+  var map = { learn:"learnH", playlist:"playlistH", schedule:"scheduleH", profile:"profileH", ai:"aiH", settings:"settingsH", history:"historyViewH", ranking:"rankingTitle" };
+  return map[v] ? t(map[v]) : v;
+}
+function isWindowed(v){ return winStack.some(function(w){ return w.v === v; }); }
+function bringWindowToFront(win){
+  winZ += 1;
+  win.style.zIndex = String(winZ);
+  var idx = -1;
+  for (var i = 0; i < winStack.length; i++) if (winStack[i].el === win) idx = i;
+  if (idx !== -1) { var w = winStack.splice(idx, 1)[0]; winStack.push(w); }
+}
+function renderSection(v){
+  if (v === "learn") renderLearn();
+  else if (v === "playlist") renderPlaylist();
+  else if (v === "schedule") renderSchedule();
+  else if (v === "profile") openProfile();
+  else if (v === "ai") { renderAI(); probeAI(); }
+  else if (v === "settings") renderSettings();
+  else if (v === "history") renderHistory();
+  else if (v === "ranking") renderRanking();
+}
+function openSectionWindow(v){
+  var existing = null;
+  for (var i = 0; i < winStack.length; i++) if (winStack[i].v === v) existing = winStack[i];
+  if (existing) {
+    bringWindowToFront(existing.el);
+    view = v;
+    updateNavSelected();
+    updateHeroForView();
+    return;
+  }
+  var section = document.getElementById(v + "-view");
+  if (!section) return;
+  var layer = document.getElementById("window-layer");
+  var win = document.createElement("div");
+  win.className = "app-window";
+  win.setAttribute("data-window", v);
+  win.style.width = Math.min(680, window.innerWidth - 24) + "px";
+  win.style.height = Math.min(560, window.innerHeight - 120) + "px";
+  win.style.left = Math.max(12, (window.innerWidth - Math.min(680, window.innerWidth - 24)) / 2) + "px";
+  win.style.top = "72px";
+  var bar = document.createElement("div");
+  bar.className = "win-titlebar";
+  var title = document.createElement("span");
+  title.className = "win-title";
+  title.textContent = sectionTitle(v);
+  var close = document.createElement("button");
+  close.className = "win-close";
+  close.textContent = "×";
+  close.setAttribute("aria-label", "Close");
+  close.onclick = function(){ closeSectionWindow(v); };
+  bar.appendChild(title); bar.appendChild(close);
+  var body = document.createElement("div");
+  body.className = "win-body";
+  var resize = document.createElement("div");
+  resize.className = "win-resize";
+  resize.setAttribute("aria-hidden", "true");
+  win.appendChild(bar); win.appendChild(body); win.appendChild(resize);
+  layer.appendChild(win);
+  var rec = { v: v, el: win, origParent: section.parentNode, origNext: section.nextSibling };
+  winStack.push(rec);
+  body.appendChild(section);
+  section.classList.remove("hidden");
   view = v;
-  ["home","subject","learn","playlist","schedule","profile","ai","legal","settings","history"].forEach(function(k){
+  attachWindowDrag(win, bar);
+  attachWindowResize(win, resize, 320, 280);
+  win.addEventListener("pointerdown", function(){ bringWindowToFront(win); });
+  bringWindowToFront(win);
+  renderSection(v);
+  updateNavSelected();
+  updateHeroForView();
+  renderStats();
+}
+function closeSectionWindow(v){
+  var idx = -1;
+  for (var i = 0; i < winStack.length; i++) if (winStack[i].v === v) idx = i;
+  if (idx === -1) return;
+  var rec = winStack.splice(idx, 1)[0];
+  var section = document.getElementById(v + "-view");
+  if (section) {
+    if (rec.origNext) rec.origParent.insertBefore(section, rec.origNext);
+    else rec.origParent.appendChild(section);
+    section.classList.add("hidden");
+  }
+  if (rec.el.parentNode) rec.el.parentNode.removeChild(rec.el);
+  var top = winStack[winStack.length - 1];
+  view = top ? top.v : "home";
+  if (!top) showView("home");
+  else { updateNavSelected(); updateHeroForView(); }
+}
+function closeAllWindows(){
+  while (winStack.length) closeSectionWindow(winStack[winStack.length - 1].v);
+}
+function updateNavSelected(){
+  ["home","learn","playlist","schedule","profile","ai","settings","history","ranking"].forEach(function(k){
+    var b = document.getElementById("nav-" + k);
+    if (b) b.setAttribute("aria-selected", (view === k || (k === "home" && view === "subject")) ? "true" : "false");
+  });
+}
+function wireFloatVideo(){
+  var fmin = document.getElementById("float-min");
+  if (fmin) fmin.onclick = minimizeFloatVideo;
+  var fclose = document.getElementById("float-close");
+  if (fclose) fclose.onclick = closeFloatVideo;
+  var fpill = document.getElementById("float-pill");
+  if (fpill) fpill.onclick = restoreFloatVideo;
+  var fwin = document.getElementById("float-video");
+  var fbar = document.getElementById("float-titlebar");
+  var fresize = document.getElementById("float-resize");
+  if (fwin && fbar) attachWindowDrag(fwin, fbar);
+  if (fwin && fresize) attachWindowResize(fwin, fresize, 280, 220);
+  if (fwin) fwin.addEventListener("pointerdown", function(){ bringWindowToFront(fwin); });
+}
+function maybeShowTermsGate(){
+  var accepted = false;
+  try { accepted = localStorage.getItem(LS_TERMS) === "1"; } catch (e) {}
+  if (accepted) { maybeShowAuthScreen(); return; }
+  var gate = document.getElementById("terms-gate");
+  var body = document.getElementById("terms-gate-body");
+  if (body) body.innerHTML = LEGAL.terms.body;
+  if (gate) gate.classList.remove("hidden");
+}
+function acceptTerms(){
+  try { localStorage.setItem(LS_TERMS, "1"); } catch (e) {}
+  var gate = document.getElementById("terms-gate");
+  if (gate) gate.classList.add("hidden");
+  maybeShowAuthScreen();
+}
+function declineTerms(){
+  var note = document.getElementById("terms-decline-note");
+  if (note) note.classList.remove("hidden");
+}
+function maybeShowAuthScreen(){
+  if (auth) { refreshAuthUI(); return; }
+  var dismissed = false;
+  try { dismissed = localStorage.getItem(LS_GUEST) === "1"; } catch (e) {}
+  if (dismissed) { refreshAuthUI(); return; }
+  showAuthScreen();
+}
+
+function showView(v){
+  flushStudyTime();
+  if (v === "home") closeAllWindows();
+  view = v;
+  ["home","subject","learn","playlist","schedule","profile","ai","legal","settings","history","ranking"].forEach(function(k){
+    if (isWindowed(k)) return;
     var el = document.getElementById(k === "home" ? "home-view" : k + "-view");
     if (el) el.classList.toggle("hidden", v !== k);
   });
   document.getElementById("back-btn").classList.toggle("hidden", v !== "subject");
-  ["home","learn","playlist","schedule","profile","ai","settings","history"].forEach(function(k){
-    var b = document.getElementById("nav-" + k);
-    if (b) b.setAttribute("aria-selected", (v === k || (k === "home" && v === "subject")) ? "true" : "false");
-  });
+  updateNavSelected();
   closeSidebar();
   var vis = document.getElementById(v === "home" ? "home-view" : v + "-view");
   if (vis && window.matchMedia && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -3938,7 +5248,7 @@ function renderStats(){
   Object.keys(store.subjects).forEach(function(id){
     var p = store.subjects[id];
     if (!p) return;
-    totalKnown += knownCount(p);
+    totalKnown += knownCount(p) + Object.keys(p.uploadedKnown || {}).filter(function(k){ return p.uploadedKnown[k]; }).length;
     totalNotes += (p.notes || []).length;
     var c = (p.streak && p.streak.count) || 0; if (c > best) best = c;
   });
@@ -3948,7 +5258,7 @@ function renderStats(){
   setEl("set-stat-known", totalKnown);
   setEl("set-stat-notes", totalNotes);
   setEl("hist-stat-guides", 6);
-  setEl("hist-stat-videos", 6);
+  setEl("hist-stat-videos", Object.keys(ALL_VIDEOS).length);
   setEl("hist-stat-saved", (store.playlist || []).length);
   setEl("hist-stat-watched", (store.watchHistory || []).length);
 }
@@ -4099,13 +5409,15 @@ function renderSubjectView(){
   document.getElementById("footer-text").textContent = sb.footer;
   renderStats();
   renderEmptyNotes();
-  document.getElementById("fc-content").classList.toggle("hidden", !sb.ready);
-  document.getElementById("fc-empty").classList.toggle("hidden", sb.ready);
+  var hasCards = sb.ready || hasUploadedCards();
+  document.getElementById("fc-content").classList.toggle("hidden", !hasCards);
+  document.getElementById("fc-empty").classList.toggle("hidden", hasCards);
+  renderUploadedLesson();
   document.getElementById("quiz-content").classList.toggle("hidden", !sb.ready);
   document.getElementById("quiz-empty").classList.toggle("hidden", sb.ready);
   document.getElementById("tasks-content").classList.toggle("hidden", !sb.ready);
   document.getElementById("tasks-empty").classList.toggle("hidden", sb.ready);
-  if (sb.ready) {
+  if (hasCards) {
     renderCard();
     if (quizStarted) loadQuiz();
   }
@@ -4151,6 +5463,16 @@ function goHome(){
   applyLang();
   renderAll();
   updateThemeLabel();
+  updateBrandLogo();
+  startStudyTimer();
+  wireFloatVideo();
+  document.addEventListener("visibilitychange", function(){ if (document.hidden) flushStudyTime(); });
+  window.addEventListener("pagehide", flushStudyTime);
+  setTimeout(function(){
+    var loader = document.getElementById("app-loader");
+    if (loader) { loader.classList.add("hide"); setTimeout(function(){ if (loader.parentNode) loader.parentNode.removeChild(loader); }, 450); }
+    maybeShowTermsGate();
+  }, 900);
   // If signed in, pull the server copy in the background.
   if (auth) {
     syncState = "syncing"; updateSyncLabel();
