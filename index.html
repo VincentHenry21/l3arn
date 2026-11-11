@@ -27,6 +27,15 @@
     --shadow:0 10px 30px rgba(26,35,64,.10);
     --shadow-sm:0 2px 10px rgba(26,35,64,.07);
     --radius:18px;
+    /* Responsive type + icon scale: phone base, tablet, desktop */
+    --fs-base:16px; --fs-h2:21px; --fs-lede:15px;
+    --icon:20px; --icon-sm:16px; --icon-lg:22px;
+  }
+  @media (min-width:640px){
+    :root{ --fs-base:17px; --fs-h2:22px; --fs-lede:15.5px; --icon:22px; --icon-sm:18px; --icon-lg:24px; }
+  }
+  @media (min-width:1024px){
+    :root{ --fs-base:18px; --fs-h2:23px; --fs-lede:16px; --icon:24px; --icon-sm:20px; --icon-lg:26px; }
   }
   html[data-theme="dark"]{
     --bg:#0f1420; --surface:#1a2030; --surface2:#232b3f;
@@ -40,12 +49,31 @@
     --shadow:0 10px 30px rgba(0,0,0,.45);
     --shadow-sm:0 2px 10px rgba(0,0,0,.35);
   }
+  /* ---------- Accessibility and density modes (Settings, persisted) ---------- */
+  html[data-text="large"]{ --fs-base:19px; --fs-h2:24px; --fs-lede:17px; }
+  @media (min-width:640px){ html[data-text="large"]{ --fs-base:20px; --fs-h2:25px; --fs-lede:17.5px; } }
+  @media (min-width:1024px){ html[data-text="large"]{ --fs-base:21px; --fs-h2:26px; --fs-lede:18px; } }
+  html[data-text="large"] body{line-height:1.7}
+  html[data-contrast="high"]{ --ink:#000000; --ink2:#1f2937; --ink3:#374151; --line:#4b5563; }
+  html[data-theme="dark"][data-contrast="high"]{ --bg:#000000; --surface:#0d1117; --surface2:#161b22; --ink:#ffffff; --ink2:#e5e7eb; --ink3:#d1d5db; --line:#9ca3af; }
+  html[data-contrast="high"] .btn, html[data-contrast="high"] .opt, html[data-contrast="high"] .snav-item{border-width:2px}
+  html[data-motion="reduced"] *, html[data-motion="reduced"] *::before, html[data-motion="reduced"] *::after{ animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+  html[data-font="dyslexic"] body{ font-family:Verdana,"Noto Sans Myanmar",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; letter-spacing:.02em; word-spacing:.09em; line-height:1.75; }
+  html[data-density="compact"] .card{padding:16px 14px}
+  html[data-density="compact"] .task{padding:16px}
+  html[data-density="compact"] .face{padding:18px}
+  html[data-density="compact"] .snav-item{min-height:40px;padding:8px 12px}
+  html[data-density="compact"] body{line-height:1.5}
   *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%;touch-action:manipulation}
+  /* No auto-zoom on tap: iOS zooms any input under 16px, and double-tap zooms
+     buttons. manipulation kills double-tap zoom but keeps pinch zoom. */
+  button,a,.snav-item,.tab,.opt,.seg button{touch-action:manipulation}
+  input,textarea,select{font-size:16px}
   body{
     margin:0;background:var(--bg);color:var(--ink);
     font-family:"Inter","Noto Sans Myanmar",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    font-size:17px;line-height:1.6;
+    font-size:var(--fs-base);line-height:1.6;
   }
   button{font:inherit;cursor:pointer;min-height:44px}
   input,textarea{font:inherit}
@@ -59,7 +87,7 @@
   .topbar{position:sticky;top:0;z-index:40;background:var(--bg);border-bottom:1px solid var(--line)}
   .topbar-inner{display:flex;align-items:center;gap:10px;padding:10px 0;flex-wrap:wrap}
   .menu-btn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;min-height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0;flex:none}
-  .menu-btn svg{width:20px;height:20px}
+  .menu-btn svg{width:var(--icon);height:var(--icon)}
   .brand{display:flex;align-items:center;flex:none}
   .brand-logo-tile{display:inline-flex;align-items:center;background:var(--navy);border-radius:12px;padding:5px 9px}
   .brand-logo{height:26px;width:auto;display:block}
@@ -68,10 +96,10 @@
   .headtools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto}
   .toolbtn{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:700;min-height:38px}
   .toolbtn:hover{background:var(--surface2)}
-  .toolbtn svg{width:16px;height:16px;flex:none}
+  .toolbtn svg{width:var(--icon-sm);height:var(--icon-sm);flex:none}
   .toolbtn.on{background:var(--teal-soft);color:var(--teal-dark);border-color:transparent}
   .streak-pill{display:inline-flex;align-items:center;gap:7px;background:var(--amber);color:#fff;border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:800;min-height:38px}
-  .streak-pill svg{width:16px;height:16px;flex:none}
+  .streak-pill svg{width:var(--icon-sm);height:var(--icon-sm);flex:none}
   .sync-pill{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);color:var(--ink2);border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:700;min-height:38px}
   .sync-pill .dot{width:9px;height:9px;border-radius:50%;background:#3ecfae;flex:none}
   .sync-pill.syncing .dot{background:#f0a832}
@@ -98,9 +126,9 @@
 
   main{padding:8px 0 40px}
   .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:14px 0 6px;flex-wrap:wrap}
-  .section-head h2{font-size:23px;font-weight:800}
+  .section-head h2{font-size:var(--fs-h2);font-weight:800}
   .counter{font-size:13.5px;font-weight:700;color:var(--ink3);white-space:nowrap}
-  .lede{color:var(--ink2);font-size:15.5px;margin-bottom:16px;max-width:640px}
+  .lede{color:var(--ink2);font-size:var(--fs-lede);margin-bottom:16px;max-width:640px}
 
   /* ---------- Flashcards (calm 300ms flip, transform + opacity only) ---------- */
   .flipwrap{perspective:1400px}
@@ -227,7 +255,7 @@
   .sidebar .snav-brand .brand-logo{height:30px}
   .snav-label{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);padding:12px 12px 8px}
   .snav-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:transparent;color:var(--ink2);font-weight:700;font-size:15px;border-radius:12px;padding:11px 12px;min-height:46px;transition:background .18s ease,color .18s ease,transform .12s ease}
-  .snav-item svg{width:20px;height:20px;flex:none}
+  .snav-item svg{width:var(--icon);height:var(--icon);flex:none}
   .snav-item:hover{background:var(--surface2);color:var(--ink)}
   .snav-item:active{transform:scale(.98)}
   .snav-item[aria-selected="true"]{background:var(--teal-soft);color:var(--teal-dark)}
@@ -295,7 +323,7 @@
   .saved-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);z-index:60;background:var(--teal);color:#fff;border-radius:999px;padding:11px 18px;font-weight:700;font-size:14.5px;display:flex;gap:8px;align-items:center;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease}
   html[data-theme="dark"] .saved-toast{color:#0b1512}
   .saved-toast.show{opacity:1;transform:translate(-50%,0)}
-  .saved-toast svg{width:17px;height:17px;flex:none}
+  .saved-toast svg{width:var(--icon-sm);height:var(--icon-sm);flex:none}
 
   /* ---------- Schedule ---------- */
   .weekgrid{display:grid;gap:10px}
@@ -332,7 +360,7 @@
   .chat-row.mine{justify-content:flex-end}
   .chat-avatar{flex:none;width:32px;height:32px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center}
   html[data-theme="dark"] .chat-avatar{color:#0b1512}
-  .chat-avatar svg{width:18px;height:18px}
+  .chat-avatar svg{width:var(--icon-sm);height:var(--icon-sm)}
   .bubble{max-width:78%;padding:11px 14px;border-radius:16px;font-size:15.5px;line-height:1.6;word-break:break-word;white-space:pre-wrap}
   .bubble.mine{background:var(--teal);color:#fff;border-bottom-right-radius:5px}
   html[data-theme="dark"] .bubble.mine{color:#0b1512}
@@ -350,7 +378,7 @@
   .chat-composer textarea:disabled{opacity:.55}
   .send-btn{flex:none;width:46px;height:46px;border-radius:50%;border:0;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;padding:0;min-height:46px}
   html[data-theme="dark"] .send-btn{color:#0b1512}
-  .send-btn svg{width:21px;height:21px}
+  .send-btn svg{width:var(--icon-lg);height:var(--icon-lg)}
   .send-btn:disabled{opacity:.45;cursor:default}
   .chat-empty{color:var(--ink3);font-weight:600;text-align:center;padding:26px 10px;font-size:15px;line-height:1.6}
   @media (prefers-reduced-motion: reduce){ .chat-row{animation:none} .chat-log{scroll-behavior:auto} .typing i{animation:none;opacity:.6} }
@@ -359,7 +387,7 @@
   .block-row{display:flex;gap:6px;align-items:flex-start;margin-top:8px}
   .block-row .grip{flex:none;width:30px;min-height:36px;border:1px solid var(--line);background:var(--surface);border-radius:9px;color:var(--ink3);font-weight:800;padding:0;font-size:14px}
   .block-row .grip:disabled{opacity:.35}
-  .block-row .btext{flex:1;min-width:0;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;color:var(--ink);font-size:15.5px;line-height:1.55;resize:vertical}
+  .block-row .btext{flex:1;min-width:0;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;color:var(--ink);font-size:16px;line-height:1.55;resize:vertical}
   .block-row .btext:focus{outline:3px solid rgba(14,124,107,.35);border-color:var(--teal)}
   .block-row .btext.h1{font-size:19px;font-weight:800}
   .block-row .bnum{flex:none;width:26px;text-align:right;font-weight:800;color:var(--ink3);padding-top:10px;font-size:15px}
@@ -369,7 +397,7 @@
   .block-div{border:0;border-top:1.5px solid var(--line);margin:14px 0 6px;flex:1}
   .block-add{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
   .block-add .btn{padding:9px 13px;font-size:13.5px;min-height:40px}
-  .block-type{flex:none;width:118px;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:9px 8px;color:var(--ink);font-size:13.5px;font-weight:700}
+  .block-type{flex:none;width:118px;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:9px 8px;color:var(--ink);font-size:16px;font-weight:700}
   .note-title{width:100%;background:var(--surface);border:0;border-bottom:1.5px solid var(--line);border-radius:0;padding:10px 2px;color:var(--ink);font-size:20px;font-weight:800}
   .note-title:focus{outline:none;border-bottom-color:var(--teal)}
 
@@ -413,6 +441,19 @@
   .btn:active,.subject-card:active,.guide-link:active,.videocard:active,.snav-item:active,.opt:active,.seg button:active{transform:scale(.985)}
   .subject-card,.guide-link,.videocard{transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease}
   @media (prefers-reduced-motion: reduce){ .view-enter{animation:none} .sidebar{transition:none} .sidebar-scrim{transition:none} }
+
+  /* ---------- Settings rows and switches ---------- */
+  .setrow{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line)}
+  .setrow:first-of-type{border-top:0;padding-top:4px}
+  .setrow .slabel{flex:1;min-width:0}
+  .setrow .slabel b{display:block;font-size:15.5px;font-weight:700}
+  .setrow .slabel span{display:block;font-size:13.5px;color:var(--ink2);margin-top:2px;line-height:1.5}
+  .switch{flex:none;width:52px;height:30px;min-height:30px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface2);position:relative;padding:0;transition:background .2s ease}
+  .switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--surface);box-shadow:var(--shadow-sm);transition:left .2s ease}
+  .switch[aria-pressed="true"]{background:var(--teal);border-color:var(--teal)}
+  .switch[aria-pressed="true"]::after{left:25px}
+  .setsub{font-size:15px;font-weight:800;margin-top:18px}
+  .setsub:first-child{margin-top:4px}
 
   .hidden{display:none !important}
 </style>
@@ -919,10 +960,43 @@
     <div class="statcard"><b id="set-stat-notes">0</b><span data-i18n="statNotes">Notes</span></div>
   </div>
   <div class="card" style="margin-top:16px">
-    <h3 style="font-size:18px;font-weight:800" data-i18n="appearanceH">Appearance</h3>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-      <button class="btn" onclick="toggleTheme()" data-i18n="themeToggle">Switch theme</button>
-      <button class="btn" onclick="toggleLang()" data-i18n="langToggle">Switch language</button>
+    <h3 style="font-size:18px;font-weight:800" data-i18n="langH">Language</h3>
+    <p class="ink2" style="margin-top:6px;font-size:14.5px" data-i18n="langNote">The app menus switch language. Study content stays in English.</p>
+    <div class="seg" id="lang-seg" style="margin-top:12px">
+      <button type="button" onclick="setLang('en')" data-lang="en">English</button>
+      <button type="button" onclick="setLang('my')" data-lang="my">မြန်မာ</button>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3 style="font-size:18px;font-weight:800" data-i18n="a11yH">Accessibility</h3>
+    <div class="setrow">
+      <div class="slabel"><b data-i18n="largerText">Larger text</b><span data-i18n="largerTextNote">Bigger text throughout the app.</span></div>
+      <button type="button" class="switch" id="sw-text" role="switch" aria-pressed="false" aria-label="Larger text" onclick="setTextSize(a11y.text==='large'?'normal':'large')"></button>
+    </div>
+    <div class="setrow">
+      <div class="slabel"><b data-i18n="highContrast">High contrast</b><span data-i18n="highContrastNote">Stronger colours and borders for easier reading.</span></div>
+      <button type="button" class="switch" id="sw-contrast" role="switch" aria-pressed="false" aria-label="High contrast" onclick="setContrast(a11y.contrast==='high'?'normal':'high')"></button>
+    </div>
+    <div class="setrow">
+      <div class="slabel"><b data-i18n="reduceMotion">Reduce motion</b><span data-i18n="reduceMotionNote">Turn off animations and transitions.</span></div>
+      <button type="button" class="switch" id="sw-motion" role="switch" aria-pressed="false" aria-label="Reduce motion" onclick="setMotion(a11y.motion!=='reduced')"></button>
+    </div>
+    <div class="setrow">
+      <div class="slabel"><b data-i18n="dyslexicFont">Dyslexia-friendly font</b><span data-i18n="dyslexicFontNote">A plainer font with wider spacing.</span></div>
+      <button type="button" class="switch" id="sw-font" role="switch" aria-pressed="false" aria-label="Dyslexia-friendly font" onclick="setFont(a11y.font==='dyslexic'?'default':'dyslexic')"></button>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3 style="font-size:18px;font-weight:800" data-i18n="displayH">Display</h3>
+    <div class="setsub" data-i18n="themeH">Theme</div>
+    <div class="seg" id="theme-seg" style="margin-top:10px">
+      <button type="button" onclick="setTheme('light')" data-theme-v="light" data-i18n="themeLight">Light</button>
+      <button type="button" onclick="setTheme('dark')" data-theme-v="dark" data-i18n="themeDark">Dark</button>
+    </div>
+    <div class="setsub" data-i18n="densityH">Layout density</div>
+    <div class="seg" id="density-seg" style="margin-top:10px">
+      <button type="button" onclick="setDensity('comfortable')" data-density-v="comfortable" data-i18n="densityComfortable">Comfortable</button>
+      <button type="button" onclick="setDensity('compact')" data-density-v="compact" data-i18n="densityCompact">Compact</button>
     </div>
   </div>
   <div class="card" style="margin-top:16px">
@@ -1090,6 +1164,22 @@ var I18N = {
     settingsH:"Settings",
     settingsLede:"App appearance, language, account, and your study stats.",
     appearanceH:"Appearance",
+    langH:"Language",
+    langNote:"The app menus switch language. Study content stays in English.",
+    a11yH:"Accessibility",
+    largerText:"Larger text",
+    largerTextNote:"Bigger text throughout the app.",
+    highContrast:"High contrast",
+    highContrastNote:"Stronger colours and borders for easier reading.",
+    reduceMotion:"Reduce motion",
+    reduceMotionNote:"Turn off animations and transitions.",
+    dyslexicFont:"Dyslexia-friendly font",
+    dyslexicFontNote:"A plainer font with wider spacing.",
+    displayH:"Display",
+    themeH:"Theme",
+    densityH:"Layout density",
+    densityComfortable:"Comfortable",
+    densityCompact:"Compact",
     accountH:"Account",
     themeToggle:"Switch theme",
     langToggle:"Switch language",
@@ -1264,6 +1354,22 @@ var I18N = {
     settingsH:"ဆက်တင်များ",
     settingsLede:"အသွင်အပြင်၊ ဘာသာစကား၊ အကောင့်နှင့် သင့်လေ့လာမှုစာရင်းများ။",
     appearanceH:"အသွင်အပြင်",
+    langH:"ဘာသာစကား",
+    langNote:"ဘာသာစကား ပြောင်းမည်။",
+    a11yH:"အသုံးပြုရလဝ်ယ်ကွတွကာ",
+    largerText:"စာလုံးအကျီးစား",
+    largerTextNote:"စာသားများ ပိကျီးမည်။",
+    highContrast:"ဆန့့ကျင်ဘက်ရောင် မြင့်မေားက်ရေား",
+    highContrastNote:"အရောင်များ ပိပြတ်သားမည်။",
+    reduceMotion:"လှုပ်ရျားမှု လျှော့ချုန်",
+    reduceMotionNote:"လှုပ်ရျားမှုများ ရပ်မည်။",
+    dyslexicFont:"စာဖတ်ရလဝ်ကူသော ဖောင့်",
+    dyslexicFontNote:"စာဖတ်ရလဝ်ကူမည်။",
+    displayH:"ပြသာမှု",
+    themeH:"အပြင်အဆင်",
+    densityH:"အပြင်အဆင် အကျစ်လစ်မှု",
+    densityComfortable:"သက်တောင့်သက်သာ",
+    densityCompact:"ကျစ်လစ်",
     accountH:"အကောင့်",
     themeToggle:"အပြင်အဆင် ပြောင်းမည်",
     langToggle:"ဘာသာစကား ပြောင်းမည်",
@@ -1399,6 +1505,7 @@ function applyLang(){
     el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph")));
   });
   document.getElementById("lang-btn").classList.toggle("on", lang === "my");
+  syncA11yControls();
   renderStreak(); renderKnownNote(); renderNotesCount(); updateSyncLabel(); updateThemeLabel();
   renderStats(); renderSubjectGrid(); renderEmptyNotes();
   updateHeroForView();
@@ -1412,11 +1519,13 @@ function applyLang(){
   else if (view === "history") renderHistory();
   renderHeaderAvatar();
 }
-function toggleLang(){
-  lang = lang === "en" ? "my" : "en";
+function setLang(l){
+  if (l !== "en" && l !== "my") return;
+  lang = l;
   try { localStorage.setItem("l3arn-lang", lang); } catch (e) {}
   applyLang();
 }
+function toggleLang(){ setLang(lang === "en" ? "my" : "en"); }
 
 /* ================= Theme ================= */
 var theme = "light";
@@ -1425,6 +1534,7 @@ function setTheme(mode){
   document.documentElement.setAttribute("data-theme", mode);
   try { localStorage.setItem("l3arn-theme", mode); } catch (e) {}
   updateThemeLabel();
+  syncA11yControls();
 }
 function updateThemeLabel(){
   var dark = theme === "dark";
@@ -1433,6 +1543,43 @@ function updateThemeLabel(){
   document.getElementById("theme-label").textContent = dark ? t("themeLight") : t("themeDark");
 }
 function toggleTheme(){ setTheme(theme === "dark" ? "light" : "dark"); }
+
+/* ================= Accessibility and display settings (persisted) ================= */
+var a11y = { text:"normal", contrast:"normal", motion:"auto", font:"default", density:"comfortable" };
+function loadA11y(){
+  try{
+    var v;
+    v = localStorage.getItem("l3arn-text"); if (v === "large" || v === "normal") a11y.text = v;
+    v = localStorage.getItem("l3arn-contrast"); if (v === "high" || v === "normal") a11y.contrast = v;
+    v = localStorage.getItem("l3arn-motion"); if (v === "reduced" || v === "auto") a11y.motion = v;
+    v = localStorage.getItem("l3arn-font"); if (v === "dyslexic" || v === "default") a11y.font = v;
+    v = localStorage.getItem("l3arn-density"); if (v === "compact" || v === "comfortable") a11y.density = v;
+  }catch(e){}
+}
+function applyA11y(){
+  var de = document.documentElement;
+  de.setAttribute("data-text", a11y.text);
+  de.setAttribute("data-contrast", a11y.contrast);
+  de.setAttribute("data-motion", a11y.motion === "reduced" ? "reduced" : "auto");
+  de.setAttribute("data-font", a11y.font);
+  de.setAttribute("data-density", a11y.density);
+  syncA11yControls();
+}
+function setTextSize(v){ if (v !== "large" && v !== "normal") return; a11y.text = v; try { localStorage.setItem("l3arn-text", v); } catch (e) {} applyA11y(); }
+function setContrast(v){ if (v !== "high" && v !== "normal") return; a11y.contrast = v; try { localStorage.setItem("l3arn-contrast", v); } catch (e) {} applyA11y(); }
+function setMotion(on){ a11y.motion = on ? "reduced" : "auto"; try { localStorage.setItem("l3arn-motion", a11y.motion); } catch (e) {} applyA11y(); }
+function setFont(v){ if (v !== "dyslexic" && v !== "default") return; a11y.font = v; try { localStorage.setItem("l3arn-font", v); } catch (e) {} applyA11y(); }
+function setDensity(v){ if (v !== "compact" && v !== "comfortable") return; a11y.density = v; try { localStorage.setItem("l3arn-density", v); } catch (e) {} applyA11y(); }
+function syncA11yControls(){
+  var sw;
+  sw = document.getElementById("sw-text"); if (sw) sw.setAttribute("aria-pressed", String(a11y.text === "large"));
+  sw = document.getElementById("sw-contrast"); if (sw) sw.setAttribute("aria-pressed", String(a11y.contrast === "high"));
+  sw = document.getElementById("sw-motion"); if (sw) sw.setAttribute("aria-pressed", String(a11y.motion === "reduced"));
+  sw = document.getElementById("sw-font"); if (sw) sw.setAttribute("aria-pressed", String(a11y.font === "dyslexic"));
+  document.querySelectorAll("#lang-seg button").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-lang") === lang); });
+  document.querySelectorAll("#theme-seg button").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-theme-v") === theme); });
+  document.querySelectorAll("#density-seg button").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-density-v") === a11y.density); });
+}
 
 /* ================= Subjects (BBA Year 1) ================= */
 var SUBJECTS = [
@@ -2855,6 +3002,7 @@ function renderSettings(){
     note.textContent = auth ? t("signedInAs") + " " + (auth.name || "") + " · " + t("syncNote") : t("signInNote");
   }
   renderStats();
+  syncA11yControls();
 }
 
 /* ================= History ================= */
@@ -3442,6 +3590,9 @@ function goHome(){
     else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) theme = "dark";
   } catch (e) {}
   document.documentElement.setAttribute("data-theme", theme);
+  // Accessibility and display settings (persisted)
+  loadA11y();
+  applyA11y();
   // Progress + streak
   loadLocal();
   syncProfileName();
