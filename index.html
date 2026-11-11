@@ -289,6 +289,21 @@
   .daycell .dclass{font-size:13.5px;font-weight:700;line-height:1.45;margin-top:6px}
   .daycell .dmeta{font-size:12.5px;color:var(--ink2);margin-top:2px;line-height:1.45}
   .daycell .dnone{font-size:13.5px;color:var(--ink3);font-weight:600;margin-top:6px}
+  /* ---------- Legal pages ---------- */
+  .footlink{color:var(--teal);font-weight:700;text-decoration:none}
+  .footlink:hover{text-decoration:underline}
+  .legal-body h3{font-size:19px;font-weight:800;margin-top:20px}
+  .legal-body h3:first-child{margin-top:0}
+  .legal-body p{color:var(--ink2);font-size:15.5px;line-height:1.65;margin-top:8px}
+  .legal-body ul{color:var(--ink2);font-size:15.5px;line-height:1.65;margin:8px 0 0;padding-left:22px;display:grid;gap:4px}
+  .legal-body .updated{font-size:13px;color:var(--ink3);font-weight:600;margin-top:4px}
+
+  /* ---------- Ask AI ---------- */
+  .ai-answer{white-space:pre-wrap;word-break:break-word;font-size:15.5px;line-height:1.65;color:var(--ink)}
+  .ai-q{font-weight:800;font-size:15.5px;line-height:1.5}
+  .ai-note{font-size:13.5px;color:var(--ink3);margin-top:10px;line-height:1.55}
+  .ai-warn{background:var(--amber-soft);border-radius:12px;padding:13px 15px;font-size:14.5px;font-weight:600;line-height:1.55}
+  .ai-warn b{color:var(--amber)}
   .hidden{display:none !important}
 </style>
 </head>
@@ -336,6 +351,7 @@
       <button class="tab" role="tab" id="nav-playlist" aria-selected="false" onclick="showMain('playlist')" data-i18n="navPlaylist">Playlist</button>
       <button class="tab" role="tab" id="nav-schedule" aria-selected="false" onclick="showMain('schedule')" data-i18n="navSchedule">Schedule</button>
       <button class="tab" role="tab" id="nav-profile" aria-selected="false" onclick="showMain('profile')" data-i18n="navProfile">Profile</button>
+      <button class="tab" role="tab" id="nav-ai" aria-selected="false" onclick="showMain('ai')" data-i18n="navAI">Ask AI</button>
     </div>
   </div>
 </nav>
@@ -661,11 +677,56 @@
         <button type="button" onclick="setYear(4)" data-year="4">Year 4</button>
       </div>
     </div>
+    <div class="card" style="margin-top:16px">
+      <h3 style="font-size:18px;font-weight:800" data-i18n="legalH">Terms and more</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <button class="btn" onclick="openLegal('terms')" data-i18n="termsLink">Terms and Conditions</button>
+        <button class="btn" onclick="openLegal('privacy')" data-i18n="privacyLink">Privacy Policy</button>
+        <button class="btn" onclick="openLegal('about')" data-i18n="aboutLink">About</button>
+      </div>
+    </div>
   </div>
+</section>
+
+<!-- Ask AI -->
+<section id="ai-view" class="wrap hidden" style="padding-top:8px;padding-bottom:40px">
+  <div class="section-head"><h2 data-i18n="aiH">Ask AI</h2></div>
+  <p class="lede" data-i18n="aiLede">Ask a study question and get free AI help explaining a concept, planning an assignment, or studying smarter.</p>
+  <div id="ai-notice" class="ai-warn hidden" style="margin-bottom:14px"></div>
+  <div class="card">
+    <label for="ai-input" class="counter" style="display:block;margin-bottom:8px" data-i18n="aiQuestionLabel">Your question</label>
+    <textarea id="ai-input" class="notebox" data-i18n-ph="aiPlaceholder" placeholder="Type your study question..."></textarea>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:12px;flex-wrap:wrap">
+      <button class="btn hidden" id="ai-check-btn" onclick="recheckAI()" data-i18n="aiCheckAgain">Check again</button>
+      <button class="btn primary" id="ai-ask-btn" onclick="askAI()" data-i18n="aiAsk">Ask</button>
+    </div>
+    <p class="ai-note" data-i18n="aiNote">Answers are AI-generated. Check them against your course material.</p>
+  </div>
+  <div id="ai-status" class="ai-warn hidden" style="margin-top:16px"></div>
+  <div id="ai-history"></div>
+</section>
+
+<!-- Legal -->
+<section id="legal-view" class="wrap hidden" style="padding-top:8px;padding-bottom:40px">
+  <div class="section-head"><h2 data-i18n="legalH">Terms and more</h2></div>
+  <p class="lede" data-i18n="legalLede">The plain rules for using L3ARN.</p>
+  <div class="tabs" role="tablist" aria-label="Legal pages">
+    <button class="tab" role="tab" id="legal-tab-terms" aria-selected="true" onclick="showLegal('terms')" data-i18n="termsLink">Terms and Conditions</button>
+    <button class="tab" role="tab" id="legal-tab-privacy" aria-selected="false" onclick="showLegal('privacy')" data-i18n="privacyLink">Privacy Policy</button>
+    <button class="tab" role="tab" id="legal-tab-about" aria-selected="false" onclick="showLegal('about')" data-i18n="aboutLink">About</button>
+  </div>
+  <div class="card legal-body" id="legal-body" style="margin-top:16px"></div>
 </section>
 
 <footer>
   <div class="wrap" id="footer-text">L3ARN · BBA Year 1 Study Hub</div>
+  <div class="wrap" style="margin-top:10px">
+    <a class="footlink" href="#" onclick="openLegal('terms');return false;" data-i18n="termsLink">Terms and Conditions</a>
+    <span aria-hidden="true"> · </span>
+    <a class="footlink" href="#" onclick="openLegal('privacy');return false;" data-i18n="privacyLink">Privacy Policy</a>
+    <span aria-hidden="true"> · </span>
+    <a class="footlink" href="#" onclick="openLegal('about');return false;" data-i18n="aboutLink">About</a>
+  </div>
 </footer>
 
 <div id="saved-toast" class="saved-toast" role="status" aria-live="polite">
@@ -819,6 +880,30 @@ var I18N = {
     statVideos:"Videos",
     statSaved:"Saved",
     statWatched:"Watched",
+    navAI:"Ask AI",
+    aiH:"Ask AI",
+    aiLede:"Ask a study question and get free AI help explaining a concept, planning an assignment, or studying smarter.",
+    aiQuestionLabel:"Your question",
+    aiPlaceholder:"Type your study question...",
+    aiAsk:"Ask",
+    aiThinking:"Thinking...",
+    aiNote:"Answers are AI-generated. Check them against your course material.",
+    aiNotConfigured:"AI help is not set up yet. It will be switched on soon, please try again later.",
+    aiCheckAgain:"Check again",
+    aiError:"AI help could not be reached right now. Check your connection and try again.",
+    aiEmpty:"Type a question above to get help.",
+    aiQuestions:"Questions asked",
+    aiYourQ:"You asked",
+    aiAnswerLabel:"AI answer",
+    legalH:"Terms and more",
+    legalLede:"The plain rules for using L3ARN.",
+    legalPages:"Pages",
+    termsLink:"Terms and Conditions",
+    privacyLink:"Privacy Policy",
+    aboutLink:"About",
+    termsH:"Terms and Conditions",
+    privacyH:"Privacy Policy",
+    aboutH:"About L3ARN",
   },
   my: {
     tabFlashcards:"ကတ်များ", tabQuiz:"မေးခွန်းစစ်ဆေးခြင်း", tabTasks:"တာဝန်ပေးချက်", tabNotes:"မှတ်စုများ",
@@ -917,6 +1002,30 @@ var I18N = {
     statVideos:"ဗီဒီယိုများ",
     statSaved:"သိမ်းထားသည်",
     statWatched:"ကြည့်ပြီး",
+    navAI:"AI မေးမည်",
+    aiH:"AI ကို မေးပါ",
+    aiLede:"သင်ယူမှုမေးခွန်းတစ်ခုမေးပြီး အယူအဆရှင်းပြခြင်း၊ တာဝန်ပေးချက်စီစဉ်ခြင်း သို့မဟုတ် လေ့လာခြင်းအတွက် အခမဲ့ AI အကူအညီရယူပါ။",
+    aiQuestionLabel:"သင့်မေးခွန်း",
+    aiPlaceholder:"သင့်သင်ယူမှုမေးခွန်းကို ရိုက်ထည့်ပါ...",
+    aiAsk:"မေးမည်",
+    aiThinking:"စဉ်းစားနေသည်...",
+    aiNote:"အဖြေများကို AI မှ ဖန်တီးထားသည်။ သင့်သင်ခန်းစာနှင့် တိုက်ဆိုင်စစ်ဆေးပါ။",
+    aiNotConfigured:"AI အကူအညီကို မသတ်မှတ်ရသေးပါ။ မကြာမီ ဖွင့်ပေးပါမည်။ နောက်မှ ထပ်ကြိုးစားပါ။",
+    aiCheckAgain:"ထပ်စစ်မည်",
+    aiError:"AI အကူအညီကို ယခု ဆက်သွယ်၍ မရပါ။ ချိတ်ဆက်မှုစစ်ပြီး ထပ်ကြိုးစားပါ။",
+    aiEmpty:"အကူအညီရရန် အထက်တွင် မေးခွန်းရိုက်ထည့်ပါ။",
+    aiQuestions:"မေးခဲ့သောမေးခွန်းများ",
+    aiYourQ:"သင်မေးခဲ့သည်",
+    aiAnswerLabel:"AI အဖြေ",
+    legalH:"စည်းကမ်းများနှင့် အခြား",
+    legalLede:"L3ARN ကို သုံးစွဲခြင်းအတွက် ရိုးရှင်းသောစည်းကမ်းများ။",
+    legalPages:"စာမျက်နှာများ",
+    termsLink:"စည်းကမ်းချက်များ",
+    privacyLink:"ကိုယ်ရေးအချက်အလက် မူဝါဒ",
+    aboutLink:"အကြောင်း",
+    termsH:"စည်းကမ်းချက်များ",
+    privacyH:"ကိုယ်ရေးအချက်အလက် မူဝါဒ",
+    aboutH:"L3ARN အကြောင်း",
   }
 };
 
@@ -937,6 +1046,8 @@ function applyLang(){
   else if (view === "playlist") renderPlaylist();
   else if (view === "schedule") renderSchedule();
   else if (view === "profile") renderProfile();
+  else if (view === "ai") renderAI();
+  else if (view === "legal") showLegal(legalPage);
   renderHeaderAvatar();
 }
 function toggleLang(){
@@ -1063,6 +1174,145 @@ function daysUntil(dateStr){
 }
 function fmtDateShort(d){ return d.toLocaleDateString(undefined, { month:"short", day:"numeric" }); }
 function fmtDateLong(d){ return d.toLocaleDateString(undefined, { weekday:"long", month:"short", day:"numeric", year:"numeric" }); }
+
+/* ================= Legal pages ================= */
+var legalPage = "terms";
+var LEGAL = {
+  terms: { body:
+    '<h3>Terms and Conditions</h3>' +
+    '<p class="updated">Last updated: 11 November 2026</p>' +
+    '<p>L3ARN is a free study hub for BBA Year 1 students. It helps you revise with flashcards, check your knowledge with quizzes, track assignments, keep notes, watch study videos, and ask the built-in AI for study help.</p>' +
+    '<p>Use the app for your own study. Do not use it to present someone else\'s work as your own. Your assignments must follow your college\'s rules on academic honesty, including how AI help may be used.</p>' +
+    '<p>Your account is protected by a display name and a 4-digit PIN that only you should know. Keep your PIN private. If someone else learns your PIN, they can open your synced progress.</p>' +
+    '<p>The notes, flashcard progress, playlist, and profile details you add belong to you. The study material in the app is provided for revision only.</p>' +
+    '<p>L3ARN is provided as is, for study. It comes with no guarantee that any answer, video, guide, or study tip is complete or correct. Always check important facts against your course material and your teachers.</p>' +
+    '<p>These terms may change when the app changes. The version shown in the app is the one that applies.</p>'
+  },
+  privacy: { body:
+    '<h3>Privacy Policy</h3>' +
+    '<p class="updated">Last updated: 11 November 2026</p>' +
+    '<p>L3ARN stores your study data on your own device first: your flashcard progress, quiz results, notes, playlist, watch history, profile picture, gender, and academic year.</p>' +
+    '<p>If you sign in, that same data is also stored on the sync server so it follows you across your devices. Signing in needs only a display name and a 4-digit PIN. The server stores a one-way hash of your PIN, never the PIN itself.</p>' +
+    '<p>We do not sell your data, show adverts, or track you across other sites. There are no analytics trackers in the app.</p>' +
+    '<p>Videos in the Learn section are hosted by YouTube and play inside the app. When you play a video, YouTube may collect data under Google\'s privacy policy.</p>' +
+    '<p>Questions you type into Ask AI are sent to the sync server, which forwards them to Google Gemini to generate an answer. Your questions are not stored with your account.</p>' +
+    '<p>Your synced data stays on the server until you ask for it to be removed. To remove it, sign out and contact the app owner with your display name, or delete the app data on your device and stop using the account.</p>'
+  },
+  about: { body:
+    '<h3>About L3ARN</h3>' +
+    '<p class="updated">L3ARN · BBA Year 1 Study Hub</p>' +
+    '<p>L3ARN is a study space for all BBA Year 1 students. It started with Unit 8, Managing a Work-Based Team Project, and covers all four Year 1 subjects: Managing a Work-Based Team Project, Entrepreneurship, Marketing Mix, and Financial Accounting.</p>' +
+    '<p>What you can do here: revise with flashcards, test yourself with quizzes, follow the four-stage assignment breakdown, keep quick notes, learn from free guides and videos, save a playlist, check your class and exam schedule, and ask the built-in AI for study help.</p>' +
+    '<p>Your progress, notes, and streak sync across your devices when you sign in. Everything is free to use.</p>' +
+    '<p>L3ARN is a student project. It is not affiliated with any college. The study guides and videos link out to their original free sources.</p>'
+  }
+};
+function openLegal(page){
+  legalPage = page || "terms";
+  showView("legal");
+  showLegal(legalPage);
+  updateHeroForView();
+  renderStats();
+  window.scrollTo({ top: 0 });
+}
+function showLegal(page){
+  legalPage = page;
+  ["terms","privacy","about"].forEach(function(p){
+    var b = document.getElementById("legal-tab-" + p);
+    if (b) b.setAttribute("aria-selected", p === page ? "true" : "false");
+  });
+  var host = document.getElementById("legal-body");
+  if (host) host.innerHTML = LEGAL[page].body;
+}
+
+/* ================= Ask AI ================= */
+var aiHistory = [];       // session only: {q, a}
+var aiConfigured = null;  // null = unknown, true/false = probed
+var aiBusy = false;
+function renderAI(){
+  var host = document.getElementById("ai-history");
+  if (!host) return;
+  var notice = document.getElementById("ai-notice");
+  var askBtn = document.getElementById("ai-ask-btn");
+  var checkBtn = document.getElementById("ai-check-btn");
+  var notReady = aiConfigured === false;
+  notice.classList.toggle("hidden", !notReady);
+  if (notReady) notice.innerHTML = "<b>" + t("aiNotConfigured") + "</b>";
+  if (checkBtn) checkBtn.classList.toggle("hidden", !notReady);
+  if (askBtn) askBtn.disabled = aiBusy || notReady;
+  host.innerHTML = "";
+  if (aiHistory.length === 0) {
+    var p = document.createElement("p");
+    p.className = "lede"; p.style.marginTop = "16px";
+    p.textContent = t("aiEmpty");
+    host.appendChild(p);
+    return;
+  }
+  aiHistory.forEach(function(item){
+    var card = document.createElement("div");
+    card.className = "card"; card.style.marginTop = "14px";
+    var q = document.createElement("div");
+    q.className = "ai-q"; q.textContent = item.q;
+    var al = document.createElement("div");
+    al.className = "counter"; al.style.marginTop = "10px"; al.textContent = t("aiAnswerLabel");
+    var a = document.createElement("div");
+    a.className = "ai-answer"; a.style.marginTop = "6px"; a.textContent = item.a;
+    card.appendChild(q); card.appendChild(al); card.appendChild(a);
+    host.appendChild(card);
+  });
+}
+function probeAI(){
+  if (aiConfigured !== null) { renderAI(); return; }
+  fetch(WORKER + "/api/ai", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status: true })
+  }).then(function(r){ return r.json(); }).then(function(d){
+    aiConfigured = !!(d && d.configured);
+    renderAI();
+  }).catch(function(){ aiConfigured = null; renderAI(); });
+}
+function recheckAI(){
+  aiConfigured = null;
+  renderAI();
+  probeAI();
+}
+function askAI(){
+  var input = document.getElementById("ai-input");
+  var q = input.value.trim();
+  if (!q) { input.focus(); return; }
+  if (aiBusy) return;
+  aiBusy = true;
+  var btn = document.getElementById("ai-ask-btn");
+  btn.disabled = true; btn.textContent = t("aiThinking");
+  var statusBox = document.getElementById("ai-status");
+  statusBox.classList.add("hidden");
+  fetch(WORKER + "/api/ai", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question: q })
+  }).then(function(r){ return r.json(); }).then(function(d){
+    aiBusy = false;
+    btn.disabled = false; btn.textContent = t("aiAsk");
+    if (d && d.ok && d.answer) {
+      aiHistory.unshift({ q: q, a: d.answer });
+      input.value = "";
+      renderAI();
+      renderStats();
+    } else if (d && d.error === "not_configured") {
+      aiConfigured = false;
+      renderAI();
+    } else {
+      statusBox.textContent = t("aiError");
+      statusBox.classList.remove("hidden");
+    }
+  }).catch(function(){
+    aiBusy = false;
+    btn.disabled = false; btn.textContent = t("aiAsk");
+    statusBox.textContent = t("aiError");
+    statusBox.classList.remove("hidden");
+  });
+}
 
 /* ================= Progress, sync, streak ================= */
 var WORKER = "https://l3arn-sync.henryvincent383.workers.dev";
@@ -1501,6 +1751,8 @@ function updateHeroForView(){
   else if (view === "playlist") { titleKey = "playlistH"; subKey = "playlistLede"; }
   else if (view === "schedule") { titleKey = "scheduleH"; subKey = "scheduleLede"; }
   else if (view === "profile") { titleKey = "profileH"; subKey = "profileLede"; }
+  else if (view === "ai") { titleKey = "aiH"; subKey = "aiLede"; }
+  else if (view === "legal") { titleKey = "legalH"; subKey = "legalLede"; }
   if (!titleKey) return;
   document.getElementById("unit-pill").textContent = yearLabel;
   document.getElementById("hero-title").textContent = t(titleKey);
@@ -1515,6 +1767,7 @@ function showMain(v){
   if (v === "learn") renderLearn();
   if (v === "playlist") renderPlaylist();
   if (v === "schedule") renderSchedule();
+  if (v === "ai") { renderAI(); probeAI(); }
   updateHeroForView();
   renderStats();
   window.scrollTo({ top: 0 });
@@ -1890,18 +2143,20 @@ function renderAll(){
   else if (view === "playlist") { updateHeroForView(); renderPlaylist(); renderStats(); }
   else if (view === "schedule") { updateHeroForView(); renderSchedule(); renderStats(); }
   else if (view === "profile") { updateHeroForView(); renderProfile(); renderStats(); }
+  else if (view === "ai") { updateHeroForView(); renderAI(); renderStats(); }
+  else if (view === "legal") { updateHeroForView(); showLegal(legalPage); renderStats(); }
   renderStreak(); renderNotes(); refreshAuthUI(); renderHeaderAvatar();
 }
 
 /* ================= Subject picker + views ================= */
 function showView(v){
   view = v;
-  ["home","subject","learn","playlist","schedule","profile"].forEach(function(k){
+  ["home","subject","learn","playlist","schedule","profile","ai","legal"].forEach(function(k){
     var el = document.getElementById(k === "home" ? "home-view" : k + "-view");
     if (el) el.classList.toggle("hidden", v !== k);
   });
   document.getElementById("back-btn").classList.toggle("hidden", v !== "subject");
-  ["home","learn","playlist","schedule","profile"].forEach(function(k){
+  ["home","learn","playlist","schedule","profile","ai"].forEach(function(k){
     var b = document.getElementById("nav-" + k);
     if (b) b.setAttribute("aria-selected", (v === k || (k === "home" && v === "subject")) ? "true" : "false");
   });
@@ -1947,6 +2202,20 @@ function renderStats(){
     v2 = totalKnown; l2 = "statKnown";
     v3 = totalNotes; l3 = "statNotes";
     v4 = store.profile.academicYear || 1; l4 = "yearH";
+  } else if (view === "ai") {
+    v1 = aiHistory.length; l1 = "aiQuestions";
+    v2 = 6; l2 = "statGuides";
+    v3 = 6; l3 = "statVideos";
+    v4 = 0;
+    SUBJECTS.forEach(function(sb){ var c = (store.subjects[sb.id].streak && store.subjects[sb.id].streak.count) || 0; if (c > v4) v4 = c; });
+    l4 = "dayStreak";
+  } else if (view === "legal") {
+    v1 = 3; l1 = "legalPages";
+    v2 = (store.playlist || []).length; l2 = "statSaved";
+    v3 = (store.watchHistory || []).length; l3 = "statWatched";
+    v4 = 0;
+    SUBJECTS.forEach(function(sb){ var c = (store.subjects[sb.id].streak && store.subjects[sb.id].streak.count) || 0; if (c > v4) v4 = c; });
+    l4 = "dayStreak";
   } else {
     var sb = currentSubject();
     if (sb.ready) {
