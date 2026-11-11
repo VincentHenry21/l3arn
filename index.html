@@ -470,7 +470,7 @@
   .chat-row{animation:chatIn .22s cubic-bezier(.2,.7,.3,1)}
   @keyframes chatIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   .flip-inner{transition:transform .3s cubic-bezier(.2,.7,.3,1)}
-  @media (prefers-reduced-motion: reduce){ .view-enter{animation:none} .sidebar{transition:none} .sidebar-scrim{transition:none} .sheet-card{animation:none} .chat-row{animation:none} .flip-inner{transition:none} .app-window{animation:none;transition:none} .float-video{animation:none;transition:none} .float-pill{animation:none;transition:none} .app-loader{transition:none} .terms-gate{animation:none} .auth-screen{animation:none} }
+  @media (prefers-reduced-motion: reduce){ .view-enter{animation:none} .sidebar{transition:none} .sidebar-scrim{transition:none} .sheet-card{animation:none} .chat-row{animation:none} .flip-inner{transition:none} .app-window{animation:none;transition:none} .float-video{animation:none;transition:none} .float-pill{animation:none;transition:none} .app-loader{transition:none} .terms-gate{animation:none} .auth-screen{animation:none} .ai-dot.busy{animation:none} }
 
   /* ---------- Settings rows and switches ---------- */
   .setrow{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line)}
@@ -530,7 +530,17 @@
   .win-btn,.win-close{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;width:30px;height:30px;min-height:30px;font-size:17px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .win-body{flex:1;overflow-y:auto;min-height:0}
   .win-body .wrap{padding-left:16px;padding-right:16px}
-  .win-resize{position:absolute;right:0;bottom:0;width:26px;height:26px;cursor:nwse-resize;touch-action:none;background:linear-gradient(135deg,transparent 50%,var(--line) 50%,var(--line) 60%,transparent 60%,transparent 70%,var(--line) 70%,var(--line) 80%,transparent 80%)}
+  .win-resize{position:absolute;right:0;bottom:0;width:26px;height:26px;cursor:nwse-resize;touch-action:none;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--line);border-right:0;border-bottom:0;border-radius:10px 0 0 0;color:var(--teal)}
+  .win-resize svg{width:16px;height:16px;pointer-events:none}
+  .ai-status{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--ink2);margin-bottom:14px;min-height:20px}
+  .ai-status .ai-dot{flex:none;width:9px;height:9px;border-radius:50%;background:var(--ink3)}
+  .ai-status .ai-dot.ok{background:var(--good)}
+  .ai-status .ai-dot.bad{background:var(--bad)}
+  .ai-status .ai-dot.busy{background:var(--amber);animation:aiPulse 1.1s ease-in-out infinite}
+  @keyframes aiPulse{0%,100%{opacity:.4}50%{opacity:1}}
+  .ai-retry-btn{display:inline-flex;margin-top:10px;padding:7px 12px;font-size:13.5px}
+  .howto-list{margin:6px 0 0;padding-left:22px;display:grid;gap:13px;font-size:15.5px;line-height:1.65}
+  .howto-list li{padding-left:4px}
   @media (max-width:640px){
     .app-window:not(.float-video){left:6px !important;right:6px;top:6px !important;bottom:6px;width:auto !important;height:auto !important}
   }
@@ -592,7 +602,7 @@
   <div id="float-video" class="app-window float-video hidden" role="dialog" aria-label="Video player">
     <div class="win-titlebar" id="float-titlebar"><span class="win-title" id="float-title">Video</span><button class="win-btn" id="float-min" aria-label="Minimize video">-</button><button class="win-close" id="float-close" aria-label="Close video">x</button></div>
     <div class="win-body" id="float-body"></div>
-    <div class="win-resize" id="float-resize" aria-hidden="true"></div>
+    <div class="win-resize" id="float-resize" aria-label="Resize window"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
   </div>
   <button id="float-pill" class="float-pill hidden"><span id="float-pill-title">Video</span><span aria-hidden="true">+</span></button>
 
@@ -641,6 +651,10 @@
   <button class="snav-item" id="nav-ranking" aria-selected="false" onclick="showMain('ranking')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 5H4a3 3 0 0 0 3 4M17 5h3a3 3 0 0 1-3 4"/></svg>
     <span data-i18n="navRanking">Ranking</span>
+  </button>
+  <button class="snav-item" id="nav-howto" aria-selected="false" onclick="showMain('howto')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span data-i18n="navHowto">How to use</span>
   </button>
 </aside>
 <div class="sidebar-scrim" id="sidebar-scrim" onclick="closeSidebar()" aria-hidden="true"></div>
@@ -1079,6 +1093,7 @@
     <button class="btn" id="ai-new-btn" onclick="clearAIChat()" data-i18n="aiNewChat">New chat</button>
   </div>
   <p class="lede" data-i18n="aiLede">Ask a study question and get free AI help explaining a concept, planning an assignment, or studying smarter.</p>
+  <div id="ai-status" class="ai-status" aria-live="polite"></div>
   <div id="ai-notice" class="ai-warn hidden" style="margin-bottom:14px"></div>
   <button class="btn hidden" id="ai-check-btn" onclick="recheckAI()" style="margin-bottom:14px" data-i18n="aiCheckAgain">Check again</button>
   <p class="chat-disclaimer" data-i18n="aiNote">Answers are AI-generated. Check them against your course material.</p>
@@ -1199,6 +1214,23 @@
   <div id="rank-leaderboard"></div>
   <h3 style="margin:22px 0 4px" data-i18n="rankLadder">Rank ladder</h3>
   <div id="rank-ladder"></div>
+</section>
+
+<!-- How to use -->
+<section id="howto-view" class="wrap hidden" style="padding-top:8px;padding-bottom:40px">
+  <div class="section-head"><h2 data-i18n="howtoTitle">How to use L3ARN</h2></div>
+  <p class="lede" data-i18n="howtoLede">Nine quick steps to get the most out of L3ARN.</p>
+  <ol class="howto-list">
+    <li><b>Sign in to sync.</b> Sign in with your name, username, age, and 4-digit PIN to sync your progress across devices, or continue as a guest.</li>
+    <li><b>Set up your profile.</b> Set your college, course, major, and year in Profile.</li>
+    <li><b>Choose a subject.</b> Pick a subject to revise with flashcards, a quiz, and the assignment breakdown.</li>
+    <li><b>Learn, save, and plan.</b> Use Learn for study guides and videos, Playlist to save videos, and Schedule for your classes and exams.</li>
+    <li><b>Upload a textbook.</b> Upload a PDF or textbook and the AI turns it into flashcards and a lesson.</li>
+    <li><b>Ask AI.</b> Ask AI for help, and use AI inside notes and video summaries.</li>
+    <li><b>Work with windows.</b> Sections open as windows you can drag, resize, and close, and videos open in a floating window you can keep playing while you work.</li>
+    <li><b>Earn points and climb ranks.</b> Study, watch videos, and mark flashcards known to climb from Novice to Legend.</li>
+    <li><b>Make it yours.</b> Change language, theme, and text size in Settings.</li>
+  </ol>
 </section>
 
 <section id="legal-view" class="wrap hidden" style="padding-top:8px;padding-bottom:40px">
@@ -1375,6 +1407,9 @@ var I18N = {
     historyViewH:"History",
     historyViewLede:"What you have watched and asked, newest first.",
     navRanking: "Ranking",
+    navHowto: "How to use",
+    howtoTitle: "How to use L3ARN",
+    howtoLede: "Nine quick steps to get the most out of L3ARN.",
     rankingTitle: "Ranking",
     rankPoints: "points",
     rankStudyTime: "Study time",
@@ -1507,7 +1542,11 @@ var I18N = {
     aiThinking:"Thinking...",
     aiNote:"Answers are AI-generated. Check them against your course material.",
     aiNotConfigured:"AI help is not set up yet. It will be switched on soon, please try again later.",
-    aiCheckAgain:"Check again",
+    aiCheckAgain:"Retry",
+    aiChecking:"Checking AI...",
+    aiReady:"AI ready",
+    aiNotReady:"AI not available",
+    aiTryAgain:"Try again",
     aiError:"AI help could not be reached right now. Check your connection and try again.",
     aiEmpty:"Ask a question below to get help.",
     aiQuestions:"Questions asked",
@@ -1634,6 +1673,9 @@ var I18N = {
     historyViewH:"မှတ်တမ်း",
     historyViewLede:"သင်ကြည့်ရှုခဲ့ပြီး မေးခဲ့သည်များ၊ အသစ်မှ အဟောင်းသို့။",
     navRanking: "Ranking",
+    navHowto: "အသုံးပြုနည်း",
+    howtoTitle: "L3ARN အသုံးပြုနည်း",
+    howtoLede: "L3ARN ကို အကောင်းဆုံးအသုံးပြုရန် အဆင့် ၉ ခု။",
     rankingTitle: "Ranking",
     rankPoints: "points",
     rankStudyTime: "Study time",
@@ -1766,7 +1808,11 @@ var I18N = {
     aiThinking:"စဉ်းစားနေသည်...",
     aiNote:"အဖြေများကို AI မှ ဖန်တီးထားသည်။ သင့်သင်ခန်းစာနှင့် တိုက်ဆိုင်စစ်ဆေးပါ။",
     aiNotConfigured:"AI အကူအညီကို မသတ်မှတ်ရသေးပါ။ မကြာမီ ဖွင့်ပေးပါမည်။ နောက်မှ ထပ်ကြိုးစားပါ။",
-    aiCheckAgain:"ထပ်စစ်မည်",
+    aiCheckAgain:"ထပ်ကြိုးစားမည်",
+    aiChecking:"AI ကို စစ်ဆေးနေသည်...",
+    aiReady:"AI အဆင်သင့်ဖြစ်ပြီ",
+    aiNotReady:"AI မရနိုင်ပါ",
+    aiTryAgain:"ထပ်မေးမည်",
     aiError:"AI အကူအညီကို ယခု ဆက်သွယ်၍ မရပါ။ ချိတ်ဆက်မှုစစ်ပြီး ထပ်ကြိုးစားပါ။",
     aiEmpty:"အကူအညီရရန် အောက်တွင် မေးခွန်းရိုက်ထည့်ပါ။",
     aiQuestions:"မေးခဲ့သောမေးခွန်းများ",
@@ -2583,6 +2629,8 @@ function showLegal(page){
 /* ================= Ask AI chat ================= */
 var aiHistory = [];       // session only: {q, a, time, error}
 var aiConfigured = null;  // null = unknown, true/false = probed
+var aiChecking = false;   // true while a probe is in flight
+var aiProbeFailed = false; // true when the last probe failed (network)
 var aiBusy = false;
 var aiTyping = false;
 function fmtChatTime(ts){
@@ -2597,10 +2645,21 @@ function renderAI(){
   var askBtn = document.getElementById("ai-ask-btn");
   var checkBtn = document.getElementById("ai-check-btn");
   var input = document.getElementById("ai-input");
+  var status = document.getElementById("ai-status");
   var notReady = aiConfigured === false;
-  notice.classList.toggle("hidden", !notReady);
+  var probeErr = aiProbeFailed && aiConfigured !== true;
+  if (status) {
+    if (aiChecking) status.innerHTML = '<span class="ai-dot busy"></span><span>' + t("aiChecking") + '</span>';
+    else if (aiConfigured === true) status.innerHTML = '<span class="ai-dot ok"></span><span>' + t("aiReady") + '</span>';
+    else if (notReady) status.innerHTML = '<span class="ai-dot bad"></span><span>' + t("aiNotReady") + '</span>';
+    else if (probeErr) status.innerHTML = '<span class="ai-dot bad"></span><span>' + t("aiError") + '</span>';
+    else status.innerHTML = "";
+  }
+  var showNotice = notReady || probeErr;
+  notice.classList.toggle("hidden", !showNotice);
   if (notReady) notice.innerHTML = "<b>" + t("aiNotConfigured") + "</b>";
-  if (checkBtn) checkBtn.classList.toggle("hidden", !notReady);
+  else if (probeErr) notice.innerHTML = "<b>" + t("aiError") + "</b>";
+  if (checkBtn) checkBtn.classList.toggle("hidden", !showNotice);
   if (askBtn) askBtn.disabled = aiBusy || notReady;
   if (input) input.disabled = notReady;
   host.innerHTML = "";
@@ -2611,7 +2670,7 @@ function renderAI(){
     host.appendChild(p);
     return;
   }
-  aiHistory.forEach(function(item){
+  aiHistory.forEach(function(item, idx){
     var row = document.createElement("div");
     row.className = "chat-row mine";
     var b = document.createElement("div");
@@ -2633,6 +2692,14 @@ function renderAI(){
       var b2 = document.createElement("div");
       b2.className = "bubble theirs" + (item.error ? " err" : "");
       b2.appendChild(document.createTextNode(item.a));
+      if (item.error && item.errKind && item.errKind !== "not_configured") {
+        var retry = document.createElement("button");
+        retry.type = "button";
+        retry.className = "btn ai-retry-btn";
+        retry.textContent = t("aiTryAgain");
+        retry.onclick = (function(i){ return function(){ retryAIItem(i); }; })(idx);
+        b2.appendChild(retry);
+      }
       var tm2 = document.createElement("span");
       tm2.className = "chat-time";
       tm2.textContent = fmtChatTime(item.time);
@@ -2672,17 +2739,20 @@ function clearAIChat(){
 }
 function probeAI(){
   if (aiConfigured !== null) { renderAI(); return; }
+  if (aiChecking) { renderAI(); return; }
+  aiChecking = true; aiProbeFailed = false; renderAI();
   fetch(WORKER + "/api/ai", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ status: true })
   }).then(function(r){ return r.json(); }).then(function(d){
+    aiChecking = false;
     aiConfigured = !!(d && d.configured);
     renderAI();
-  }).catch(function(){ aiConfigured = null; renderAI(); });
+  }).catch(function(){ aiChecking = false; aiProbeFailed = true; aiConfigured = null; renderAI(); });
 }
 function recheckAI(){
-  aiConfigured = null;
+  aiConfigured = null; aiProbeFailed = false; aiChecking = false;
   renderAI();
   probeAI();
 }
@@ -2693,7 +2763,7 @@ function askAI(){
   if (aiBusy) return;
   aiBusy = true;
   aiTyping = true;
-  var item = { q: q, a: null, time: Date.now(), error: false };
+  var item = { q: q, a: null, time: Date.now(), error: false, errKind: null };
   aiHistory.push(item);
   input.value = "";
   renderAI();
@@ -2706,13 +2776,27 @@ function askAI(){
     } else if (res.error === "not_configured") {
       aiConfigured = false;
       item.a = t("aiNotConfigured");
-      item.error = true;
+      item.error = true; item.errKind = "not_configured";
     } else {
       item.a = t("aiError");
-      item.error = true;
+      item.error = true; item.errKind = res.error;
     }
     renderAI();
     renderStats();
+  });
+}
+function retryAIItem(idx){
+  var item = aiHistory[idx];
+  if (!item || aiBusy) return;
+  aiBusy = true; aiTyping = true;
+  item.a = null; item.error = false; item.errKind = null;
+  renderAI();
+  callAI(item.q).then(function(res){
+    aiBusy = false; aiTyping = false;
+    if (res.ok) { item.a = res.answer; }
+    else if (res.error === "not_configured") { aiConfigured = false; item.a = t("aiNotConfigured"); item.error = true; item.errKind = "not_configured"; }
+    else { item.a = t("aiError"); item.error = true; item.errKind = res.error; }
+    renderAI(); renderStats();
   });
 }
 
@@ -4177,6 +4261,7 @@ function updateHeroForView(){
   else if (view === "settings") titleKey = "settingsH";
   else if (view === "history") titleKey = "historyViewH";
   else if (view === "ranking") titleKey = "rankingTitle";
+  else if (view === "howto") titleKey = "howtoTitle";
   if (!titleKey) return;
   document.getElementById("footer-text").textContent = "L3ARN · " + t(titleKey);
 }
@@ -5076,6 +5161,7 @@ function renderAll(){
   else if (view === "settings") { updateHeroForView(); renderSettings(); renderStats(); }
   else if (view === "history") { updateHeroForView(); renderHistory(); renderStats(); }
   else if (view === "ranking") { updateHeroForView(); renderRanking(); renderStats(); }
+  else if (view === "howto") { updateHeroForView(); renderStats(); }
   renderStreak(); renderNotes(); refreshAuthUI(); renderHeaderAvatar();
 }
 
@@ -5083,8 +5169,9 @@ function renderAll(){
 
 var winStack = [];
 var winZ = 100;
+var RESIZE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>';
 function sectionTitle(v){
-  var map = { learn:"learnH", playlist:"playlistH", schedule:"scheduleH", profile:"profileH", ai:"aiH", settings:"settingsH", history:"historyViewH", ranking:"rankingTitle" };
+  var map = { learn:"learnH", playlist:"playlistH", schedule:"scheduleH", profile:"profileH", ai:"aiH", settings:"settingsH", history:"historyViewH", ranking:"rankingTitle", howto:"howtoTitle" };
   return map[v] ? t(map[v]) : v;
 }
 function isWindowed(v){ return winStack.some(function(w){ return w.v === v; }); }
@@ -5140,7 +5227,8 @@ function openSectionWindow(v){
   body.className = "win-body";
   var resize = document.createElement("div");
   resize.className = "win-resize";
-  resize.setAttribute("aria-hidden", "true");
+  resize.setAttribute("aria-label", "Resize window");
+  resize.innerHTML = RESIZE_ICON;
   win.appendChild(bar); win.appendChild(body); win.appendChild(resize);
   layer.appendChild(win);
   var rec = { v: v, el: win, origParent: section.parentNode, origNext: section.nextSibling };
@@ -5178,7 +5266,7 @@ function closeAllWindows(){
   while (winStack.length) closeSectionWindow(winStack[winStack.length - 1].v);
 }
 function updateNavSelected(){
-  ["home","learn","playlist","schedule","profile","ai","settings","history","ranking"].forEach(function(k){
+  ["home","learn","playlist","schedule","profile","ai","settings","history","ranking","howto"].forEach(function(k){
     var b = document.getElementById("nav-" + k);
     if (b) b.setAttribute("aria-selected", (view === k || (k === "home" && view === "subject")) ? "true" : "false");
   });
@@ -5228,7 +5316,7 @@ function showView(v){
   flushStudyTime();
   if (v === "home") closeAllWindows();
   view = v;
-  ["home","subject","learn","playlist","schedule","profile","ai","legal","settings","history","ranking"].forEach(function(k){
+  ["home","subject","learn","playlist","schedule","profile","ai","legal","settings","history","ranking","howto"].forEach(function(k){
     if (isWindowed(k)) return;
     var el = document.getElementById(k === "home" ? "home-view" : k + "-view");
     if (el) el.classList.toggle("hidden", v !== k);
