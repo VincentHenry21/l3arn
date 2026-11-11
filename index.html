@@ -99,7 +99,7 @@
   .toolbtn:hover{background:var(--surface2)}
   .toolbtn svg{width:var(--icon-sm);height:var(--icon-sm);flex:none}
   .toolbtn.on{background:var(--teal-soft);color:var(--teal-dark);border-color:transparent}
-  .streak-pill{display:inline-flex;align-items:center;gap:7px;background:var(--amber);color:#fff;border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:800;min-height:38px}
+  .streak-pill{display:inline-flex;align-items:center;gap:7px;background:var(--amber-soft);color:var(--amber);border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:800;min-height:38px}
   .streak-pill svg{width:var(--icon-sm);height:var(--icon-sm);flex:none}
   .sync-pill{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);color:var(--ink2);border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:700;min-height:38px}
   .sync-pill .dot{width:9px;height:9px;border-radius:50%;background:#3ecfae;flex:none}
@@ -262,13 +262,15 @@
   .snav-item[aria-selected="true"]{background:var(--teal-soft);color:var(--teal-dark)}
   .sidebar-scrim{position:fixed;inset:0;z-index:45;background:rgba(10,15,30,.45);opacity:0;pointer-events:none;transition:opacity .25s ease}
   .sidebar-scrim.show{opacity:1;pointer-events:auto}
-  .app-main{min-height:100vh}
+  .app-main{min-height:100vh;transition:margin-left .28s ease}
   @media (min-width:960px){
     .sidebar{transform:translateX(0)}
+    body.nav-hidden .sidebar{transform:translateX(-102%)}
     .sidebar-scrim{display:none}
     .app-main{margin-left:248px}
-    .menu-btn{display:none}
+    body.nav-hidden .app-main{margin-left:0}
     .topbar .brand{display:none}
+    body.nav-hidden .topbar .brand{display:flex}
   }
   .avatar{width:38px;height:38px;border-radius:50%;flex:none;object-fit:cover}
   .avatar-init{display:grid;place-items:center;background:var(--navy);color:#fff;font-weight:800;font-size:16px}
@@ -300,6 +302,16 @@
 
   /* ---------- Profile ---------- */
   .profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--line);background:var(--surface2);flex:none}
+  .profile-hero{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+  .profile-hero-text{flex:1;min-width:200px}
+  .profile-username{font-size:17px;font-weight:800;color:var(--teal-dark);margin-top:6px;word-break:break-all}
+  .profile-bio{font-size:15px;color:var(--ink2);line-height:1.55;margin-top:6px}
+  .copy-btn{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);background:var(--surface2);color:var(--ink2);border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:700;margin-left:8px;vertical-align:middle}
+  .copy-btn svg{width:13px;height:13px}
+  .profile-details{display:grid;margin-top:18px;border-top:1px solid var(--line)}
+  .profile-details .drow{display:flex;justify-content:space-between;gap:16px;padding:11px 2px;border-bottom:1px solid var(--line);font-size:15px}
+  .profile-details .drow .dlabel{color:var(--ink3);font-weight:700;flex:none}
+  .profile-details .drow .dval{font-weight:700;text-align:right;word-break:break-word}
   .avatar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px;max-width:340px}
   .avatar-pick{padding:0;border:2px solid var(--line);border-radius:50%;background:none;cursor:pointer;line-height:0;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
   .avatar-pick img{width:100%;height:auto;border-radius:50%;display:block}
@@ -470,7 +482,7 @@
   .chat-row{animation:chatIn .22s cubic-bezier(.2,.7,.3,1)}
   @keyframes chatIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   .flip-inner{transition:transform .3s cubic-bezier(.2,.7,.3,1)}
-  @media (prefers-reduced-motion: reduce){ .view-enter{animation:none} .sidebar{transition:none} .sidebar-scrim{transition:none} .sheet-card{animation:none} .chat-row{animation:none} .flip-inner{transition:none} .app-window{animation:none;transition:none} .float-video{animation:none;transition:none} .float-pill{animation:none;transition:none} .app-loader{transition:none} .terms-gate{animation:none} .auth-screen{animation:none} .ai-dot.busy{animation:none} }
+  @media (prefers-reduced-motion: reduce){ .view-enter{animation:none} .sidebar{transition:none} .app-main{transition:none} .sidebar-scrim{transition:none} .sheet-card{animation:none} .chat-row{animation:none} .flip-inner{transition:none} .app-window{animation:none;transition:none} .float-video{animation:none;transition:none} .float-pill{animation:none;transition:none} .app-loader{transition:none} .terms-gate{animation:none} .auth-screen{animation:none} .ai-dot.busy{animation:none} }
 
   /* ---------- Settings rows and switches ---------- */
   .setrow{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line)}
@@ -501,14 +513,18 @@
   .auth-screen-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:22px;width:100%;max-width:480px}
   .linklike{background:none;border:0;color:var(--teal);font-weight:700;font-size:14.5px;padding:0;cursor:pointer;text-decoration:underline}
   /* ---------- Ranking ---------- */
-  .rank-badge{display:inline-block;background:var(--teal-soft);color:var(--teal-dark);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:800}
+  .rank-badge{display:inline-flex;align-items:center;gap:6px;background:var(--teal-soft);color:var(--teal-dark);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:800}
+  .rank-badge svg{width:16px;height:16px;flex:none}
+  .r-rank{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--teal-dark);white-space:nowrap}
+  .r-rank svg{width:15px;height:15px;flex:none}
   .rank-hero .rank-points{font-size:22px;font-weight:800;margin-top:8px}
   .rank-next{font-size:14.5px;color:var(--ink2);font-weight:700}
   .rank-bar{height:10px;border-radius:999px;background:var(--surface2);border:1px solid var(--line);margin-top:14px;overflow:hidden}
   .rank-bar-fill{height:100%;background:var(--teal);border-radius:999px;transition:width .3s cubic-bezier(.2,.7,.3,1)}
   .rank-row{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px}
   .rank-row.me{border-color:var(--teal)}
-  .rank-row .rname{flex:1;min-width:0;font-weight:700}
+  .rank-row .rname{flex:1;min-width:0;font-weight:700;display:flex;align-items:center;gap:7px}
+  .rank-row .rname svg{width:16px;height:16px;flex:none}
   .rank-row .rpts{font-weight:800;white-space:nowrap}
   .rank-row .rmin{font-size:13px;color:var(--ink2);font-weight:600}
   /* ---------- Sticky notes on the draw board ---------- */
@@ -532,6 +548,7 @@
   .win-body .wrap{padding-left:16px;padding-right:16px}
   .win-resize{position:absolute;right:0;bottom:0;width:26px;height:26px;cursor:nwse-resize;touch-action:none;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--line);border-right:0;border-bottom:0;border-radius:10px 0 0 0;color:var(--teal)}
   .win-resize svg{width:16px;height:16px;pointer-events:none}
+  .win-btn svg{width:16px;height:16px;pointer-events:none}
   .ai-status{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--ink2);margin-bottom:14px;min-height:20px}
   .ai-status .ai-dot{flex:none;width:9px;height:9px;border-radius:50%;background:var(--ink3)}
   .ai-status .ai-dot.ok{background:var(--good)}
@@ -544,6 +561,8 @@
   @media (max-width:640px){
     .app-window:not(.float-video){left:6px !important;right:6px;top:6px !important;bottom:6px;width:auto !important;height:auto !important}
   }
+  .app-window.win-max{left:0 !important;right:0 !important;top:0 !important;bottom:0 !important;width:100vw !important;height:100vh !important;max-width:none !important;border-radius:0 !important}
+  .app-window.win-anim{transition:width .25s cubic-bezier(.2,.7,.3,1),height .25s cubic-bezier(.2,.7,.3,1),left .25s cubic-bezier(.2,.7,.3,1),top .25s cubic-bezier(.2,.7,.3,1),right .25s cubic-bezier(.2,.7,.3,1)}
   /* ---------- Floating video window ---------- */
   .float-video{z-index:90}
   .float-video .win-body{overflow:hidden;display:flex}
@@ -600,7 +619,7 @@
   </div>
   <div id="window-layer"></div>
   <div id="float-video" class="app-window float-video hidden" role="dialog" aria-label="Video player">
-    <div class="win-titlebar" id="float-titlebar"><span class="win-title" id="float-title">Video</span><button class="win-btn" id="float-min" aria-label="Minimize video">-</button><button class="win-close" id="float-close" aria-label="Close video">x</button></div>
+    <div class="win-titlebar" id="float-titlebar"><span class="win-title" id="float-title">Video</span><button class="win-btn" id="float-min" aria-label="Minimize video">-</button><button class="win-btn" id="float-fs" aria-label="Go full screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button><button class="win-close" id="float-close" aria-label="Close video">x</button></div>
     <div class="win-body" id="float-body"></div>
     <div class="win-resize" id="float-resize" aria-label="Resize window"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
   </div>
@@ -1014,18 +1033,36 @@
   </div>
   <div id="profile-content" class="hidden">
     <div class="card">
-      <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+      <div class="profile-hero">
         <div id="profile-pic-wrap"></div>
-        <div style="flex:1;min-width:200px">
-          <h3 id="profile-name" style="font-size:21px;font-weight:800">Guest</h3>
-          <p class="ink2" id="profile-meta" style="font-size:14.5px;margin-top:4px"></p>
+        <div class="profile-hero-text">
+          <h3 id="profile-name" style="font-size:24px;font-weight:800">Guest</h3>
+          <p class="profile-username"><span id="profile-username"></span><button type="button" class="copy-btn hidden" id="copy-username-btn" onclick="copyUsername()" aria-label="Copy username"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span data-i18n="copyUsername">Copy</span></button></p>
+          <p class="profile-bio" id="profile-bio-display"></p>
+          <p class="ink2" id="profile-meta" style="font-size:14.5px;margin-top:6px"></p>
           <p class="ink2" id="profile-stats" style="font-size:14.5px;margin-top:4px"></p>
           <span id="profile-rank-badge" class="rank-badge" style="margin-top:8px"></span>
         </div>
       </div>
+      <dl class="profile-details" id="profile-details">
+        <div class="drow"><dt class="dlabel" data-i18n="collegeLabel">College</dt><dd class="dval" id="detail-college"></dd></div>
+        <div class="drow"><dt class="dlabel" data-i18n="courseLabel">Course</dt><dd class="dval" id="detail-course"></dd></div>
+        <div class="drow"><dt class="dlabel" data-i18n="majorLabel">Major</dt><dd class="dval" id="detail-major"></dd></div>
+        <div class="drow"><dt class="dlabel" data-i18n="yearH">Academic year</dt><dd class="dval" id="detail-year"></dd></div>
+        <div class="drow"><dt class="dlabel" data-i18n="ageLabel">Age</dt><dd class="dval" id="detail-age"></dd></div>
+        <div class="drow"><dt class="dlabel" data-i18n="birthdayLabel">Birthday</dt><dd class="dval" id="detail-birthday"></dd></div>
+      </dl>
       <div class="field" style="margin-top:16px">
         <label for="profile-name-input" data-i18n="displayName">Display name</label>
         <input id="profile-name-input" type="text" maxlength="40" data-i18n-ph="namePlaceholder" placeholder="Your name" onchange="setProfileName(this.value)" />
+      </div>
+      <div class="field">
+        <label for="profile-birthday-input" data-i18n="birthdayLabel">Birthday</label>
+        <input id="profile-birthday-input" type="date" onchange="setBirthday(this.value)" />
+      </div>
+      <div class="field">
+        <label for="profile-bio-input" data-i18n="bioLabel">About</label>
+        <input id="profile-bio-input" type="text" maxlength="120" data-i18n-ph="bioPlaceholder" placeholder="Write a line about yourself" onchange="setBio(this.value)" />
       </div>
       <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
         <label class="btn" for="pic-input" data-i18n="uploadPic">Upload picture</label>
@@ -1490,7 +1527,7 @@ var I18N = {
     examsCount:"Exams",
     dayStreak:"Day streak",
     profileH:"Profile",
-    profileLede:"Your picture, college, course, major, and academic year. Everything here syncs across your devices when you are signed in.",
+    profileLede:"Your picture, birthday, about, college, course, major, and academic year. Everything here syncs across your devices when you are signed in.",
     studyProfileH:"Study profile",
     collegeLabel:"College",
     courseLabel:"Course",
@@ -1525,6 +1562,14 @@ var I18N = {
     notSet:"Not set",
     guestName:"Guest",
     displayName:"Display name",
+    birthdayLabel:"Birthday",
+    bioLabel:"About",
+    bioPlaceholder:"Write a line about yourself",
+    ageLabel:"Age",
+    copyUsername:"Copy",
+    usernameCopied:"Username copied",
+    hideMenu:"Hide menu",
+    showMenu:"Show menu",
     namePlaceholder:"Your name",
     savedToast:"Saved",
     syncedToast:"Saved · Synced",
@@ -1756,7 +1801,7 @@ var I18N = {
     examsCount:"စာမေးပွဲများ",
     dayStreak:"ရက်ဆက်တိုက်",
     profileH:"ပရိုဖိုင်",
-    profileLede:"သင့်ဓာတ်ပုံ၊ ကောလိပ်၊ သင်တန်း၊ အဓိကဘာသာနှင့် ပညာသင်နှစ်။ ဝင်ရောက်ထားလျှင် စက်အားလုံးတွင် ချိန်ညှိပေးမည်။",
+    profileLede:"သင့်ဓာတ်ပုံ၊ မွေးနေ့၊ အကြောင်း၊ ကောလိပ်၊ သင်တန်း၊ အဓိကဘာသာနှင့် ပညာသင်နှစ်။ ဝင်ရောက်ထားလျှင် စက်အားလုံးတွင် ချိန်ညှိပေးမည်။",
     studyProfileH:"လေ့လာမှုပရိုဖိုင်",
     collegeLabel:"ကောလိပ်",
     courseLabel:"သင်တန်း",
@@ -1791,6 +1836,14 @@ var I18N = {
     notSet:"မသတ်မှတ်ရသေးပါ",
     guestName:"ဧည့်သည်",
     displayName:"အမည်",
+    birthdayLabel:"မွေးနေ့",
+    bioLabel:"အကြောင်း",
+    bioPlaceholder:"မိမိအကြောင်းကို တစ်ကြောင်းရေးပါ",
+    ageLabel:"အသက်",
+    copyUsername:"ကူးယူမည်",
+    usernameCopied:"အသုံးပြုသူအမည်ကို ကူးယူပြီးပါပြီ",
+    hideMenu:"မီနူး ဖျောက်ရန်",
+    showMenu:"မီနူး ပြရန်",
     namePlaceholder:"သင့်အမည်",
     savedToast:"သိမ်းပြီးပြီ",
     syncedToast:"သိမ်းပြီး · ချိန်ညှိပြီးပြီ",
@@ -3031,7 +3084,7 @@ var LS_TERMS = "l3arn-terms-accepted";
 function emptySubjectProgress(){
   return { known:{}, quizBest:null, lastQuiz:null, notes:[], streak:{ count:0, lastDay:null }, studySeconds:0, uploaded:null, uploadedKnown:{} };
 }
-function emptyProfile(){ return { name:"", gender:null, academicYear:1, picture:null, college:"NMA College", course:"athe-bba", major:"Business Administration", username:"", age:null }; }
+function emptyProfile(){ return { name:"", gender:null, academicYear:1, picture:null, college:"NMA College", course:"athe-bba", major:"Business Administration", username:"", age:null, birthday:"", bio:"" }; }
 function mergeProfile(p){
   var d = emptyProfile();
   if (!p || typeof p !== "object") return d;
@@ -3046,6 +3099,11 @@ function mergeProfile(p){
   if (typeof p.username === "string" && /^[a-z0-9_]{3,30}$/.test(p.username)) d.username = p.username;
   var ageNum = Number(p.age);
   if (isFinite(ageNum) && ageNum >= 1 && ageNum <= 120) d.age = Math.floor(ageNum);
+  if (typeof p.birthday === "string" && /^\d{4}-\d{2}-\d{2}$/.test(p.birthday)) {
+    var bd = new Date(p.birthday + "T00:00:00Z");
+    if (!isNaN(bd.getTime()) && bd.getUTCFullYear() >= 1900 && bd.getUTCFullYear() <= 2100) d.birthday = p.birthday;
+  }
+  if (typeof p.bio === "string") d.bio = p.bio.slice(0, 120);
   return d;
 }
 function emptyStore(){
@@ -3099,6 +3157,15 @@ function nextRankFor(points){
   for (var i = 0; i < RANKS.length; i++) if (RANKS[i].min > points) return RANKS[i];
   return null;
 }
+var RANK_ICONS = {
+  "Novice": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-9"/><path d="M12 13c0-3.5-2.5-5.5-6-5.5 0 3.5 2.5 5.5 6 5.5z"/><path d="M12 13c0-3.5 2.5-5.5 6-5.5 0 3.5-2.5 5.5-6 5.5z"/></svg>',
+  "Scholar": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  "Achiever": '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+  "Expert": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>',
+  "Master": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 7.5 12 12 5.5 16.5 12 21 8.5 19.5 17h-15z"/><path d="M5 20.5h14"/></svg>',
+  "Legend": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>'
+};
+function rankIcon(name){ return RANK_ICONS[name] || RANK_ICONS["Novice"]; }
 function totalStudySeconds(){
   var total = 0;
   Object.keys(store.subjects).forEach(function(id){ var p = store.subjects[id]; if (p && typeof p.studySeconds === "number") total += p.studySeconds; });
@@ -3170,7 +3237,7 @@ function renderRanking(){
   var rank = rankFor(pts);
   var next = nextRankFor(pts);
   var badge = document.getElementById("rank-badge");
-  if (badge) badge.textContent = rank.name;
+  if (badge) badge.innerHTML = rankIcon(rank.name) + escHtml(rank.name);
   var ptsEl = document.getElementById("rank-points");
   if (ptsEl) ptsEl.textContent = String(pts);
   var nextEl = document.getElementById("rank-next");
@@ -3194,13 +3261,14 @@ function renderRanking(){
     }).sort(function(a, b){ return b.points - a.points || b.seconds - a.seconds; });
     lb.innerHTML = rows.map(function(r, i){
       var me = r.id === store.active;
-      return '<div class="rank-row' + (me ? " me" : "") + '"><span class="rmin">#' + (i + 1) + '</span><span class="rname">' + escHtml(r.title) + (me ? ' (' + escHtml(t("rankYou")) + ')' : "") + '</span><span class="rmin">' + escHtml(fmtStudyTime(r.seconds)) + ' · ' + r.known + ' ' + escHtml(t("rankCards")) + '</span><span class="rpts">' + r.points + '</span></div>';
+      var sr = rankFor(r.points);
+      return '<div class="rank-row' + (me ? " me" : "") + '"><span class="rmin">#' + (i + 1) + '</span><span class="rname">' + escHtml(r.title) + (me ? ' (' + escHtml(t("rankYou")) + ')' : "") + '</span><span class="r-rank">' + rankIcon(sr.name) + escHtml(sr.name) + '</span><span class="rmin">' + escHtml(fmtStudyTime(r.seconds)) + ' · ' + r.known + ' ' + escHtml(t("rankCards")) + '</span><span class="rpts">' + r.points + '</span></div>';
     }).join("");
   }
   var lad = document.getElementById("rank-ladder");
   if (lad){
     lad.innerHTML = RANKS.map(function(r){
-      return '<div class="rank-row' + (r.name === rank.name ? " me" : "") + '"><span class="rname">' + escHtml(r.name) + '</span><span class="rpts">' + r.min + '+</span></div>';
+      return '<div class="rank-row' + (r.name === rank.name ? " me" : "") + '"><span class="rname">' + rankIcon(r.name) + escHtml(r.name) + '</span><span class="rpts">' + r.min + '+</span></div>';
     }).join("");
   }
 }
@@ -4276,11 +4344,33 @@ function showMain(v){
 
 
 /* ================= Sidebar ================= */
+var LS_SIDEBAR = "l3arn-sidebar-hidden";
+function isDesktopNav(){ return window.matchMedia && window.matchMedia("(min-width:960px)").matches; }
+function setMenuBtn(hidden){
+  var mb = document.getElementById("menu-btn");
+  if (!mb) return;
+  mb.setAttribute("aria-expanded", hidden ? "false" : "true");
+  mb.setAttribute("aria-label", hidden ? t("showMenu") : t("hideMenu"));
+}
+function applySidebarState(){
+  var hidden = false;
+  try { hidden = localStorage.getItem(LS_SIDEBAR) === "1"; } catch (e) {}
+  document.body.classList.toggle("nav-hidden", hidden);
+  if (isDesktopNav()) setMenuBtn(hidden);
+}
 function toggleSidebar(){
+  if (isDesktopNav()) {
+    var hidden = document.body.classList.toggle("nav-hidden");
+    try { localStorage.setItem(LS_SIDEBAR, hidden ? "1" : "0"); } catch (e) {}
+    setMenuBtn(hidden);
+    return;
+  }
   var sb = document.getElementById("sidebar");
   var open = sb.classList.toggle("open");
   document.getElementById("sidebar-scrim").classList.toggle("show", open);
-  document.getElementById("menu-btn").setAttribute("aria-expanded", open ? "true" : "false");
+  var mb = document.getElementById("menu-btn");
+  mb.setAttribute("aria-expanded", open ? "true" : "false");
+  mb.setAttribute("aria-label", open ? t("hideMenu") : t("showMenu"));
 }
 function closeSidebar(){
   var sb = document.getElementById("sidebar");
@@ -4289,7 +4379,7 @@ function closeSidebar(){
   var sc = document.getElementById("sidebar-scrim");
   if (sc) sc.classList.remove("show");
   var mb = document.getElementById("menu-btn");
-  if (mb) mb.setAttribute("aria-expanded", "false");
+  if (mb && !isDesktopNav()) { mb.setAttribute("aria-expanded", "false"); mb.setAttribute("aria-label", t("showMenu")); }
 }
 document.addEventListener("keydown", function(e){
   if (e.key === "Escape") {
@@ -4517,6 +4607,10 @@ function closeFloatVideo(){
   var body = document.getElementById("float-body");
   var frame = body.querySelector("iframe");
   if (frame) frame.src = "about:blank";
+  win.classList.remove("win-max");
+  win._maxGeom = null;
+  var ffs = document.getElementById("float-fs");
+  if (ffs){ ffs.innerHTML = FS_EXPAND_ICON; ffs.setAttribute("aria-label", "Go full screen"); }
   win.classList.add("hidden");
   document.getElementById("float-pill").classList.add("hidden");
   floatVideoId = null;
@@ -4538,6 +4632,7 @@ function restoreFloatVideo(){
 function attachWindowDrag(win, handle){
   handle.addEventListener("pointerdown", function(ev){
     if (ev.target && ev.target.closest && ev.target.closest("button")) return;
+    if (win.classList.contains("win-max")) return;
     ev.preventDefault();
     var startX = ev.clientX, startY = ev.clientY;
     var r = win.getBoundingClientRect();
@@ -4559,6 +4654,7 @@ function attachWindowDrag(win, handle){
 }
 function attachWindowResize(win, handle, minW, minH){
   handle.addEventListener("pointerdown", function(ev){
+    if (win.classList.contains("win-max")) return;
     ev.preventDefault();
     ev.stopPropagation();
     var startX = ev.clientX, startY = ev.clientY;
@@ -4608,6 +4704,10 @@ function recordWatch(id){
 var uploadFileText = "";
 var uploadFileName = "";
 var uploadTruncated = false;
+var uploadReadPromise = null;
+var uploadReadingFile = null;
+var uploadReadToken = 0;
+var uploadGenerating = false;
 var pdfJsPromise = null;
 function loadPdfJs(){
   if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
@@ -4672,26 +4772,51 @@ function setUploadStatus(msg, show){
 function onUploadFileChosen(){
   var input = document.getElementById("upload-file");
   var file = input && input.files && input.files[0];
-  if (!file) return;
-  if (file.size > 5 * 1024 * 1024) { setUploadStatus(t("uploadFileTooBig"), true); input.value = ""; return; }
+  if (!file) return null;
+  if (file.size > 5 * 1024 * 1024) { setUploadStatus(t("uploadFileTooBig"), true); input.value = ""; return null; }
   var isPdf = /\.pdf$/i.test(file.name) || file.type === "application/pdf";
   var isTxt = /\.txt$/i.test(file.name) || file.type === "text/plain";
-  if (!isPdf && !isTxt) { setUploadStatus(t("uploadFileType"), true); input.value = ""; return; }
+  if (!isPdf && !isTxt) { setUploadStatus(t("uploadFileType"), true); input.value = ""; return null; }
+  if (uploadReadPromise && uploadReadingFile === file) return uploadReadPromise;
+  var token = ++uploadReadToken;
+  uploadReadingFile = file;
+  var btn = document.getElementById("upload-generate");
+  if (btn) btn.disabled = true;
   setUploadStatus(t("uploadReading"), true);
-  var reader = new FileReader();
-  if (isTxt) {
-    reader.onload = function(){ handleUploadText(String(reader.result || ""), file.name); };
-    reader.readAsText(file);
-  } else {
-    reader.onload = function(){
-      extractPdfText(reader.result).then(function(text){
-        handleUploadText(text, file.name);
-      }).catch(function(){
-        setUploadStatus(t("uploadPdfError"), true);
-      });
+  uploadReadPromise = new Promise(function(resolve){
+    var done = function(ok){
+      if (token === uploadReadToken) {
+        uploadReadPromise = null;
+        uploadReadingFile = null;
+        if (btn) btn.disabled = false;
+      }
+      resolve(ok);
     };
-    reader.readAsArrayBuffer(file);
-  }
+    var reader = new FileReader();
+    reader.onerror = function(){
+      if (token === uploadReadToken) setUploadStatus(t("uploadError"), true);
+      done(false);
+    };
+    if (isTxt) {
+      reader.onload = function(){
+        if (token === uploadReadToken) handleUploadText(String(reader.result || ""), file.name);
+        done(token === uploadReadToken);
+      };
+      reader.readAsText(file);
+    } else {
+      reader.onload = function(){
+        extractPdfText(reader.result).then(function(text){
+          if (token === uploadReadToken) handleUploadText(text, file.name);
+          done(token === uploadReadToken);
+        }).catch(function(){
+          if (token === uploadReadToken) setUploadStatus(t("uploadPdfError"), true);
+          done(false);
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  });
+  return uploadReadPromise;
 }
 function handleUploadText(text, fileName){
   uploadFileText = text || "";
@@ -4705,10 +4830,33 @@ function generateFromUpload(){
   var subjectId = sel ? sel.value : store.active;
   var input = document.getElementById("upload-file");
   if (!uploadFileText) {
-    if (input && input.files && input.files[0]) { onUploadFileChosen(); return; }
+    var p = null;
+    if (uploadReadPromise) {
+      p = uploadReadPromise;
+    } else if (input && input.files && input.files[0]) {
+      p = onUploadFileChosen();
+    }
+    if (p) {
+      var btn = document.getElementById("upload-generate");
+      if (btn) btn.disabled = true;
+      p.then(function(){
+        if (uploadFileText) {
+          doGenerateFromUpload(subjectId);
+        } else if (btn) {
+          btn.disabled = false;
+        }
+      });
+      return;
+    }
     setUploadStatus(t("uploadNoFile"), true);
     return;
   }
+  doGenerateFromUpload(subjectId);
+}
+function doGenerateFromUpload(subjectId){
+  if (uploadGenerating) return;
+  uploadGenerating = true;
+  var input = document.getElementById("upload-file");
   var sb = subjectDef(subjectId);
   var subjectTitle = sb ? sb.title : "";
   setUploadStatus(t("uploadGenerating"), true);
@@ -4719,6 +4867,7 @@ function generateFromUpload(){
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text: uploadFileText, subject: subjectTitle })
   }).then(function(r){ return r.json(); }).then(function(d){
+    uploadGenerating = false;
     if (btn) btn.disabled = false;
     if (!d || !d.ok || d.error === "not_configured") {
       setUploadStatus(t("uploadNotSetUp"), true);
@@ -4736,6 +4885,7 @@ function generateFromUpload(){
     if (input) input.value = "";
     openSubject(subjectId);
   }).catch(function(){
+    uploadGenerating = false;
     if (btn) btn.disabled = false;
     setUploadStatus(t("uploadError"), true);
   });
@@ -4883,10 +5033,27 @@ function openProfile(){
 function renderProfile(){
   var p = store.profile;
   var name = displayName();
-  document.getElementById("profile-name").textContent = profileNameLine();
+  document.getElementById("profile-name").textContent = name;
+  var uname = document.getElementById("profile-username");
+  if (uname) uname.textContent = p.username ? "@" + p.username : "";
+  var copyBtn = document.getElementById("copy-username-btn");
+  if (copyBtn) copyBtn.classList.toggle("hidden", !p.username);
+  var bioEl = document.getElementById("profile-bio-display");
+  if (bioEl) bioEl.textContent = p.bio || "";
   document.getElementById("profile-meta").textContent = profileSubLine();
+  var setDetail = function(id, v){ var el = document.getElementById(id); if (el) el.textContent = v; };
+  setDetail("detail-college", p.college || t("notSet"));
+  setDetail("detail-course", courseLabel(p.course));
+  setDetail("detail-major", displayMajor() || t("notSet"));
+  setDetail("detail-year", "Year " + (p.academicYear || 1));
+  setDetail("detail-age", (typeof p.age === "number") ? String(p.age) : t("notSet"));
+  var bday = formatBirthday(p.birthday);
+  if (!bday) bday = t("notSet");
+  else if (typeof p.age === "number") bday += " · " + t("ageLabel") + " " + p.age;
+  setDetail("detail-birthday", bday);
   var rb = document.getElementById("profile-rank-badge");
-  if (rb) rb.textContent = rankFor(totalPoints()).name + " · " + totalPoints() + " " + t("rankPoints");
+  var rbRank = rankFor(totalPoints());
+  if (rb) rb.innerHTML = rankIcon(rbRank.name) + escHtml(rbRank.name) + " · " + totalPoints() + " " + escHtml(t("rankPoints"));
   var acc = document.getElementById("study-profile-account");
   if (acc) {
     if (auth && auth.username) acc.textContent = t("signedInAs") + " " + auth.name + " (@" + auth.username + (typeof auth.age === "number" ? " · Age " + auth.age : "") + ")";
@@ -4904,6 +5071,10 @@ function renderProfile(){
   document.getElementById("profile-stats").textContent = t("dayStreak") + ": " + best + " · " + t("statKnown") + ": " + totalKnown + " · " + t("statNotes") + ": " + totalNotes;
   var input = document.getElementById("profile-name-input");
   if (document.activeElement !== input) input.value = p.name || "";
+  var bInput = document.getElementById("profile-birthday-input");
+  if (bInput && document.activeElement !== bInput) bInput.value = p.birthday || "";
+  var bioInput = document.getElementById("profile-bio-input");
+  if (bioInput && document.activeElement !== bioInput) bioInput.value = p.bio || "";
   var wrap = document.getElementById("profile-pic-wrap");
   wrap.innerHTML = "";
   if (p.picture) {
@@ -4960,7 +5131,7 @@ function renderHeaderAvatar(){
   var nm = profileNameLine(), sub = profileSubLine();
   var setTxt = function(id, v){ var el = document.getElementById(id); if (el) el.textContent = v; };
   setTxt("snav-profile-name", nm);
-  setTxt("snav-profile-sub", sub);
+  setTxt("snav-profile-sub", store.profile.username ? "@" + store.profile.username : sub);
   setTxt("header-profile-name", nm);
   setTxt("header-profile-sub", sub);
 }
@@ -4983,6 +5154,46 @@ function setProfileName(v){
   saveProgress();
   showSaved(t("savedToast"));
   renderProfile();
+}
+function formatBirthday(iso){
+  if (!iso || typeof iso !== "string") return "";
+  var m = iso.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return "";
+  var y = Number(m[1]), mo = Number(m[2]), d = Number(m[3]);
+  var dt = new Date(Date.UTC(y, mo - 1, d));
+  if (isNaN(dt.getTime()) || dt.getUTCFullYear() !== y || dt.getUTCMonth() !== mo - 1 || dt.getUTCDate() !== d) return "";
+  var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  return d + " " + months[mo - 1] + " " + y;
+}
+function setBirthday(v){
+  v = (v || "").trim();
+  if (v && !formatBirthday(v)) { renderProfile(); return; }
+  store.profile.birthday = v;
+  saveProgress();
+  showSaved(t("savedToast"));
+  renderProfile();
+}
+function setBio(v){
+  store.profile.bio = (v || "").slice(0, 120);
+  saveProgress();
+  showSaved(t("savedToast"));
+  renderProfile();
+}
+function copyUsername(){
+  var u = store.profile.username;
+  if (!u) return;
+  var text = "@" + u;
+  var done = function(){ showSaved(t("usernameCopied")); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, function(){ fallbackCopy(text); done(); });
+  } else { fallbackCopy(text); done(); }
+}
+function fallbackCopy(text){
+  var ta = document.createElement("textarea");
+  ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); } catch (e) {}
+  document.body.removeChild(ta);
 }
 function setGender(g){
   store.profile.gender = g;
@@ -5170,6 +5381,33 @@ function renderAll(){
 var winStack = [];
 var winZ = 100;
 var RESIZE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>';
+var FS_EXPAND_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
+var FS_RESTORE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>';
+function motionReduced(){
+  return document.documentElement.getAttribute("data-motion") === "reduced" || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+}
+function toggleWindowMax(win, btn){
+  if (!win) return;
+  var isMax = win.classList.contains("win-max");
+  if (!motionReduced()){
+    win.classList.add("win-anim");
+    setTimeout(function(){ win.classList.remove("win-anim"); }, 300);
+  }
+  if (isMax){
+    var g = win._maxGeom;
+    win.classList.remove("win-max");
+    if (g){
+      win.style.left = g.left; win.style.top = g.top; win.style.right = g.right;
+      win.style.width = g.width; win.style.height = g.height;
+    }
+    win._maxGeom = null;
+    if (btn){ btn.innerHTML = FS_EXPAND_ICON; btn.setAttribute("aria-label", "Go full screen"); }
+  } else {
+    win._maxGeom = { left: win.style.left, top: win.style.top, right: win.style.right, width: win.style.width, height: win.style.height };
+    win.classList.add("win-max");
+    if (btn){ btn.innerHTML = FS_RESTORE_ICON; btn.setAttribute("aria-label", "Exit full screen"); }
+  }
+}
 function sectionTitle(v){
   var map = { learn:"learnH", playlist:"playlistH", schedule:"scheduleH", profile:"profileH", ai:"aiH", settings:"settingsH", history:"historyViewH", ranking:"rankingTitle", howto:"howtoTitle" };
   return map[v] ? t(map[v]) : v;
@@ -5222,7 +5460,12 @@ function openSectionWindow(v){
   close.textContent = "×";
   close.setAttribute("aria-label", "Close");
   close.onclick = function(){ closeSectionWindow(v); };
-  bar.appendChild(title); bar.appendChild(close);
+  var fs = document.createElement("button");
+  fs.className = "win-btn";
+  fs.innerHTML = FS_EXPAND_ICON;
+  fs.setAttribute("aria-label", "Go full screen");
+  fs.onclick = function(){ toggleWindowMax(win, fs); };
+  bar.appendChild(title); bar.appendChild(fs); bar.appendChild(close);
   var body = document.createElement("div");
   body.className = "win-body";
   var resize = document.createElement("div");
@@ -5283,6 +5526,8 @@ function wireFloatVideo(){
   var fresize = document.getElementById("float-resize");
   if (fwin && fbar) attachWindowDrag(fwin, fbar);
   if (fwin && fresize) attachWindowResize(fwin, fresize, 280, 220);
+  var ffs = document.getElementById("float-fs");
+  if (ffs) ffs.onclick = function(){ toggleWindowMax(fwin, ffs); };
   if (fwin) fwin.addEventListener("pointerdown", function(){ bringWindowToFront(fwin); });
 }
 function maybeShowTermsGate(){
@@ -5543,6 +5788,8 @@ function goHome(){
   // Accessibility and display settings (persisted)
   loadA11y();
   applyA11y();
+  // Sidebar open/closed choice (persisted)
+  applySidebarState();
   // Progress + streak
   loadLocal();
   syncProfileName();
