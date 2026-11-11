@@ -94,7 +94,7 @@
   .auth-err.show{display:block}
 
   /* ---------- Tabs ---------- */
-  .tabbar{position:sticky;top:0;z-index:20;background:var(--bg);padding:14px 0 10px}
+  .tabbar{position:sticky;top:70px;z-index:20;background:var(--bg);padding:14px 0 10px}
   .tabs{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px;gap:4px;box-shadow:var(--shadow-sm);overflow-x:auto}
   .tab{flex:1;border:0;background:transparent;color:var(--ink2);font-weight:700;font-size:14.5px;border-radius:999px;padding:10px 8px;transition:background .2s,color .2s;white-space:nowrap;min-width:0}
   .tab[aria-selected="true"]{background:var(--teal);color:#fff}
@@ -223,6 +223,72 @@
   .empty p{color:var(--ink2);font-size:15px;margin-top:8px;line-height:1.6;max-width:520px;margin-left:auto;margin-right:auto}
 
   footer{border-top:1px solid var(--line);padding:22px 0 34px;text-align:center;color:var(--ink3);font-size:13.5px}
+
+  /* ---------- Main nav (app sections) ---------- */
+  .mainnav{position:sticky;top:0;z-index:30;background:var(--bg);padding:12px 0 8px}
+  .mainnav .tab{min-height:40px;font-size:14px}
+  .avatar{width:38px;height:38px;border-radius:50%;flex:none;object-fit:cover}
+  .avatar-init{display:grid;place-items:center;background:#fff;color:var(--navy);font-weight:800;font-size:16px;border:2px solid rgba(255,255,255,.4)}
+
+  /* ---------- Learn / videos ---------- */
+  .videogrid{display:grid;gap:14px;margin-top:6px}
+  @media (min-width:720px){ .videogrid{grid-template-columns:1fr 1fr} }
+  .videocard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+  .vthumb{position:relative;aspect-ratio:16/9;background:var(--surface2)}
+  .vthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .vthumb iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .playbtn{position:absolute;inset:0;margin:auto;width:56px;height:56px;border-radius:50%;background:rgba(30,42,120,.88);color:#fff;border:0;display:grid;place-items:center}
+  .playbtn svg{width:26px;height:26px;margin-left:2px}
+  .vbody{padding:14px 16px 16px}
+  .vtitle{font-size:16px;font-weight:800;line-height:1.4}
+  .vchan{font-size:13.5px;color:var(--ink3);font-weight:600;margin-top:4px}
+  .vactions{display:flex;gap:10px;margin-top:12px}
+  .vactions .btn{flex:1}
+  .guide-link{display:flex;justify-content:space-between;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-top:8px;text-decoration:none;color:var(--ink);font-weight:700;font-size:15px}
+  .guide-link:hover{border-color:var(--teal)}
+  .guide-link .gsrc{flex:none;font-size:12.5px;color:var(--teal);font-weight:800;white-space:nowrap}
+
+  /* ---------- Playlist / history ---------- */
+  .history-row{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+  .history-row img{width:96px;height:54px;object-fit:cover;border-radius:8px;flex:none}
+  .history-row .hmid{flex:1;min-width:0}
+  .history-row .htitle{font-size:14.5px;font-weight:700;line-height:1.4}
+  .history-row .hmeta{font-size:12.5px;color:var(--ink3);font-weight:600;margin-top:3px}
+
+  /* ---------- Profile ---------- */
+  .profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--line);background:var(--surface2);flex:none}
+  .profile-initial{display:grid;place-items:center;font-size:44px;font-weight:800;color:#fff;background:var(--navy)}
+  .seg{display:flex;gap:6px;flex-wrap:wrap}
+  .seg button{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:9px 16px;font-weight:700;font-size:14.5px}
+  .seg button.on{background:var(--teal);border-color:var(--teal);color:#fff}
+  html[data-theme="dark"] .seg button.on{color:#0b1512}
+
+  /* ---------- Loading (spinner + pulse, flat colors only) ---------- */
+  .spinner{width:34px;height:34px;flex:none;border-radius:50%;border:3px solid var(--line);border-top-color:var(--teal);animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .skel{background:var(--surface2);border-radius:10px;animation:pulse 1s ease-in-out infinite alternate}
+  @keyframes pulse{from{opacity:.5}to{opacity:1}}
+  .fadein{animation:fadein .3s ease}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  @media (prefers-reduced-motion: reduce){ .spinner,.skel,.fadein{animation:none} }
+
+  /* ---------- Saved toast ---------- */
+  .saved-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);z-index:60;background:var(--teal);color:#fff;border-radius:999px;padding:11px 18px;font-weight:700;font-size:14.5px;display:flex;gap:8px;align-items:center;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease}
+  html[data-theme="dark"] .saved-toast{color:#0b1512}
+  .saved-toast.show{opacity:1;transform:translate(-50%,0)}
+  .saved-toast svg{width:17px;height:17px;flex:none}
+
+  /* ---------- Schedule ---------- */
+  .weekgrid{display:grid;gap:10px}
+  @media (min-width:720px){ .weekgrid{grid-template-columns:repeat(7,1fr)} }
+  .daycell{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px}
+  .daycell.today{border-color:var(--teal);background:var(--teal-soft)}
+  .daycell .dow{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+  .daycell.today .dow{color:var(--teal-dark)}
+  .daycell .dnum{font-size:20px;font-weight:800;margin-top:2px}
+  .daycell .dclass{font-size:13.5px;font-weight:700;line-height:1.45;margin-top:6px}
+  .daycell .dmeta{font-size:12.5px;color:var(--ink2);margin-top:2px;line-height:1.45}
+  .daycell .dnone{font-size:13.5px;color:var(--ink3);font-weight:600;margin-top:6px}
   .hidden{display:none !important}
 </style>
 </head>
@@ -249,6 +315,8 @@
         <svg id="theme-icon-sun" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         <span id="theme-label">Dark</span>
       </button>
+      <img id="header-avatar-img" class="avatar hidden" alt="Profile picture" />
+      <span id="header-avatar-init" class="avatar avatar-init hidden" aria-hidden="true"></span>
       <button class="toolbtn" id="auth-btn" onclick="openAuth()">Sign in</button>
     </div>
     <div class="stats">
@@ -259,6 +327,18 @@
     </div>
   </div>
 </header>
+
+<nav class="mainnav" aria-label="Main sections">
+  <div class="wrap">
+    <div class="tabs" role="tablist" aria-label="App sections">
+      <button class="tab" role="tab" id="nav-home" aria-selected="true" onclick="showMain('home')" data-i18n="navSubjects">Subjects</button>
+      <button class="tab" role="tab" id="nav-learn" aria-selected="false" onclick="showMain('learn')" data-i18n="navLearn">Learn</button>
+      <button class="tab" role="tab" id="nav-playlist" aria-selected="false" onclick="showMain('playlist')" data-i18n="navPlaylist">Playlist</button>
+      <button class="tab" role="tab" id="nav-schedule" aria-selected="false" onclick="showMain('schedule')" data-i18n="navSchedule">Schedule</button>
+      <button class="tab" role="tab" id="nav-profile" aria-selected="false" onclick="showMain('profile')" data-i18n="navProfile">Profile</button>
+    </div>
+  </div>
+</nav>
 
 <div class="wrap">
   <!-- Auth panel -->
@@ -497,9 +577,101 @@
 </main>
 </div>
 
+
+<!-- Learn -->
+<section id="learn-view" class="wrap hidden" style="padding-top:8px;padding-bottom:40px">
+  <div class="section-head"><h2 data-i18n="learnH">Learn</h2></div>
+  <p class="lede" data-i18n="learnLede">Free guides and videos on writing assignments, doing research, and planning your ideas. Videos play right here in the app.</p>
+  <div id="learn-topics"></div>
+</section>
+
+<!-- Playlist + Watch History -->
+<section id="playlist-view" class="wrap hidden" style="padding-top:8px;padding-bottom:40px">
+  <div class="section-head"><h2 data-i18n="playlistH">My Playlist</h2><span class="counter" id="playlist-count"></span></div>
+  <p class="lede" data-i18n="playlistLede">Videos you saved. Tap one to watch it here.</p>
+  <div id="playlist-list" class="videogrid"></div>
+  <p class="lede hidden" id="playlist-empty" style="margin-top:16px" data-i18n="playlistEmpty">Nothing saved yet. Open Learn and tap Save on any video to add it here.</p>
+  <div class="section-head" style="margin-top:26px"><h2 data-i18n="historyH">Watch History</h2><span class="counter" id="history-count"></span></div>
+  <p class="lede" data-i18n="historyLede">Videos you watched, newest first.</p>
+  <div id="history-list"></div>
+  <p class="lede hidden" id="history-empty" style="margin-top:16px" data-i18n="historyEmpty">No videos watched yet.</p>
+</section>
+
+<!-- Schedule -->
+<section id="schedule-view" class="wrap hidden" style="padding-top:8px;padding-bottom:40px">
+  <div class="section-head"><h2 data-i18n="scheduleH">Schedule</h2><span class="counter" id="schedule-week-label"></span></div>
+  <p class="lede" data-i18n="scheduleLede">Your real BBA class timetable and exam dates.</p>
+  <div class="card" style="margin-bottom:16px">
+    <div class="section-head" style="margin-top:0"><h3 style="font-size:18px" data-i18n="nextClass">Next class</h3></div>
+    <div id="next-class-box"></div>
+  </div>
+  <div class="section-head"><h3 style="font-size:18px" data-i18n="thisWeek">This week</h3></div>
+  <div class="weekgrid" id="week-grid"></div>
+  <div class="section-head" style="margin-top:26px"><h3 style="font-size:18px" data-i18n="examsH">Exams</h3></div>
+  <div class="taskgrid" id="exam-list"></div>
+  <p class="lede" style="margin-top:14px" data-i18n="scheduleNote">Times are Yangon time. Exam times have not been published yet.</p>
+</section>
+
+<!-- Profile -->
+<section id="profile-view" class="wrap hidden" style="padding-top:8px;padding-bottom:40px">
+  <div class="section-head"><h2 data-i18n="profileH">Profile</h2></div>
+  <p class="lede" data-i18n="profileLede">Your picture, gender, and academic year. Everything here syncs across your devices when you are signed in.</p>
+  <div id="profile-loading" class="card hidden">
+    <div style="display:flex;gap:16px;align-items:center">
+      <div class="spinner" role="status" aria-label="Loading profile"></div>
+      <div style="flex:1;display:grid;gap:10px">
+        <div class="skel" style="height:20px;width:55%"></div>
+        <div class="skel" style="height:14px;width:80%"></div>
+        <div class="skel" style="height:14px;width:40%"></div>
+      </div>
+    </div>
+  </div>
+  <div id="profile-content" class="hidden">
+    <div class="card">
+      <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+        <div id="profile-pic-wrap"></div>
+        <div style="flex:1;min-width:200px">
+          <h3 id="profile-name" style="font-size:21px;font-weight:800">Guest</h3>
+          <p class="ink2" id="profile-meta" style="font-size:14.5px;margin-top:4px"></p>
+          <p class="ink2" id="profile-stats" style="font-size:14.5px;margin-top:4px"></p>
+        </div>
+      </div>
+      <div class="field" style="margin-top:16px">
+        <label for="profile-name-input" data-i18n="displayName">Display name</label>
+        <input id="profile-name-input" type="text" maxlength="40" data-i18n-ph="namePlaceholder" placeholder="Your name" onchange="setProfileName(this.value)" />
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+        <label class="btn" for="pic-input" data-i18n="uploadPic">Upload picture</label>
+        <input type="file" id="pic-input" accept="image/*" class="hidden" onchange="onPicChosen(event)" />
+        <button class="btn" id="remove-pic-btn" onclick="removePic()" data-i18n="removePic">Remove picture</button>
+      </div>
+      <p class="ink3" style="font-size:13px;margin-top:10px" data-i18n="picNote">Your picture is resized to a small square on this device before it is saved, so it stays light.</p>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3 style="font-size:18px;font-weight:800" data-i18n="genderH">Gender</h3>
+      <div class="seg" id="gender-seg" style="margin-top:12px">
+        <button type="button" onclick="setGender('male')" data-gender="male" data-i18n="male">Male</button>
+        <button type="button" onclick="setGender('female')" data-gender="female" data-i18n="female">Female</button>
+      </div>
+      <h3 style="font-size:18px;font-weight:800;margin-top:22px" data-i18n="yearH">Academic year</h3>
+      <div class="seg" id="year-seg" style="margin-top:12px">
+        <button type="button" onclick="setYear(1)" data-year="1">Year 1</button>
+        <button type="button" onclick="setYear(2)" data-year="2">Year 2</button>
+        <button type="button" onclick="setYear(3)" data-year="3">Year 3</button>
+        <button type="button" onclick="setYear(4)" data-year="4">Year 4</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap" id="footer-text">L3ARN · BBA Year 1 Study Hub</div>
 </footer>
+
+<div id="saved-toast" class="saved-toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="saved-toast-text">Saved</span>
+</div>
 
 <script>
 /* ================= Study content (unchanged from the source) ================= */
@@ -588,7 +760,65 @@ var I18N = {
     emptyNote:"Study material for {subject} has not been added yet. Flashcards, quiz questions, and the assignment breakdown will appear here once they are added.",
     statSubjects:"Subjects", statReady:"Ready", statKnown:"Cards known", statNotes:"Notes",
     readyLabel:"Ready", notAddedLabel:"Not added yet", openLabel:"Open",
-    cardMetaReady:"{c} flashcards · {q} questions · {t} tasks"
+    cardMetaReady:"{c} flashcards · {q} questions · {t} tasks",
+
+    navSubjects:"Subjects",
+    navLearn:"Learn",
+    navPlaylist:"Playlist",
+    navSchedule:"Schedule",
+    navProfile:"Profile",
+    learnH:"Learn",
+    learnLede:"Free guides and videos on writing assignments, doing research, and planning your ideas. Videos play right here in the app.",
+    guideH:"Free guides",
+    videoH:"Videos",
+    openGuide:"Open guide",
+    playVideo:"Watch",
+    saveVideo:"Save",
+    savedVideo:"Saved",
+    playlistH:"My Playlist",
+    playlistLede:"Videos you saved. Tap one to watch it here.",
+    playlistEmpty:"Nothing saved yet. Open Learn and tap Save on any video to add it here.",
+    historyH:"Watch History",
+    historyLede:"Videos you watched, newest first.",
+    historyEmpty:"No videos watched yet.",
+    watchedOn:"Watched",
+    scheduleH:"Schedule",
+    scheduleLede:"Your real BBA class timetable and exam dates.",
+    nextClass:"Next class",
+    thisWeek:"This week",
+    examsH:"Exams",
+    scheduleNote:"Times are Yangon time. Exam times have not been published yet.",
+    noClass:"No class",
+    moduleEnded:"Module ended",
+    examTimeTbd:"Time not published yet",
+    daysToGo:"{n} days to go",
+    todayLabel:"Today",
+    tomorrowLabel:"Tomorrow",
+    inDays:"In {n} days",
+    noUpcoming:"No upcoming classes",
+    classesPerWeek:"Classes a week",
+    daysToExam:"Days to exam",
+    examsCount:"Exams",
+    dayStreak:"Day streak",
+    profileH:"Profile",
+    profileLede:"Your picture, gender, and academic year. Everything here syncs across your devices when you are signed in.",
+    uploadPic:"Upload picture",
+    removePic:"Remove picture",
+    picNote:"Your picture is resized to a small square on this device before it is saved, so it stays light.",
+    genderH:"Gender",
+    male:"Male",
+    female:"Female",
+    yearH:"Academic year",
+    notSet:"Not set",
+    guestName:"Guest",
+    displayName:"Display name",
+    namePlaceholder:"Your name",
+    savedToast:"Saved",
+    syncedToast:"Saved · Synced",
+    statGuides:"Guides",
+    statVideos:"Videos",
+    statSaved:"Saved",
+    statWatched:"Watched",
   },
   my: {
     tabFlashcards:"ကတ်များ", tabQuiz:"မေးခွန်းစစ်ဆေးခြင်း", tabTasks:"တာဝန်ပေးချက်", tabNotes:"မှတ်စုများ",
@@ -628,7 +858,65 @@ var I18N = {
     emptyNote:"{subject} အတွက် သင်ခန်းစာ မထည့်ရသေးပါ။ သင်ခန်းစာ ထည့်ပြီးလျှင် ကတ်များ၊ မေးခွန်းများနှင့် တာဝန်ပေးချက်များ ဤနေရာတွင် ပေါ်လာမည်။",
     statSubjects:"ဘာသာရပ်များ", statReady:"အဆင်သင့်", statKnown:"သိပြီးသော ကတ်များ", statNotes:"မှတ်စုများ",
     readyLabel:"အဆင်သင့်", notAddedLabel:"မထည့်ရသေးပါ", openLabel:"ဖွင့်မည်",
-    cardMetaReady:"ကတ် {c} ခု · မေးခွန်း {q} ခု · တာဝန် {t} ခု"
+    cardMetaReady:"ကတ် {c} ခု · မေးခွန်း {q} ခု · တာဝန် {t} ခု",
+
+    navSubjects:"ဘာသာရပ်များ",
+    navLearn:"သင်ယူရန်",
+    navPlaylist:"ပလေးလစ်",
+    navSchedule:"အချိန်ဇယား",
+    navProfile:"ပရိုဖိုင်",
+    learnH:"သင်ယူရန်",
+    learnLede:"တာဝန်ပေးချက်ရေးနည်း၊ သုတေသနလုပ်နည်း၊ အတွေးအခေါ်ချမှတ်နည်းများအတွက် အခမဲ့လမ်းညွှန်များနှင့် ဗီဒီယိုများ။ ဗီဒီယိုများကို ဤအက်ပ်ထဲတွင် တိုက်ရိုက်ကြည့်နိုင်သည်။",
+    guideH:"အခမဲ့လမ်းညွှန်များ",
+    videoH:"ဗီဒီယိုများ",
+    openGuide:"ဖွင့်ကြည့်မည်",
+    playVideo:"ကြည့်မည်",
+    saveVideo:"သိမ်းမည်",
+    savedVideo:"သိမ်းပြီးပြီ",
+    playlistH:"ကျွန်ုပ်၏ပလေးလစ်",
+    playlistLede:"သိမ်းထားသောဗီဒီယိုများ။ ကြည့်ရန် နှိပ်ပါ။",
+    playlistEmpty:"ဘာမှမသိမ်းရသေးပါ။ Learn တွင် ဗီဒီယိုတစ်ခု၌ Save ကိုနှိပ်၍ ဤနေရာသို့ ထည့်ပါ။",
+    historyH:"ကြည့်ရှုမှတ်တမ်း",
+    historyLede:"ကြည့်ပြီးသောဗီဒီယိုများ၊ အသစ်ဆုံး အရင်ပြမည်။",
+    historyEmpty:"ဗီဒီယိုမကြည့်ရသေးပါ။",
+    watchedOn:"ကြည့်ခဲ့သည်",
+    scheduleH:"အချိန်ဇယား",
+    scheduleLede:"သင်၏ BBA အတန်းအချိန်ဇယားအစစ်နှင့် စာမေးပွဲရက်များ။",
+    nextClass:"နောက်အတန်း",
+    thisWeek:"ဤအပတ်",
+    examsH:"စာမေးပွဲများ",
+    scheduleNote:"အချိန်များမှာ ရန်ကုန်အချိန်ဖြစ်သည်။ စာမေးပွဲအချိန်များကို မထုတ်ပြန်ရသေးပါ။",
+    noClass:"အတန်းမရှိပါ",
+    moduleEnded:"သင်ခန်းစာပြီးဆုံးပါပြီ",
+    examTimeTbd:"အချိန်မထုတ်ပြန်ရသေးပါ",
+    daysToGo:"{n} ရက်လိုသေးသည်",
+    todayLabel:"ယနေ့",
+    tomorrowLabel:"မနက်ဖြန်",
+    inDays:"{n} ရက်အတွင်း",
+    noUpcoming:"နောက်အတန်းမရှိပါ",
+    classesPerWeek:"တစ်ပတ်အတန်း",
+    daysToExam:"စာမေးပွဲအထိရက်",
+    examsCount:"စာမေးပွဲများ",
+    dayStreak:"ရက်ဆက်တိုက်",
+    profileH:"ပရိုဖိုင်",
+    profileLede:"သင့်ဓာတ်ပုံ၊ ကျား/မ နှင့် ပညာသင်နှစ်။ ဝင်ရောက်ထားလျှင် စက်အားလုံးတွင် ချိန်ညှိပေးမည်။",
+    uploadPic:"ဓာတ်ပုံတင်မည်",
+    removePic:"ဓာတ်ပုံဖယ်ရှားမည်",
+    picNote:"သင့်ဓာတ်ပုံကို သိမ်းဆည်းခြင်းမပြုမီ ဤစက်တွင် စတုရန်းပုံအသေးအဖြစ် ချုံ့ပေးမည်။",
+    genderH:"ကျား/မ",
+    male:"ကျား",
+    female:"မ",
+    yearH:"ပညာသင်နှစ်",
+    notSet:"မသတ်မှတ်ရသေးပါ",
+    guestName:"ဧည့်သည်",
+    displayName:"အမည်",
+    namePlaceholder:"သင့်အမည်",
+    savedToast:"သိမ်းပြီးပြီ",
+    syncedToast:"သိမ်းပြီး · ချိန်ညှိပြီးပြီ",
+    statGuides:"လမ်းညွှန်များ",
+    statVideos:"ဗီဒီယိုများ",
+    statSaved:"သိမ်းထားသည်",
+    statWatched:"ကြည့်ပြီး",
   }
 };
 
@@ -644,6 +932,12 @@ function applyLang(){
   document.getElementById("lang-btn").classList.toggle("on", lang === "my");
   renderStreak(); renderKnownNote(); renderNotesCount(); updateSyncLabel(); updateThemeLabel();
   renderStats(); renderSubjectGrid(); renderEmptyNotes();
+  updateHeroForView();
+  if (view === "learn") renderLearn();
+  else if (view === "playlist") renderPlaylist();
+  else if (view === "schedule") renderSchedule();
+  else if (view === "profile") renderProfile();
+  renderHeaderAvatar();
 }
 function toggleLang(){
   lang = lang === "en" ? "my" : "en";
@@ -688,6 +982,88 @@ function currentSubject(){
 }
 var view = "home";   // home | subject
 
+/* ================= Learn: free guides + videos ================= */
+var LEARN_TOPICS = [
+  { id:"writing", title:"How to write an assignment",
+    desc:"Plan, structure, and write your assignment step by step.",
+    guides:[
+      { title:"How to write an essay", source:"Prospects", url:"https://www.prospects.ac.uk/applying-for-university/university-life/how-to-write-an-essay/" },
+      { title:"Writing Resources", source:"James Cook University Library", url:"https://libguides.jcu.edu.au/writing/writing-resources" }
+    ],
+    videos:[
+      { id:"UuOWNNvupik", title:"How to Write an Essay: 4 Minute Step-by-step Guide", channel:"Scribbr" },
+      { id:"6VmG6B_Gaf4", title:"Writing essays at UWA: Get started on essay structure", channel:"University of Western Australia" }
+    ] },
+  { id:"research", title:"How to do research",
+    desc:"Find, judge, and use good sources for your assignment.",
+    guides:[
+      { title:"Conducting Research", source:"Purdue OWL", url:"https://owl.purdue.edu/owl/research_and_citation/conducting_research/index.html" },
+      { title:"Writing and Research Tutorials", source:"University of St. Michael's College Library", url:"https://library.stmikes.utoronto.ca/help/tutorials/" }
+    ],
+    videos:[
+      { id:"LdQeaDN9Qic", title:"Introduction to academic research", channel:"Laurentian University" },
+      { id:"dsuHdKNvnDw", title:"Unlock the Research Process: From Curiosity to Clarity", channel:"UNF Library" }
+    ] },
+  { id:"ideas", title:"Idea plotting",
+    desc:"Brainstorm and mind-map your ideas before you start writing.",
+    guides:[
+      { title:"Mind Mapping", source:"Open Polytechnic", url:"https://www.openpolytechnic.ac.nz/current-students/study-tips-and-techniques/study-skills/mind-mapping/" },
+      { title:"Brainstorming", source:"University of South Carolina Upstate Library", url:"https://uscupstate.libguides.com/c.php?g=1342882&p=9902007" }
+    ],
+    videos:[
+      { id:"RB4T7_SGhaI", title:"Thinking About the Topic: Brainstorming", channel:"Wisconsin Technical College System" },
+      { id:"FXdjwHkTKbA", title:"Thinking About the Topic: Generating Ideas", channel:"Wisconsin Technical College System" }
+    ] }
+];
+var ALL_VIDEOS = {};
+LEARN_TOPICS.forEach(function(tp){ tp.videos.forEach(function(v){ ALL_VIDEOS[v.id] = v; }); });
+
+/* ================= Schedule: real BBA timetable ================= */
+var SCHEDULE = {
+  classes: [
+    { id:"teamproject", subject:"Managing a Work-Based Team Project", teacher:"Daw Shein Pa Pa Min",
+      days:[1,3], start:"2026-11-09", end:"2027-01-06", startMin:12*60, endMin:14*60+30 },
+    { id:"entrepreneurship", subject:"Entrepreneurship", teacher:"Dr. Sandar Htwe",
+      days:[5,6], start:"2026-11-13", end:"2027-01-09", startMin:12*60, endMin:14*60+30 }
+  ],
+  exams: [
+    { subject:"Managing a Work-Based Team Project", date:"2027-01-13", time:null },
+    { subject:"Entrepreneurship", date:"2027-01-13", time:null }
+  ]
+};
+function fmtClock(min){ var h = Math.floor(min / 60), m = min % 60; var ap = h >= 12 ? "PM" : "AM"; var hh = h % 12 || 12; return hh + ":" + String(m).padStart(2, "0") + " " + ap; }
+function parseDay(s){ var p = s.split("-"); return new Date(+p[0], +p[1]-1, +p[2]); }
+function dayKey(d){ return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function classesOn(date){
+  var out = [];
+  SCHEDULE.classes.forEach(function(c){
+    if (c.days.indexOf(date.getDay()) === -1) return;
+    var k = dayKey(date);
+    if (k < c.start || k > c.end) return;
+    out.push(c);
+  });
+  return out;
+}
+function nextClass(){
+  var now = new Date();
+  for (var i = 0; i < 21; i++){
+    var d = new Date(now); d.setDate(d.getDate() + i);
+    var list = classesOn(d);
+    for (var j = 0; j < list.length; j++){
+      var c = list[j];
+      var start = new Date(d); start.setHours(Math.floor(c.startMin / 60), c.startMin % 60, 0, 0);
+      if (start > now) return { cls:c, date:d, start:start };
+    }
+  }
+  return null;
+}
+function daysUntil(dateStr){
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  return Math.round((parseDay(dateStr) - today) / 86400000);
+}
+function fmtDateShort(d){ return d.toLocaleDateString(undefined, { month:"short", day:"numeric" }); }
+function fmtDateLong(d){ return d.toLocaleDateString(undefined, { weekday:"long", month:"short", day:"numeric", year:"numeric" }); }
+
 /* ================= Progress, sync, streak ================= */
 var WORKER = "https://l3arn-sync.henryvincent383.workers.dev";
 var LS_PROGRESS = "l3arn-progress-v1";
@@ -697,8 +1073,19 @@ var LS_GUEST = "l3arn-guest-dismissed";
 function emptySubjectProgress(){
   return { known:{}, quizBest:null, lastQuiz:null, notes:[], streak:{ count:0, lastDay:null } };
 }
+function emptyProfile(){ return { name:"", gender:null, academicYear:1, picture:null }; }
+function mergeProfile(p){
+  var d = emptyProfile();
+  if (!p || typeof p !== "object") return d;
+  if (typeof p.name === "string") d.name = p.name.slice(0, 40);
+  if (p.gender === "male" || p.gender === "female") d.gender = p.gender;
+  var y = Number(p.academicYear);
+  if (y >= 1 && y <= 4) d.academicYear = Math.round(y);
+  if (typeof p.picture === "string" && p.picture.indexOf("data:image/") === 0 && p.picture.length <= 150000) d.picture = p.picture;
+  return d;
+}
 function emptyStore(){
-  var s = { active:"teamproject", subjects:{} };
+  var s = { active:"teamproject", subjects:{}, playlist:[], watchHistory:[], profile: emptyProfile() };
   SUBJECTS.forEach(function(sb){ s.subjects[sb.id] = emptySubjectProgress(); });
   return s;
 }
@@ -728,6 +1115,13 @@ function normalizeStore(raw){
     });
   }
   if (raw.active && s.subjects[raw.active]) s.active = raw.active;
+  if (Array.isArray(raw.playlist)) {
+    s.playlist = raw.playlist.filter(function(id){ return typeof id === "string" && ALL_VIDEOS[id]; }).slice(0, 100);
+  }
+  if (Array.isArray(raw.watchHistory)) {
+    s.watchHistory = raw.watchHistory.filter(function(h){ return h && typeof h.videoId === "string" && ALL_VIDEOS[h.videoId]; }).slice(0, 200).map(function(h){ return { videoId: h.videoId, at: (typeof h.at === "string" ? h.at : new Date().toISOString()) }; });
+  }
+  if (raw.profile && typeof raw.profile === "object") s.profile = mergeProfile(raw.profile);
   return s;
 }
 var store = emptyStore();
@@ -770,7 +1164,16 @@ function renderStreak(){
 }
 
 var saveTimer = null;
-function saveProgress(){
+var toastTimer = null;
+function showSaved(msg){
+  var toast = document.getElementById("saved-toast");
+  if (!toast) return;
+  document.getElementById("saved-toast-text").textContent = msg || t("savedToast");
+  toast.classList.add("show");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toast.classList.remove("show"); }, 1800);
+}
+function saveProgress(quiet){
   saveLocal();
   if (!auth) { syncState = "guest"; updateSyncLabel(); return; }
   syncState = "syncing"; updateSyncLabel();
@@ -783,6 +1186,7 @@ function saveProgress(){
     }).then(function(r){ return r.json(); }).then(function(d){
       syncState = d && d.ok ? "synced" : "offline";
       updateSyncLabel();
+      if (d && d.ok && !quiet) showSaved(t("syncedToast"));
     }).catch(function(){
       syncState = "offline"; updateSyncLabel();
     });
@@ -862,6 +1266,7 @@ function doSignIn(){
           bumpStreak();
           saveProgress();
         }
+        syncProfileName();
         syncState = "synced"; updateSyncLabel();
         refreshAuthUI(); renderAll();
       }).catch(function(){
@@ -934,6 +1339,7 @@ function markCard(knows){
   if (knows) { progress.known[currentCard] = true; delete learning[currentCard]; }
   else { delete progress.known[currentCard]; learning[currentCard] = true; }
   saveProgress();
+  showSaved(t("savedToast"));
   renderCard();
   if (currentCard < flashcards.length - 1) { setTimeout(nextCard, 220); }
 }
@@ -963,6 +1369,7 @@ function loadQuiz(){
     }
     progress.lastQuiz = { score: score, total: quizData.length, at: new Date().toISOString() };
     saveProgress();
+    showSaved(t("savedToast"));
     var rev = document.getElementById("review-list");
     rev.innerHTML = "";
     quizData.forEach(function(item, i){
@@ -1063,12 +1470,14 @@ function saveNote(){
   progress.notes.unshift({ id: "n" + Date.now().toString(36) + Math.random().toString(36).slice(2,6), text: text, at: new Date().toISOString() });
   input.value = "";
   saveProgress();
+  showSaved(t("savedToast"));
   renderNotes();
   input.focus();
 }
 function deleteNote(id){
   progress.notes = (progress.notes || []).filter(function(n){ return n.id !== id; });
   saveProgress();
+  showSaved(t("savedToast"));
   renderNotes();
 }
 
@@ -1083,18 +1492,419 @@ function switchTab(name){
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+
+/* ================= Main navigation ================= */
+function updateHeroForView(){
+  var yearLabel = "Year " + (store.profile.academicYear || 1) + " · BBA";
+  var titleKey = null, subKey = null;
+  if (view === "learn") { titleKey = "learnH"; subKey = "learnLede"; }
+  else if (view === "playlist") { titleKey = "playlistH"; subKey = "playlistLede"; }
+  else if (view === "schedule") { titleKey = "scheduleH"; subKey = "scheduleLede"; }
+  else if (view === "profile") { titleKey = "profileH"; subKey = "profileLede"; }
+  if (!titleKey) return;
+  document.getElementById("unit-pill").textContent = yearLabel;
+  document.getElementById("hero-title").textContent = t(titleKey);
+  document.getElementById("hero-sub").textContent = t(subKey);
+  document.getElementById("footer-text").textContent = "L3ARN · " + t(titleKey);
+}
+function showMain(v){
+  if (v === "profile") { openProfile(); return; }
+  if (v === "subject") { goHome(); return; }
+  showView(v);
+  if (v === "home") renderHome();
+  if (v === "learn") renderLearn();
+  if (v === "playlist") renderPlaylist();
+  if (v === "schedule") renderSchedule();
+  updateHeroForView();
+  renderStats();
+  window.scrollTo({ top: 0 });
+}
+
+/* ================= Learn ================= */
+function renderLearn(){
+  var host = document.getElementById("learn-topics");
+  host.innerHTML = "";
+  LEARN_TOPICS.forEach(function(tp){
+    var card = document.createElement("div");
+    card.className = "card";
+    card.style.marginBottom = "16px";
+    var h = document.createElement("h3");
+    h.style.cssText = "font-size:20px;font-weight:800";
+    h.textContent = tp.title;
+    var d = document.createElement("p");
+    d.className = "ink2"; d.style.marginTop = "6px"; d.textContent = tp.desc;
+    card.appendChild(h); card.appendChild(d);
+    var gh = document.createElement("h4");
+    gh.style.cssText = "font-size:15px;font-weight:800;margin-top:18px";
+    gh.textContent = t("guideH");
+    card.appendChild(gh);
+    tp.guides.forEach(function(g){
+      var a = document.createElement("a");
+      a.className = "guide-link";
+      a.href = g.url; a.target = "_blank"; a.rel = "noopener";
+      var gt = document.createElement("span"); gt.textContent = g.title;
+      var gs = document.createElement("span"); gs.className = "gsrc"; gs.textContent = g.source + " · " + t("openGuide");
+      a.appendChild(gt); a.appendChild(gs);
+      card.appendChild(a);
+    });
+    var vh = document.createElement("h4");
+    vh.style.cssText = "font-size:15px;font-weight:800;margin-top:18px";
+    vh.textContent = t("videoH");
+    card.appendChild(vh);
+    var grid = document.createElement("div");
+    grid.className = "videogrid";
+    tp.videos.forEach(function(v){ grid.appendChild(videoCard(v)); });
+    card.appendChild(grid);
+    host.appendChild(card);
+  });
+}
+function videoCard(v){
+  var card = document.createElement("div");
+  card.className = "videocard";
+  card.setAttribute("data-video", v.id);
+  var thumb = document.createElement("div");
+  thumb.className = "vthumb";
+  var img = document.createElement("img");
+  img.src = "https://i.ytimg.com/vi/" + v.id + "/hqdefault.jpg";
+  img.alt = v.title;
+  img.loading = "lazy";
+  var play = document.createElement("button");
+  play.className = "playbtn";
+  play.setAttribute("aria-label", t("playVideo") + ": " + v.title);
+  play.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+  play.onclick = function(){ playVideo(v.id, card); };
+  thumb.appendChild(img); thumb.appendChild(play);
+  var body = document.createElement("div");
+  body.className = "vbody";
+  var title = document.createElement("div");
+  title.className = "vtitle"; title.textContent = v.title;
+  var ch = document.createElement("div");
+  ch.className = "vchan"; ch.textContent = v.channel;
+  var actions = document.createElement("div");
+  actions.className = "vactions";
+  var watchBtn = document.createElement("button");
+  watchBtn.className = "btn primary"; watchBtn.textContent = t("playVideo");
+  watchBtn.onclick = function(){ playVideo(v.id, card); };
+  var saveBtn = document.createElement("button");
+  saveBtn.className = "btn"; saveBtn.textContent = isSaved(v.id) ? t("savedVideo") : t("saveVideo");
+  saveBtn.onclick = function(){ toggleSaveVideo(v.id); };
+  actions.appendChild(watchBtn); actions.appendChild(saveBtn);
+  body.appendChild(title); body.appendChild(ch); body.appendChild(actions);
+  card.appendChild(thumb); card.appendChild(body);
+  return card;
+}
+function playVideo(id, card){
+  var v = ALL_VIDEOS[id]; if (!v || !card) return;
+  recordWatch(id);
+  var host = card.querySelector(".vthumb");
+  if (!host || host.querySelector("iframe")) return;
+  var frame = document.createElement("iframe");
+  frame.src = "https://www.youtube-nocookie.com/embed/" + id + "?rel=0&autoplay=1";
+  frame.title = v.title;
+  frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+  frame.allowFullscreen = true;
+  host.innerHTML = "";
+  host.appendChild(frame);
+}
+function isSaved(id){ return (store.playlist || []).indexOf(id) !== -1; }
+function toggleSaveVideo(id){
+  if (!ALL_VIDEOS[id]) return;
+  var p = store.playlist || [];
+  var i = p.indexOf(id);
+  if (i === -1) p.push(id); else p.splice(i, 1);
+  store.playlist = p;
+  saveProgress();
+  showSaved(t("savedToast"));
+  renderLearn();
+  renderPlaylist();
+  renderStats();
+}
+function recordWatch(id){
+  if (!ALL_VIDEOS[id]) return;
+  var h = (store.watchHistory || []).filter(function(x){ return x.videoId !== id; });
+  h.unshift({ videoId:id, at:new Date().toISOString() });
+  store.watchHistory = h.slice(0, 200);
+  saveProgress(true);
+  renderStats();
+}
+
+/* ================= Playlist + Watch History ================= */
+function renderPlaylist(){
+  var list = document.getElementById("playlist-list");
+  list.innerHTML = "";
+  var saved = store.playlist || [];
+  document.getElementById("playlist-count").textContent = String(saved.length);
+  document.getElementById("playlist-empty").classList.toggle("hidden", saved.length > 0);
+  saved.forEach(function(id){
+    var v = ALL_VIDEOS[id]; if (!v) return;
+    list.appendChild(videoCard(v));
+  });
+  var hlist = document.getElementById("history-list");
+  hlist.innerHTML = "";
+  var h = store.watchHistory || [];
+  document.getElementById("history-count").textContent = String(h.length);
+  document.getElementById("history-empty").classList.toggle("hidden", h.length > 0);
+  h.forEach(function(item){
+    var v = ALL_VIDEOS[item.videoId]; if (!v) return;
+    var row = document.createElement("div");
+    row.className = "history-row";
+    var img = document.createElement("img");
+    img.src = "https://i.ytimg.com/vi/" + v.id + "/mqdefault.jpg";
+    img.alt = "";
+    var mid = document.createElement("div"); mid.className = "hmid";
+    var tt = document.createElement("div"); tt.className = "htitle"; tt.textContent = v.title;
+    var meta = document.createElement("div"); meta.className = "hmeta"; meta.textContent = t("watchedOn") + " · " + fmtTime(item.at);
+    mid.appendChild(tt); mid.appendChild(meta);
+    var btn = document.createElement("button");
+    btn.className = "btn"; btn.textContent = t("playVideo");
+    btn.onclick = function(){
+      showMain("learn");
+      setTimeout(function(){
+        var card = document.querySelector('[data-video="' + v.id + '"]');
+        if (card) { card.scrollIntoView({ behavior:"smooth", block:"center" }); playVideo(v.id, card); }
+      }, 60);
+    };
+    row.appendChild(img); row.appendChild(mid); row.appendChild(btn);
+    hlist.appendChild(row);
+  });
+}
+
+/* ================= Schedule ================= */
+function renderSchedule(){
+  var now = new Date();
+  var monday = new Date(now); var dow = (now.getDay() + 6) % 7; monday.setDate(now.getDate() - dow);
+  var sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
+  document.getElementById("schedule-week-label").textContent = fmtDateShort(monday) + " – " + fmtDateShort(sunday);
+  var nc = nextClass();
+  var box = document.getElementById("next-class-box");
+  box.innerHTML = "";
+  if (nc) {
+    var today0 = new Date(); today0.setHours(0, 0, 0, 0);
+    var d0 = new Date(nc.date); d0.setHours(0, 0, 0, 0);
+    var diff = Math.round((d0 - today0) / 86400000);
+    var when = diff === 0 ? t("todayLabel") : diff === 1 ? t("tomorrowLabel") : t("inDays").replace("{n}", diff);
+    var title = document.createElement("div");
+    title.style.cssText = "font-size:17px;font-weight:800;line-height:1.4";
+    title.textContent = nc.cls.subject;
+    var meta = document.createElement("div");
+    meta.className = "ink2"; meta.style.marginTop = "6px";
+    meta.textContent = when + " · " + fmtDateLong(nc.date) + " · " + fmtClock(nc.cls.startMin) + " – " + fmtClock(nc.cls.endMin);
+    var teach = document.createElement("div");
+    teach.className = "ink2"; teach.style.marginTop = "2px";
+    teach.textContent = nc.cls.teacher;
+    box.appendChild(title); box.appendChild(meta); box.appendChild(teach);
+  } else {
+    var none = document.createElement("div");
+    none.className = "ink2"; none.style.fontWeight = "700";
+    none.textContent = t("noUpcoming");
+    box.appendChild(none);
+  }
+  var grid = document.getElementById("week-grid");
+  grid.innerHTML = "";
+  for (var i = 0; i < 7; i++){
+    var d = new Date(monday); d.setDate(monday.getDate() + i);
+    var cell = document.createElement("div");
+    cell.className = "daycell" + (dayKey(d) === dayKey(now) ? " today" : "");
+    var dowEl = document.createElement("div");
+    dowEl.className = "dow";
+    dowEl.textContent = d.toLocaleDateString(undefined, { weekday:"short" }) + (dayKey(d) === dayKey(now) ? " · " + t("todayLabel") : "");
+    var num = document.createElement("div");
+    num.className = "dnum"; num.textContent = String(d.getDate());
+    cell.appendChild(dowEl); cell.appendChild(num);
+    var list = classesOn(d);
+    if (list.length === 0) {
+      var nn = document.createElement("div");
+      nn.className = "dnone"; nn.textContent = t("noClass");
+      cell.appendChild(nn);
+    } else {
+      list.forEach(function(c){
+        var cl = document.createElement("div");
+        cl.className = "dclass"; cl.textContent = c.subject;
+        var cm = document.createElement("div");
+        cm.className = "dmeta"; cm.textContent = fmtClock(c.startMin) + " – " + fmtClock(c.endMin) + " · " + c.teacher;
+        cell.appendChild(cl); cell.appendChild(cm);
+      });
+    }
+    grid.appendChild(cell);
+  }
+  var ex = document.getElementById("exam-list");
+  ex.innerHTML = "";
+  SCHEDULE.exams.forEach(function(e){
+    var days = daysUntil(e.date);
+    var card = document.createElement("div");
+    card.className = "task";
+    var badge = document.createElement("div");
+    badge.className = "tasknum";
+    badge.textContent = days > 0 ? String(days) : "0";
+    var body = document.createElement("div");
+    body.className = "taskbody";
+    var title = document.createElement("div");
+    title.className = "tasktitle"; title.textContent = e.subject + " exam";
+    var note = document.createElement("div");
+    note.className = "tasknote";
+    note.textContent = fmtDateLong(parseDay(e.date)) + " · " + t("examTimeTbd") + " · " + (days > 0 ? t("daysToGo").replace("{n}", days) : t("todayLabel"));
+    body.appendChild(title); body.appendChild(note);
+    card.appendChild(badge); card.appendChild(body);
+    ex.appendChild(card);
+  });
+}
+
+/* ================= Profile ================= */
+function openProfile(){
+  showView("profile");
+  updateHeroForView();
+  renderStats();
+  var loading = document.getElementById("profile-loading");
+  var content = document.getElementById("profile-content");
+  loading.classList.remove("hidden");
+  content.classList.add("hidden");
+  content.classList.remove("fadein");
+  setTimeout(function(){
+    renderProfile();
+    loading.classList.add("hidden");
+    content.classList.remove("hidden");
+    content.classList.add("fadein");
+  }, 400);
+  window.scrollTo({ top: 0 });
+}
+function renderProfile(){
+  var p = store.profile;
+  var name = (p.name || "") || (auth && auth.name) || t("guestName");
+  document.getElementById("profile-name").textContent = name;
+  var genderTxt = p.gender === "male" ? t("male") : p.gender === "female" ? t("female") : t("notSet");
+  document.getElementById("profile-meta").textContent = genderTxt + " · Year " + p.academicYear;
+  var totalKnown = 0, totalNotes = 0, best = 0;
+  SUBJECTS.forEach(function(sb){
+    var sp = store.subjects[sb.id];
+    totalKnown += knownCount(sp);
+    totalNotes += (sp.notes || []).length;
+    var c = (sp.streak && sp.streak.count) || 0; if (c > best) best = c;
+  });
+  document.getElementById("profile-stats").textContent = t("dayStreak") + ": " + best + " · " + t("statKnown") + ": " + totalKnown + " · " + t("statNotes") + ": " + totalNotes;
+  var input = document.getElementById("profile-name-input");
+  if (document.activeElement !== input) input.value = p.name || "";
+  var wrap = document.getElementById("profile-pic-wrap");
+  wrap.innerHTML = "";
+  if (p.picture) {
+    var img = document.createElement("img");
+    img.className = "profile-pic"; img.src = p.picture; img.alt = name;
+    wrap.appendChild(img);
+  } else {
+    var init = document.createElement("div");
+    init.className = "profile-pic profile-initial";
+    init.textContent = name.charAt(0).toUpperCase();
+    wrap.appendChild(init);
+  }
+  document.querySelectorAll("#gender-seg button").forEach(function(b){
+    b.classList.toggle("on", b.getAttribute("data-gender") === p.gender);
+  });
+  document.querySelectorAll("#year-seg button").forEach(function(b){
+    b.classList.toggle("on", Number(b.getAttribute("data-year")) === p.academicYear);
+  });
+  document.getElementById("remove-pic-btn").classList.toggle("hidden", !p.picture);
+  renderHeaderAvatar();
+}
+function renderHeaderAvatar(){
+  var img = document.getElementById("header-avatar-img");
+  var init = document.getElementById("header-avatar-init");
+  var p = store.profile;
+  if (p.picture) {
+    img.src = p.picture; img.classList.remove("hidden"); init.classList.add("hidden");
+  } else if (auth && auth.name) {
+    init.textContent = auth.name.charAt(0).toUpperCase();
+    init.classList.remove("hidden"); img.classList.add("hidden");
+  } else {
+    img.classList.add("hidden"); init.classList.add("hidden");
+  }
+}
+function syncProfileName(){
+  if (auth && auth.name && !store.profile.name) {
+    store.profile.name = auth.name.slice(0, 40);
+    saveLocal();
+  }
+}
+function setProfileName(v){
+  store.profile.name = (v || "").trim().slice(0, 40);
+  saveProgress();
+  showSaved(t("savedToast"));
+  renderProfile();
+}
+function setGender(g){
+  store.profile.gender = g;
+  saveProgress();
+  showSaved(t("savedToast"));
+  renderProfile();
+}
+function setYear(y){
+  store.profile.academicYear = y;
+  saveProgress();
+  showSaved(t("savedToast"));
+  renderProfile();
+  renderSubjectGrid();
+}
+function resizeImageToSquare(dataUrl, done){
+  var img = new Image();
+  img.onload = function(){
+    try {
+      var size = 200;
+      var canvas = document.createElement("canvas");
+      canvas.width = size; canvas.height = size;
+      var ctx = canvas.getContext("2d");
+      var s = Math.min(img.width, img.height);
+      var sx = (img.width - s) / 2, sy = (img.height - s) / 2;
+      ctx.drawImage(img, sx, sy, s, s, 0, 0, size, size);
+      done(canvas.toDataURL("image/jpeg", 0.8));
+    } catch (e) { done(null); }
+  };
+  img.onerror = function(){ done(null); };
+  img.src = dataUrl;
+}
+function onPicChosen(ev){
+  var file = ev.target.files && ev.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(){
+    resizeImageToSquare(reader.result, function(dataUrl){
+      if (!dataUrl) return;
+      store.profile.picture = dataUrl;
+      saveProgress();
+      showSaved(t("savedToast"));
+      renderProfile();
+    });
+  };
+  reader.readAsDataURL(file);
+  ev.target.value = "";
+}
+function removePic(){
+  store.profile.picture = null;
+  saveProgress();
+  showSaved(t("savedToast"));
+  renderProfile();
+}
+
 function renderAll(){
-  if (view === "home") { renderHome(); }
-  else { renderSubjectView(); }
-  renderStreak(); renderNotes(); refreshAuthUI();
+  showView(view);
+  if (view === "home") renderHome();
+  else if (view === "subject") renderSubjectView();
+  else if (view === "learn") { updateHeroForView(); renderLearn(); renderStats(); }
+  else if (view === "playlist") { updateHeroForView(); renderPlaylist(); renderStats(); }
+  else if (view === "schedule") { updateHeroForView(); renderSchedule(); renderStats(); }
+  else if (view === "profile") { updateHeroForView(); renderProfile(); renderStats(); }
+  renderStreak(); renderNotes(); refreshAuthUI(); renderHeaderAvatar();
 }
 
 /* ================= Subject picker + views ================= */
 function showView(v){
   view = v;
-  document.getElementById("home-view").classList.toggle("hidden", v !== "home");
-  document.getElementById("subject-view").classList.toggle("hidden", v !== "subject");
+  ["home","subject","learn","playlist","schedule","profile"].forEach(function(k){
+    var el = document.getElementById(k === "home" ? "home-view" : k + "-view");
+    if (el) el.classList.toggle("hidden", v !== k);
+  });
   document.getElementById("back-btn").classList.toggle("hidden", v !== "subject");
+  ["home","learn","playlist","schedule","profile"].forEach(function(k){
+    var b = document.getElementById("nav-" + k);
+    if (b) b.setAttribute("aria-selected", (v === k || (k === "home" && v === "subject")) ? "true" : "false");
+  });
 }
 function renderStats(){
   var v1, v2, v3, v4, l1, l2, l3, l4;
@@ -1109,6 +1919,34 @@ function renderStats(){
     v2 = 1; l2 = "statReady";
     v3 = totalKnown; l3 = "statKnown";
     v4 = totalNotes; l4 = "statNotes";
+  } else if (view === "learn") {
+    v1 = 6; l1 = "statGuides";
+    v2 = 6; l2 = "statVideos";
+    v3 = (store.playlist || []).length; l3 = "statSaved";
+    v4 = (store.watchHistory || []).length; l4 = "statWatched";
+  } else if (view === "playlist") {
+    v1 = (store.playlist || []).length; l1 = "statSaved";
+    v2 = (store.watchHistory || []).length; l2 = "statWatched";
+    v3 = 6; l3 = "statVideos";
+    v4 = 6; l4 = "statGuides";
+  } else if (view === "schedule") {
+    v1 = 4; l1 = "classesPerWeek";
+    v2 = Math.max(0, daysUntil("2027-01-13")); l2 = "daysToExam";
+    v3 = 2; l3 = "examsCount";
+    v4 = 0;
+    SUBJECTS.forEach(function(sb){ var c = (store.subjects[sb.id].streak && store.subjects[sb.id].streak.count) || 0; if (c > v4) v4 = c; });
+    l4 = "dayStreak";
+  } else if (view === "profile") {
+    var totalKnown = 0, totalNotes = 0, best = 0;
+    SUBJECTS.forEach(function(sb){
+      totalKnown += knownCount(store.subjects[sb.id]);
+      totalNotes += (store.subjects[sb.id].notes || []).length;
+      var c = (store.subjects[sb.id].streak && store.subjects[sb.id].streak.count) || 0; if (c > best) best = c;
+    });
+    v1 = best; l1 = "dayStreak";
+    v2 = totalKnown; l2 = "statKnown";
+    v3 = totalNotes; l3 = "statNotes";
+    v4 = store.profile.academicYear || 1; l4 = "yearH";
   } else {
     var sb = currentSubject();
     if (sb.ready) {
@@ -1170,7 +2008,7 @@ function renderSubjectGrid(){
 }
 function renderHome(){
   showView("home");
-  document.getElementById("unit-pill").textContent = "Year 1 \u00b7 BBA";
+  document.getElementById("unit-pill").textContent = "Year " + (store.profile.academicYear || 1) + " \u00b7 BBA";
   document.getElementById("hero-title").textContent = t("chooseSubject");
   document.getElementById("hero-sub").textContent = t("chooseLede");
   document.getElementById("footer-text").textContent = "L3ARN \u00b7 BBA Year 1 Study Hub";
@@ -1207,15 +2045,13 @@ function openSubject(id){
   qi = 0; score = 0; picks = []; answered = false; quizStarted = false;
   bumpStreak();
   saveLocal();
-  saveProgress();
+  saveProgress(true);
   switchTab("flashcards");
   renderAll();
   window.scrollTo({ top: 0 });
 }
 function goHome(){
-  view = "home";
-  renderAll();
-  window.scrollTo({ top: 0 });
+  showMain("home");
 }
 
 /* ================= Init ================= */
@@ -1231,6 +2067,7 @@ function goHome(){
   document.documentElement.setAttribute("data-theme", theme);
   // Progress + streak
   loadLocal();
+  syncProfileName();
   bumpStreak();
   saveLocal();
   applyLang();
@@ -1246,6 +2083,7 @@ function goHome(){
           progress = store.subjects[store.active];
           bumpStreak();
           saveLocal();
+          syncProfileName();
           syncState = "synced";
           renderAll();
         } else { syncState = "synced"; }
